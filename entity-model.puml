@@ -1,0 +1,68 @@
+@startuml
+
+skinparam dpi 200
+skinparam classAttributeFontSize 8
+skinparam classArrowFontSize 9
+skinparam classFontSize 10
+skinparam nodesep 90
+skinparam ranksep 40
+hide stereotype
+skinparam class {
+	BackgroundColor White
+	BackgroundColor<<Sample>> LightPink
+	BackgroundColor<<User>> LightBlue
+	BackgroundColor<<Metadata>> LightGreen
+	BackgroundColor<<Annotation>> LightYellow
+}
+
+class MetadataTemplate <<Metadata>> {
+    String name
+}
+
+class MetadataField <<Metadata>> {
+    String name, type
+}
+MetadataTemplate "definedIn 1" -- "defines many" MetadataField
+MetadataTemplate "describedBy 1" -- "describes many" Sample
+
+class MetadataValue <<Metadata>> {
+    String value
+}
+MetadataValue "valued many" -up- "values 1" MetadataField
+MetadataValue "has many" -right- "for 1" Sample
+
+class Sample <<Sample>> {
+    String text
+}
+
+class TagHierarchy <<Annotation>> {
+    String name
+}
+TagHierarchy "taggedBy 1" -- "tags many" Sample
+
+class Tag <<Annotation>> {
+    String name
+}
+Tag "defines many" -up- "definedIn 1" TagHierarchy
+Tag "child many" -- "parent 0..1" Tag
+Tag "uses 1" -- "usedIn many" Annotation
+
+class Annotation <<Annotation>> {
+    Integer start, end
+    Boolean reviewed
+}
+Annotation "annotatedBy many" -left- "annotates 1" Sample
+
+class User <<User>> {
+    String username
+    String email
+}
+
+class Linguist <<User>> extends User {
+}
+Linguist "1 annotatedBy" -- "many annotates" Annotation
+
+class Admin <<User>> extends User {
+}
+
+@enduml
