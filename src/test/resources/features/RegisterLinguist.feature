@@ -1,0 +1,16 @@
+Feature: Register Linguist
+  In order to allow a new linguist to use the app
+  As an admin
+  I want to register a new linguist account
+
+  Scenario: Register new linguist as admin
+    Given I login as "admin" with password "password"
+    When I register a new linguist with username "linguist", email "linguist@textannot.org" and password "password"
+    Then The response code is 201
+    And It has been created a linguist with username "linguist" and email "linguist@textannot.org", the password is not returned
+
+  Scenario: Try to register new linguist without authenticating
+    Given I'm not logged in
+    When I register a new linguist with username "linguist", email "linguist@textannot.org" and password "password"
+    Then The response code is 401
+    And It has not been created a linguist with username "linguist"
