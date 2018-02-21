@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +21,7 @@ public abstract class User extends UriEntity<String> implements UserDetails {
   @Id
   private String username;
 
-  @Email
+  @Email @NotBlank
   private String email;
 
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
