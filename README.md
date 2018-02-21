@@ -24,9 +24,10 @@ Moreover, authorised users can define samples metadata and the error tags hierar
 | ------------------------------| --------------------------------|
 | Create Sample for Template    | Register Linguist               |
 | Edit Sample Metadata          | Create Metadata Template        |
-| Define Uploads Template       | Add/Delete/Edit Metadata Field  |
+| List Metadata Templates       | Add/Delete/Edit Metadata Field  |
 | Upload XML Samples            | Create Annotation Hierarchy     |
 | List/Search Samples           | Add/Delete/Edit Annotation Tag  |
+| List Annotation Hierarchies   |                                 |
 | Start Sample Annotation       |                                 |
 | Tag Sample Text Error         |                                 |
 | Review Annotation             |                                 |
