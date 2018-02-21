@@ -1,9 +1,11 @@
 package cat.udl.eps.entsoftarch.textannot.handler;
 
 import cat.udl.eps.entsoftarch.textannot.domain.Linguist;
+import cat.udl.eps.entsoftarch.textannot.repository.LinguistRepository;
 import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleAfterCreate;
 import org.springframework.data.rest.core.annotation.HandleAfterDelete;
 import org.springframework.data.rest.core.annotation.HandleAfterLinkSave;
@@ -19,6 +21,9 @@ import org.springframework.stereotype.Component;
 @RepositoryEventHandler
 public class LinguistEventHandler {
     final Logger logger = LoggerFactory.getLogger(Linguist.class);
+
+    @Autowired
+    LinguistRepository linguistRepository;
 
     @HandleBeforeCreate
     @Transactional
@@ -47,12 +52,16 @@ public class LinguistEventHandler {
     @Transactional
     public void handleLinguistPostCreate(Linguist linguist){
         logger.info("After creating: {}", linguist.toString());
+        linguist.encodePassword();
+        linguistRepository.save(linguist);
     }
 
     @HandleAfterSave
     @Transactional
     public void handleLinguistPostSave(Linguist linguist){
         logger.info("After updating: {}", linguist.toString());
+        linguist.encodePassword();
+        linguistRepository.save(linguist);
     }
 
     @HandleAfterDelete

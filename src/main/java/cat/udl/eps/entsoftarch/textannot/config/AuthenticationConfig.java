@@ -33,6 +33,7 @@ public class AuthenticationConfig extends GlobalAuthenticationConfigurerAdapter 
       admin.setEmail("admin@textannot.org");
       admin.setUsername("admin");
       admin.setPassword("password");
+      admin.encodePassword();
       adminRepository.save(admin);
     }
     if (!linguistRepository.exists("user")) {
@@ -40,6 +41,7 @@ public class AuthenticationConfig extends GlobalAuthenticationConfigurerAdapter 
       user.setEmail("user@textannot.org");
       user.setUsername("user");
       user.setPassword("password");
+      user.encodePassword();
       linguistRepository.save(user);
     }
   }
