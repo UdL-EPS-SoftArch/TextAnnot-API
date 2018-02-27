@@ -17,6 +17,6 @@ Feature: Create Sample
 
   Scenario: Attempting to create a sample with empty text
     Given I login as "linguist" with password "password"
-    When I create a new sample without text
+    When I create a new sample with text ""
     Then The response code is 400
-    And It has not been created a sample with empty text
+    And It has not been created a sample with text ""
