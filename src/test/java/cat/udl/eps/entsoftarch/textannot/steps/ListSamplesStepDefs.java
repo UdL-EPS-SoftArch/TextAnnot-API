@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -41,9 +42,7 @@ public class ListSamplesStepDefs {
 
   @And("^The list is empty$")
   public void TheListIsEmpty() throws Throwable{
-    stepDefs.result = stepDefs.mockMvc.perform(
-            get("/samples").accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNotFound());
+    stepDefs.result.andExpect(jsonPath("samples", hasSize(0)));
   }
 
 
