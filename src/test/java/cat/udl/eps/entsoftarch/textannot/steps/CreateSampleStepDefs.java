@@ -21,7 +21,9 @@ public class CreateSampleStepDefs {
     @Autowired
     private StepDefs stepDefs;
 
-    @When("^I create a new sample with text \"([^\"]+)\")$")
+    private String newResourceUri;
+
+    @When("^I create a new sample with text \"([^\"]*)\"$")
     public void iCreateANewSample(String text) throws Throwable{
         JSONObject sample = new JSONObject();
         sample.put("text", text);
@@ -32,31 +34,37 @@ public class CreateSampleStepDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
-
+        newResourceUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
     }
 
     @And("^It has been created a sample with text\"([^\"]*)\"$")
     public void itHasBeenCreatedASample(String text) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/samples/{text}", text)
+                get(newResourceUri, text)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
+
     }
 
     @And("^It has not been created a sample with text \"([^\"]*)\"$")
     public void itHasNotBeenCreatedASample(String text) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/samples/{text}", text)
+                get(newResourceUri, text)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
-    @When("^I create a new sample with text \"\"$")
-    public void itHasNotBeenCreatedASampleWithEmptyText () throws Throwable {
+    @When("^I create a new sample with no text field$")
+    public void itHasNotBeenCreatedASampleGivenNoTextField () throws Throwable {
+        JSONObject sample = new JSONObject();
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/samples/{text}", "")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                post("/samples")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(sample.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+        newResourceUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
     }
 }
