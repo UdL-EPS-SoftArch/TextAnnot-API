@@ -28,6 +28,6 @@ Feature: List samples
 
   Scenario: Having 0 samples, list samples authenticated
     Given I login as "user" with password "password"
-    When I list samples.
+    When I list samples
     Then The response code is 200
-    And The list is empty.
+    And The list is empty
