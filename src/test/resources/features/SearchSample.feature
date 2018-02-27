@@ -4,11 +4,11 @@ Feature: Search Sample
   I want to search a sample
 
   Scenario: Search a sample
-    Given I login as "user" with "password"
-    And There are some samples with text "sample1" "sample2" and "sample3"
-    When I search a sample with the "word"
+    Given I login as "user" with password "password"
+    And There are some samples with text "Hola que tal" "Yo bien y tu?" and "Mas o menos"
+    When I search a sample with the word "a"
     Then The response code is 200
-    And The samples are "sample"
+    And The samples are "Hola que tal" and "Mas o menos"
 
 
 

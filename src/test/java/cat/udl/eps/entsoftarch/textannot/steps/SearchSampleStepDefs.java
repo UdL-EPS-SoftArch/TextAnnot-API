@@ -29,9 +29,7 @@ public class SearchSampleStepDefs {
     @Autowired
     private SampleRepository sampleRepository;
 
-
-
-    @And("^The samples are \"([^\"]*)\" \"([^\"]*)\" and \"([^\"]*)\"$")
+    @And("^There are some samples with text \"([^\"]*)\" \"([^\"]*)\" and \"([^\"]*)\"$")
     public void listTheSamples(String sample1, String sample2, String sample3) throws Throwable{
         List<Sample> sampleList = new ArrayList<>();
         sampleList.add(new Sample(sample1));
@@ -41,19 +39,14 @@ public class SearchSampleStepDefs {
 
     }
 
-    @When("^I search a sample with the \"([^\"]*)\"$")
+    @When("^I search a sample with the word \"([^\"]*)\"$")
     public void searchASample(String word) throws Throwable {
         SearchSampleStepDefs.word = word;
-    }
-    
-
-    @Then("^The response code is (\\d+)$")
-    public void theResponseIs() throws Throwable{
 
     }
 
 
-    @And("The samples are \"([^\"]*)\"$")
+    @And("The samples are \"([^\"]*)\" and \"([^\"]*)\"$")
     public void theSamplesAre() throws Throwable{
 
     }
