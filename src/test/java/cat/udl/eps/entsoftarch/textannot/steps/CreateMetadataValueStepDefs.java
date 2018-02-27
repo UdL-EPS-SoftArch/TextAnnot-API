@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class CreateMetadataValueStepDefs {
 
-    private static final Logger logger = LoggerFactory.getLogger(RegisterLinguistStepDef.class);
+    private static final Logger logger = LoggerFactory.getLogger(CreateMetadataValueStepDefs.class);
 
     @Autowired
     private StepDefs stepDefs;
@@ -49,13 +49,24 @@ public class CreateMetadataValueStepDefs {
                 .andExpect(jsonPath("$.id", is(testId)));
     }
 
-    @And("^It has not been created a metadataValue with value \"([^\"]*)\"$")
-    public void itHasNotBeenCreatedAMetadataValueWithValue(String testValue) throws Throwable {
+    @And("^It has not been created a metadataValue with value \"([^\"]*)\" and Id (\\d+)$")
+    public void itHasNotBeenCreatedAMetadataValueWithValue(String testValue, int testId) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/metadataValues/{value}", testValue)
+                get("/metadataValues/{id}", testId)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
+    @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+)$")
+    public void itHasBeenCreatedANewMetadataValueWithValueAndId(String testValue, int testId) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/metadataValues/{id}", testId)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.value", is(testValue)))
+                .andExpect(jsonPath("$.id", is(testId)));
+    }
 }

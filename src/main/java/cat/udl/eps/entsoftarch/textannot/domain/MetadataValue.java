@@ -11,11 +11,11 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-public class MetadataValue {
+public class MetadataValue extends UriEntity<Integer>{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
     @NotBlank
     private String value;
