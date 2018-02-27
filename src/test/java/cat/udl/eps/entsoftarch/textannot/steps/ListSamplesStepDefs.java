@@ -37,12 +37,12 @@ public class ListSamplesStepDefs {
   }
   @And("The sample with text \"([^\"]*)\" is in the response$")
   public void theSampleIsInResponse(String text) throws Throwable{
-    stepDefs.result.andExpect(jsonPath("$.text", is(text)));
+    stepDefs.result.andExpect(jsonPath("$._embedded.samples.text[*]", is(text)));
   }
 
   @And("^The list is empty$")
   public void TheListIsEmpty() throws Throwable{
-    stepDefs.result.andExpect(jsonPath("samples", hasSize(0)));
+    stepDefs.result.andExpect(jsonPath("$._embedded.samples", hasSize(0)));
   }
 
 
