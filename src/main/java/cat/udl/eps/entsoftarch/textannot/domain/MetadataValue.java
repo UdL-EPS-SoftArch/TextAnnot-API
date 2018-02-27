@@ -15,8 +15,14 @@ public class MetadataValue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @NotBlank
     private String value;
+
+    public MetadataValue(){}
+
+    public MetadataValue(String value){
+        this.value = value;
+    }
 }

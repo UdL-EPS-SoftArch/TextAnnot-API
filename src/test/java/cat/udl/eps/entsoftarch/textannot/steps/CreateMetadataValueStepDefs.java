@@ -3,83 +3,59 @@ package cat.udl.eps.entsoftarch.textannot.steps;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 public class CreateMetadataValueStepDefs {
 
-    @And("^It has been created with Id value of (\\d+)$")
-    public void itHasBeenCreatedWithIdValueOf(int arg0) throws Throwable {
+    private static final Logger logger = LoggerFactory.getLogger(RegisterLinguistStepDef.class);
+
+    @Autowired
+    private StepDefs stepDefs;
+
+    @When("^I register a new metadataValue with value \"([^\"]*)\"$")
+    public void iRegisterANewMetadataValueWithValue(String testValue) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        JSONObject metadatavalue = new JSONObject();
+        metadatavalue.put("value", testValue);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/metadataValues")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(metadatavalue.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
     }
 
-    @When("^I create a new MetadataValue with value \"([^\"]*)\"$")
-    public void iCreateANewMetadataValueWithValue(String arg0) throws Throwable {
+    @And("^It has been created a new metadataValue with value \"([^\"]*)\"$ and Id (\\d+)$")
+    public void itHasBeenCreatedANewMetadataValue(String testValue, int testId) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/metadataValues/{id}", testId)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.value", is(testValue)))
+                .andExpect(jsonPath("$.id", is(testId)));
     }
 
-    @And("^It has been created a new MetadataValue with value \"([^\"]*)\"$")
-    public void itHasBeenCreatedANewMetadataValueWithValue(String arg0) throws Throwable {
+    @And("^It has not been created a metadataValue with value \"([^\"]*)\"$")
+    public void itHasNotBeenCreatedAMetadataValueWithValue(String testValue) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/metadataValues/{value}", testValue)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
-    @When("^I register a new MetadataValue with value \"([^\"]*)\"$")
-    public void iRegisterANewMetadataValueWithValue(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^It has not been created a MetadataValue with value \"([^\"]*)\"$")
-    public void itHasNotBeenCreatedAMetadataValueWithValue(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @When("^I create a new MetadataValue with no value$")
-    public void iCreateANewMetadataValueWithNoValue() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^It has not been created a new metadata$")
-    public voi,d itHasNotBeenCreatedANewMetadata() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @When("^I edit an existing MetadataValue with Id (\\d+)$")
-    public void iEditAnExistingMetadataValueWithId(int arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^I change the value to \"([^\"]*)\"$")
-    public void iChangeTheValueTo(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^It has changed the value of MetadataValue with Id (\\d+)$")
-    public void itHasChangedTheValueOfMetadataValueWithId(int arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^It has changed the value to \"([^\"]*)\"$")
-    public void itHasChangedTheValueTo(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @When("^I edit a non existing MetadataValue with Id (\\d+)$")
-    public void iEditANonExistingMetadataValueWithId(int arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^It has not changed the value of MetadataValue with Id (\\d+)$")
-    public void itHasNotChangedTheValueOfMetadataValueWithId(int arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
 }
