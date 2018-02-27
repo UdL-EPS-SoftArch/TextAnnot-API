@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import cat.udl.eps.entsoftarch.textannot.domain.Sample;
 import cat.udl.eps.entsoftarch.textannot.repository.SampleRepository;
@@ -36,6 +37,13 @@ public class ListSamplesStepDefs {
   @And("The sample with text \"([^\"]*)\" is in the response$")
   public void theSampleIsInResponse(String text) throws Throwable{
     stepDefs.result.andExpect(jsonPath("$.text", is(text)));
+  }
+
+  @And("^The list is empty$")
+  public void TheListIsEmpty() throws Throwable{
+    stepDefs.result = stepDefs.mockMvc.perform(
+            get("/samples").accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound());
   }
 
 
