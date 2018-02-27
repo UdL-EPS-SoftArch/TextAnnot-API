@@ -1,10 +1,13 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import cat.udl.eps.entsoftarch.textannot.domain.Sample;
 import cat.udl.eps.entsoftarch.textannot.repository.SampleRepository;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,10 @@ public class ListSamplesStepDefs {
   public void ICreateASample(String text) throws Throwable {
     Sample sample = new Sample(text);
     sampleRepos.save(sample);
+  }
+  @And("The sample with text \"([^\"]*)\" is in the response$")
+  public void theSampleIsInResponse(String text) throws Throwable{
+    stepDefs.result.andExpect(jsonPath("$.text", is(text)));
   }
 
 
