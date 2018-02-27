@@ -27,7 +27,7 @@ Feature: List samples
     And The sample with text "b" is in the response
 
   Scenario: Having 0 samples, list samples authenticated
-    Given: I login as "user" with password "password"
-    When: I list samples.
-    Then: The response code is 200
-    And: The list is empty.
+    Given I login as "user" with password "password"
+    When I list samples.
+    Then The response code is 200
+    And The list is empty.
