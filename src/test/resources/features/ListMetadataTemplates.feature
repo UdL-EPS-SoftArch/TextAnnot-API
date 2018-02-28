@@ -22,7 +22,7 @@ Feature: List Metadata Template
     And There is a MetadataTemplate with name "name4"
     When I retrieve all MetadataTemplate
     Then The response code is 200
-    And The response is a MetadataList[4]
+    And The response is a MetadataTemplate
 
   Scenario: List a metadata template as linguist
     Given I login as "linguist" with password "password"
@@ -39,4 +39,4 @@ Feature: List Metadata Template
     And There is a MetadataTemplate with name "name4"
     When I retrieve all MetadataTemplate
     Then The response code is 200
-    And The response is a MetadataList[4]
+    And The response is a MetadataList
