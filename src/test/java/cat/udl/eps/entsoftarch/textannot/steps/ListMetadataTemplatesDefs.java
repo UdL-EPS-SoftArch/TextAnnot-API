@@ -22,6 +22,7 @@ import cucumber.api.java.en.When;
 //      posicions com indiqui l'argument, del mètode, que s'ha passat. Per cada posició es crea una
 //      instància, i al sortir del bucle es guarden una a una amb l'objecte en qüestió.
 //
+//
 
 
 public class ListMetadataTemplatesDefs {
