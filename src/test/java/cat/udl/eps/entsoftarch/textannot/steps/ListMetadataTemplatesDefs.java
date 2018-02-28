@@ -33,32 +33,14 @@ public class ListMetadataTemplatesDefs {
         throw new PendingException();
     }
 
-    @When("^I retrieve all metadata templates$")
-    public void iRetrieveAllMetadataTemplates() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
     @And("^The respone contains only a MetadataTemplate with name \"([^\"]*)\"$")
-    public void theResponeContainsAMetadataTemplateWithName(String arg0) throws Throwable {
+    public void theResponeContainsAMetadataTemplateWithName(String mtName) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
 
-    @When("^I retrieve all MetadataTemplate$")
+    @When("^I retrieve all MetadataTemplates$")
     public void iRetrieveAllMetadataTemplate() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^The response is a MetadataTemplate$")
-    public void theResponseIsAMetadataTemplate() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^the response contains a MetadataTemplate with name \"([^\"]*)\"$")
-    public void theResponseContainsAMetadataTemplateWithName(String arg0) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
