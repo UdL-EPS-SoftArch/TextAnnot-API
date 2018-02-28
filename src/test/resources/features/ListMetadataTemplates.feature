@@ -1,36 +1,36 @@
 Feature: List Metadata Template
   "explicació"
 
-  Scenario: List a metadata template as no admin login
+  Scenario: List a metadata template as no user login
     Given I'm not logged in
-    And There is a metadata template with name "name"
+    And There is a single metadata template with name "name"
     When I retrieve all metadata templates
     Then The response code is 401
 
   Scenario: List a metadata template as admin
     Given I login as "admin" with password "password"
-    And There is a metadata template with name "name"
+    And There is a single metadata template with name "name"
     When I retrieve all metadata templates
     Then The response code is 200
-    And The respone contains a MetadataTemplate with name "name"
+    And The respone contains only a MetadataTemplate with name "name"
 
   Scenario: List 4 metadata templates as admin
     Given I login as "admin" with password "password"
     And There are 4 MetadataTemplates
     When I retrieve all MetadataTemplate
     Then The response code is 200
-    And The response is a MetadataTemplate
+    And The response is a MetadataTemplatesList
 
   Scenario: List a metadata template as linguist
     Given I login as "linguist" with password "password"
-    And There is a metadata template with name "name"
+    And There is a single metadata template with name "name"
     When I retrieve all metadata templates
     Then The response code is 200
-    And the response contains a MetadataTemplate with name "name"
+    And The respone contains only a MetadataTemplate with name "name"
 
   Scenario: List 4 metadata templates as linguist
     Given I login as "linguist" with password "password"
     And There are 4 MetadataTemplates
     When I retrieve all MetadataTemplate
     Then The response code is 200
-    And The response is a MetadataList
+    And The response is a MetadataTemplatesList

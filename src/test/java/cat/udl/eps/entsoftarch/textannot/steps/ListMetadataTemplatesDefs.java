@@ -25,9 +25,11 @@ import cucumber.api.java.en.When;
 
 
 public class ListMetadataTemplatesDefs {
-    @And("^There is a metadata template with name \"([^\"]*)\"$")
-    public void thereIsAMetadataTemplateWithName(String metadataTemplateName) throws Throwable {
-        MetadataTemplate mt = new MetadataTemplate(metadataTemplateName);
+    @And("^There is a single metadata template with name \"([^\"]*)\"$")
+    public void thereIsASingleMetadataTemplateWithName(String mtName) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        MetadataTemplate mt;
+        mt = new MetadataTemplate(mtName);
         throw new PendingException();
     }
 
@@ -37,7 +39,7 @@ public class ListMetadataTemplatesDefs {
         throw new PendingException();
     }
 
-    @And("^The respone contains a MetadataTemplate with name \"([^\"]*)\"$")
+    @And("^The respone contains only a MetadataTemplate with name \"([^\"]*)\"$")
     public void theResponeContainsAMetadataTemplateWithName(String arg0) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
@@ -61,8 +63,8 @@ public class ListMetadataTemplatesDefs {
         throw new PendingException();
     }
 
-    @And("^The response is a MetadataList$")
-    public void theResponseIsAMetadataList() throws Throwable {
+    @And("^The response is a MetadataTemplatesList$")
+    public void theResponseIsAMetadataTemplatesList() throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
@@ -72,4 +74,6 @@ public class ListMetadataTemplatesDefs {
         // Write code here that turns the phrase above into concrete actions
             throw new PendingException();
     }
+
+
 }
