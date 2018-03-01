@@ -31,19 +31,16 @@ public class ListSamplesStepDefs {
   }
 
   @Given("^I create a sample with text \"([^\"]*)\"$")
-  @And("^I create a sample with text \"([^\"]*)\"$")
   public void ICreateASample(String text) throws Throwable {
     Sample sample = new Sample(text);
     sampleRepos.save(sample);
   }
 
-  @Then("The sample with text \"([^\"]*)\" is in the response$")
   @And("The sample with text \"([^\"]*)\" is in the response$")
   public void theSampleIsInResponse(String text) throws Throwable{
     stepDefs.result.andExpect(jsonPath("$._embedded.samples.*.text", hasItem(text)));
   }
 
-  @Then("^The list is empty$")
   @And("^The list is empty$")
   public void TheListIsEmpty() throws Throwable{
     stepDefs.result.andExpect(jsonPath("$._embedded.samples", hasSize(0)));
