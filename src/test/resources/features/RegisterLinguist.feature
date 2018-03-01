@@ -40,5 +40,5 @@ Feature: Register Linguist
     Given I login as "admin" with password "password"
     When I register a new linguist with username "linguist", email "linguist@textannot.org" and password "pass"
     Then The response code is 400
-    And The error message is "length must be between 8 and 2147483647"
+    And The error message is "length must be between 8 and 256"
     And It has not been created a linguist with username "linguist"

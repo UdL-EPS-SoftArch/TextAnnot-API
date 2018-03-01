@@ -3,7 +3,9 @@ package cat.udl.eps.entsoftarch.textannot.steps;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
@@ -33,4 +35,6 @@ public class AuthenticationStepDefs {
     public void iMNotLoggedIn() throws Throwable {
         currentUsername = currentPassword = null;
     }
+
+
 }
