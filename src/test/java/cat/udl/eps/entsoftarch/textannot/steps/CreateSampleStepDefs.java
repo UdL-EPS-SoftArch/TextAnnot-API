@@ -1,8 +1,10 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
 
+import cat.udl.eps.entsoftarch.textannot.repository.SampleRepository;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class CreateSampleStepDefs {
     @Autowired
     private StepDefs stepDefs;
 
+    @Autowired
+    private SampleRepository sampleRepository;
+
     private String newResourceUri;
 
     @When("^I create a new sample with text \"([^\"]*)\"$")
@@ -34,13 +39,14 @@ public class CreateSampleStepDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
+
         newResourceUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
     }
 
-    @And("^It has been created a sample with text\"([^\"]*)\"$")
+    @And("^It has been created a sample with text \"([^\"]*)\"$")
     public void itHasBeenCreatedASample(String text) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get(newResourceUri, text)
+                get(newResourceUri)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
@@ -49,10 +55,8 @@ public class CreateSampleStepDefs {
 
     @And("^It has not been created a sample with text \"([^\"]*)\"$")
     public void itHasNotBeenCreatedASample(String text) throws Throwable {
-        stepDefs.result = stepDefs.mockMvc.perform(
-                get(newResourceUri, text)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+        //Assert.assertNull(newResourceUri);
+        Assert.assertEquals(0,sampleRepository.count());
     }
 
     @When("^I create a new sample with no text field$")
