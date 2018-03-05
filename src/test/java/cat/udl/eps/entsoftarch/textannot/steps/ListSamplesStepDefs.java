@@ -10,7 +10,6 @@ import cat.udl.eps.entsoftarch.textannot.domain.Sample;
 import cat.udl.eps.entsoftarch.textannot.repository.SampleRepository;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,8 +25,11 @@ public class ListSamplesStepDefs {
     @When("^I list samples$")
     public void IListSamples() throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/samples").accept(MediaType.APPLICATION_JSON))
-                .andDo(print());
+                get("/samples")
+                .accept(MediaType.APPLICATION_JSON)
+                .with(AuthenticationStepDefs.authenticate())
+        )
+        .andDo(print());
     }
 
     @Given("^I create a sample with text \"([^\"]*)\"$")
