@@ -25,7 +25,8 @@ public class ListMetadataTemplatesDefs {
     public void thereIsASingleMetadataTemplateWithName(String mtName) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         MetadataTemplate mt;
-        mt = new MetadataTemplate(mtName);
+        mt = new MetadataTemplate();
+        mt.setName(mtName);
         mtR.save(mt);
     }
 
