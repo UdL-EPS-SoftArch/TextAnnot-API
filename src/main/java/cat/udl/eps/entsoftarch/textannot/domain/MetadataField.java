@@ -1,12 +1,13 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
+import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 
-
+@Data
 @Entity
-public class AddMetaDataField extends UriEntity<Long> {
+public class MetadataField extends UriEntity<Integer> {
 
     @NotBlank
     String name, type;
@@ -14,15 +15,23 @@ public class AddMetaDataField extends UriEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id;
 
 
     @Override
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
+    public MetadataField(){
+        this.name="";
+    }
 
+    public MetadataField(String name, String type){
+        this.name = name;
+        this.type = type;
+
+    }
     public String getName() {
         return name;
     }
