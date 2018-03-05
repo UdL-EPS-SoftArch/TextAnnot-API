@@ -1,12 +1,6 @@
 Feature: List Metadata Template
   "explicació"
 
-  Scenario: List a metadata template as no user login
-    Given I'm not logged in
-    And There is a single metadata template with name "metadataTemplateExample"
-    When I get all MetadataTemplates
-    Then The response code is 401
-
   Scenario: List a metadata template as admin
     Given I login as "admin" with password "password"
     And There is a single metadata template with name "metadataTemplateExample"
@@ -34,3 +28,9 @@ Feature: List Metadata Template
     When I get all MetadataTemplates
     Then The response code is 200
     And The response is a MetadataTemplatesList with 4 items
+
+  Scenario: List a metadata template as no user login
+    Given I'm not logged in
+    And There is a single metadata template with name "metadataTemplateExample"
+    When I get all MetadataTemplates
+    Then The response code is 401
