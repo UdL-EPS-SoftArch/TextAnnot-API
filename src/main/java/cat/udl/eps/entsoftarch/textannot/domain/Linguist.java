@@ -16,4 +16,14 @@ public class Linguist extends User {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_LINGUIST");
 	}
+
+	@Override
+	public String getPassword() {
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		return null;
+	}
 }

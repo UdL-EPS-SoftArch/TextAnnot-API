@@ -15,4 +15,14 @@ public class Admin extends User {
     return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN");
   }
 
+  @Override
+  public String getPassword() {
+    return null;
+  }
+
+  @Override
+  public String getUsername() {
+    return null;
+  }
+
 }
