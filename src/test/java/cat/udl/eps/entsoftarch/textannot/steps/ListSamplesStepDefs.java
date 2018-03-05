@@ -17,36 +17,34 @@ import org.springframework.http.MediaType;
 
 public class ListSamplesStepDefs {
 
-  @Autowired
-  private StepDefs stepDefs;
+    @Autowired
+    private StepDefs stepDefs;
 
-  @Autowired
-  private SampleRepository sampleRepos;
+    @Autowired
+    private SampleRepository sampleRepos;
 
-  @When("^I list samples$")
-  public void IListSamples() throws Throwable {
-    stepDefs.result = stepDefs.mockMvc.perform(
-        get("/samples").accept(MediaType.APPLICATION_JSON))
-    .andDo(print());
-  }
+    @When("^I list samples$")
+    public void IListSamples() throws Throwable {
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/samples").accept(MediaType.APPLICATION_JSON))
+                .andDo(print());
+    }
 
-  @Given("^I create a sample with text \"([^\"]*)\"$")
-  public void ICreateASample(String text) throws Throwable {
-    Sample sample = new Sample(text);
-    sampleRepos.save(sample);
-  }
+    @Given("^I create a sample with text \"([^\"]*)\"$")
+    public void ICreateASample(String text) throws Throwable {
+        Sample sample = new Sample(text);
+        sampleRepos.save(sample);
+    }
 
-  @And("The sample with text \"([^\"]*)\" is in the response$")
-  public void theSampleIsInResponse(String text) throws Throwable{
-    stepDefs.result.andExpect(jsonPath("$._embedded.samples.*.text", hasItem(text)));
-  }
+    @And("The sample with text \"([^\"]*)\" is in the response$")
+    public void theSampleIsInResponse(String text) throws Throwable {
+        stepDefs.result.andExpect(jsonPath("$._embedded.samples.*.text", hasItem(text)));
+    }
 
-  @And("^The list is empty$")
-  public void TheListIsEmpty() throws Throwable{
-    stepDefs.result.andExpect(jsonPath("$._embedded.samples", hasSize(0)));
-  }
-
-
+    @And("^The list is empty$")
+    public void TheListIsEmpty() throws Throwable {
+        stepDefs.result.andExpect(jsonPath("$._embedded.samples", hasSize(0)));
+    }
 
 
 }
