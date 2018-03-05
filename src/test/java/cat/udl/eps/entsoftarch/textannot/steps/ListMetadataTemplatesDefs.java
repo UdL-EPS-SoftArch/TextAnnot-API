@@ -44,7 +44,8 @@ public class ListMetadataTemplatesDefs {
     @When("^I get all MetadataTemplates$")
     public void iRetrieveAllMetadataTemplate() throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/metadataTemplates"));
+                get("/metadataTemplates")
+                .with(AuthenticationStepDefs.authenticate()));
     }
 
     @And("^There are (\\d+) MetadataTemplates$")
