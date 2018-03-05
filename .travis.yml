@@ -1,0 +1,32 @@
+language: java
+jdk:
+- oraclejdk8
+
+sudo: required
+
+services:
+  - docker
+
+branches:
+  only:
+  - master
+
+after_success:
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
+      docker login -u $DOCKER_USER -p $DOCKER_PASS;
+      export REPO=udlepssoftarch/textannot-api;
+      export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`;
+      docker build -f Dockerfile -t $REPO:$TRAVIS_COMMIT .;
+      docker tag $REPO:$TRAVIS_COMMIT $REPO:$TAG;
+      docker push $REPO;
+      docker login --username=_ --password=$HEROKU_TOKEN registry.heroku.com;
+      docker tag $REPO:$TRAVIS_COMMIT registry.heroku.com/textannot-api/web;
+      docker push registry.heroku.com/textannot-api/web;
+    fi
+
+notifications:
+  slack:
+    on_success: change
+    on_failure: always
+    on_pull_requests: true
+    secure: NQTUcOgLxjUV+9w8ZbwKR15dTKS2Z+Kue1MIEnqcIIaMyjI53W1kSeAsWi21jPixQM42wqr01X+dzft1uOEYj19UMAoHXn092OU+YqvMBkp/J9RekMmsuQpieYUhTftJhIdTXqtiPwTIW2xvwTCIFcXeOSo9XZ/Y9EqpKS1mk050AGLRLsb15GRP4HIgrUVaAYMzNgfRe6zrz4rZLF8h7EIwELwVMbEshaGRdjSLmzycg4PpLBFwjic+7CpiTKPPi8wpLAZuczM1+YyNwXPx9IiArrAc5pWBihJzDvJi3eloMGV9e3t8khs9nkfw/SZ9C8ho4Uh5csA713I5TRmSHplCWLqY7Nl479+ynCDcQbQ/ax8UoAFJgeZYJyJkNvTKjfWvOP1eRvtEDawM28tIKVdghJFxSeWgJScAZnSf1fnAEfgOpCMF6XZB8Ffr0pzvhOCWaSgEVXvKYwSkrm8zuy39DEnj/AiyuVlxXQQSekFd2CMHeybsY5+dzfeobTqeC68N3DmAonqSc/2iUM9KbKej3wfzpj1IviM6yTg7RPfJUZBNXxJXq3+wcHyILtEUVr+xalZWc8PbAD6+XJYSlOfGxi1WQ0IqhxsCSCJsghRsBrS2NY5c5jfQVVTJC36gyhzGYm3aHrdpzkKcSqaV9y9C4U6nFMlIewjNIZr5qyk=
