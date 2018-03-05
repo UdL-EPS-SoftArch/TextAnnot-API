@@ -19,4 +19,4 @@ Feature: Create Sample
     Given I login as "user" with password "password"
     When I create a new sample with no text field
     Then The response code is 400
-    And The error message is "supply a text field"
+    And The error message is "may not be null"
