@@ -11,11 +11,11 @@ Feature: Create new Metadata Template
 
   Scenario: Create a new Metadata Template as linguist
     Given I login as "linguist" with password "password"
-    When I create a new Metadata Template with name "sonia"
+    When I create a new Metadata Template with name "mtTest"
     Then The response code is 401
 
   Scenario: Create a new Metadata Template as admin without name
     Given I login as "admin" with password "password"
     When I create a new Metadata Template with name ""
-    Then The response code is 201
-    And The object name is ""
+    Then The response code is 400
+    And The error message is "may not be empty"

@@ -28,8 +28,6 @@ public class CreateMetadataTemplateDefs {
     public void iCreateANewMetadataTemplateWithName(String arg0) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
 
-        //MetadataTemplate mt = new MetadataTemplate("Sonia");
-        //repository.save(mt);
 
         JSONObject metadataTemplate = new JSONObject();
         metadataTemplate.put("name", arg0);
