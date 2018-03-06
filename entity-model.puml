@@ -35,6 +35,10 @@ class Sample <<Sample>> {
     String text
 }
 
+class XMLSample <<Sample>> extends Sample {
+    String content
+}
+
 class TagHierarchy <<Annotation>> {
     String name
 }
