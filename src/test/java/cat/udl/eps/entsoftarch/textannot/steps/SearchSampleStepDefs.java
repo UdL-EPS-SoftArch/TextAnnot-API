@@ -15,16 +15,24 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class SearchSampleStepDefs {
 
     private static String word;
     private static List<Sample> sampleList;
     private static List<Sample> result;
+
+    @Autowired
+    private StepDefs stepDefs;
+
 
     @Autowired
     private SampleRepository sampleRepository;
@@ -42,13 +50,23 @@ public class SearchSampleStepDefs {
     @When("^I search a sample with the word \"([^\"]*)\"$")
     public void searchASample(String word) throws Throwable {
         SearchSampleStepDefs.word = word;
-
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/samples/search/findByTextContains?word={word}", word)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
     }
 
 
     @And("The samples are \"([^\"]*)\" and \"([^\"]*)\"$")
-    public void theSamplesAre() throws Throwable{
-
+    public void theSamplesAre(String sample1, String sample2) throws Throwable{
+        stepDefs.result.andExpect(jsonPath("$._embedded.samples.*.text", hasItem(sample1)));
+        stepDefs.result.andExpect(jsonPath("$._embedded.samples.*.text", hasItem(sample2)));
+        stepDefs.result.andExpect(jsonPath("$._embedded.samples", hasSize(2)));
     }
 
+    @And("The samples are empty$")
+    public void theSamplesAreEmpty() throws Throwable{
+       stepDefs.result.andExpect(jsonPath("$._embedded.samples", hasSize(0)));
+    }
 }
