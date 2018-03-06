@@ -7,7 +7,7 @@ Feature: Create new Metadata Template
     Given I login as "admin" with password "password"
     When I create a new Metadata Template with name "mtTest"
     Then The response code is 201
-    And The object name is "mtTest"
+    And The metadata template name is "mtTest"
 
   Scenario: Create a new Metadata Template as linguist
     Given I login as "linguist" with password "password"
