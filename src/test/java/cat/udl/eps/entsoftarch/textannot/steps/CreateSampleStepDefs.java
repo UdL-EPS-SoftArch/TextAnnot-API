@@ -49,14 +49,14 @@ public class CreateSampleStepDefs {
                 get(newResourceUri)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print());
-
+                .andDo(print())
+        .andExpect(jsonPath("$.text", is(text)));
     }
 
     @And("^It has not been created a sample with text \"([^\"]*)\"$")
     public void itHasNotBeenCreatedASample(String text) throws Throwable {
-        //Assert.assertNull(newResourceUri);
         Assert.assertEquals(0,sampleRepository.count());
+        Assert.assertEquals(0,sampleRepository.findByTextContaining(text).size());
     }
 
     @When("^I create a new sample with no text field$")
