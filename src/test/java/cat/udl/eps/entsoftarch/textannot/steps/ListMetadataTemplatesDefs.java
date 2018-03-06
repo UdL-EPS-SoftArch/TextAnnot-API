@@ -7,12 +7,14 @@ import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
+// It's necessary to know the type of the metadata templates are recived. Is a List, a Set, an Iterable?//
 
 public class ListMetadataTemplatesDefs {
     @Autowired
@@ -45,7 +47,8 @@ public class ListMetadataTemplatesDefs {
     public void iRetrieveAllMetadataTemplate() throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/metadataTemplates")
-                .with(AuthenticationStepDefs.authenticate()));
+                .with(AuthenticationStepDefs.authenticate()))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     @And("^There are (\\d+) MetadataTemplates$")
