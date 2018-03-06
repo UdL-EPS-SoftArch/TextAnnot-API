@@ -123,12 +123,6 @@
 			<version>2.13.0</version>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>cat.udl.eps.entsoftarch</groupId>
-            <artifactId>textannot-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
 	<build>
