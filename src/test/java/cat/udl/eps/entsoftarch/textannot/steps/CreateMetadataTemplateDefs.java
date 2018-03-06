@@ -40,7 +40,7 @@ public class CreateMetadataTemplateDefs {
                 .andDo(print());
     }
 
-    @And("^The object name is \"([^\"]*)\"$")
+    @And("^The metadata template name is \"([^\"]*)\"$")
     public void theObjectNameIs(String name) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         stepDefs.result = stepDefs.mockMvc.perform(
