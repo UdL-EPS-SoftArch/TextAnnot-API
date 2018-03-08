@@ -25,7 +25,6 @@ public class AddMetadataFieldStepDefs {
     @Autowired
     private StepDefs stepDefs;
 
-    private String newUri;
 
     @When("^I create a new metadatafield with text \"([^\"]*)\" and type \"([^\"]*)\"$")
     public void iCreateANewMetadatafieldWithTextAndType(String name, String type) throws Throwable {
