@@ -1,0 +1,79 @@
+package cat.udl.eps.entsoftarch.textannot.steps;
+//Daniel Galan i Roger Capdevila                                                                                        //
+
+import cat.udl.eps.entsoftarch.textannot.domain.MetadataTemplate;
+import cat.udl.eps.entsoftarch.textannot.repository.MetadataTemplateRepository;
+import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
+import cucumber.api.java.en.When;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
+// It's necessary to know the type of the metadata templates are recived. Is a List, a Set, an Iterable?//
+
+public class ListMetadataTemplatesDefs {
+    @Autowired
+    private StepDefs stepDefs;
+
+    @Autowired
+    private MetadataTemplateRepository mtR;
+
+    @And("^There is a single metadata template with name \"([^\"]*)\"$")
+    public void thereIsASingleMetadataTemplateWithName(String mtName) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        MetadataTemplate mt;
+        mt = new MetadataTemplate();
+        mt.setName(mtName);
+        mtR.save(mt);
+    }
+
+    @And("^The respone contains only a MetadataTemplate with name \"([^\"]*)\"$")
+    public void theResponeContainsAMetadataTemplateWithName(String mtName) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        int i = 0;
+        for(MetadataTemplate mt : mtR.findAll()){
+            assert (mt.getName() == mtName);
+            i ++;
+        }
+        assert (i == 1);
+    }
+
+    @When("^I get all MetadataTemplates$")
+    public void iRetrieveAllMetadataTemplate() throws Throwable {
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/metadataTemplates")
+                .with(AuthenticationStepDefs.authenticate()))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @And("^There are (\\d+) MetadataTemplates$")
+    public void thereAreMetadataTemplates(int numOfMetadataTemplates) throws Throwable {
+        String mtname;
+        for (int i=0; i<numOfMetadataTemplates; i++){
+            mtname= "metadataTemplateExample"+i;
+            thereIsASingleMetadataTemplateWithName(mtname);
+        }
+    }
+
+    @And("^The response is a MetadataTemplatesList with (\\d+) items$")
+    public void theResponseIsAMetadataTemplatesListWithItems(int numOfMT) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        int i = 0;
+        Set<String> mtNames = new LinkedHashSet<String>();
+        for(int j=0; j<numOfMT; j++){
+            mtNames.add("metadataTemplateExample"+j);
+        }
+        for(MetadataTemplate mt : mtR.findAll()){
+            assert(mt.getClass() == MetadataTemplate.class);
+            assert(mtNames.contains(mt.getName()));
+            i ++;
+        }
+        assert (i == numOfMT);
+
+    }
+}
