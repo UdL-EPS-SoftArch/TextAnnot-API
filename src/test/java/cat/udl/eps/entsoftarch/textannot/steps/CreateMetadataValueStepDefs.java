@@ -1,5 +1,7 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
 
+import cat.udl.eps.entsoftarch.textannot.domain.Sample;
+import cat.udl.eps.entsoftarch.textannot.repository.SampleRepository;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
@@ -68,5 +70,18 @@ public class CreateMetadataValueStepDefs {
                 .andDo(print())
                 .andExpect(jsonPath("$.value", is(testValue)))
                 .andExpect(jsonPath("$.id", is(testId)));
+    }
+
+    @And("^there is a created Sample with text \"([^\"]*)\"$")
+    public void thereIsACreatedSampleWithText(String text) throws Throwable {
+        //Sample test_sample = new Sample(text);
+        throw new PendingException();
+    }
+
+
+    @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+) for Sample (\\d+) with text \"([^\"]*)\"$")
+    public void itHasBeenCreatedANewMetadataValueWithValueAndIdForSampleWithText(String arg0, int arg1, int arg2, String arg3) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
     }
 }

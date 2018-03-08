@@ -1,13 +1,11 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -19,6 +17,10 @@ public class MetadataValue extends UriEntity<Integer>{
 
     @NotBlank
     private String value;
+
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private	Sample has;
 
     public MetadataValue(){}
 
