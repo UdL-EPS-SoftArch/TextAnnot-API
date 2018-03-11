@@ -25,4 +25,9 @@ public class MetadataValue extends UriEntity<Integer>{
     public MetadataValue(String value){
         this.value = value;
     }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
 }
