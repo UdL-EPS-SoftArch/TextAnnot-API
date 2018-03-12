@@ -90,4 +90,22 @@ public class CreateMetadataValueStepDefs {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
+
+    @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+) for metadataField with text \"([^\"]*)\" and type \"([^\"]*)\"$")
+    public void itHasBeenCreatedANewMetadataValueWithValueAndIdForMetadataFieldWithTextAndType(String arg0, int arg1, String arg2, String arg3) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @When("^I register a new metadataValue with value \"([^\"]*)\" for metadataField \"([^\"]*)\"$")
+    public void iRegisterANewMetadataValueWithValueForMetadataField(String arg0, String arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @And("^there is a created metadataField with text \"([^\"]*)\" and type \"([^\"]*)\"$")
+    public void thereIsACreatedMetadataFieldWithTextAndType(String arg0, String arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
 }

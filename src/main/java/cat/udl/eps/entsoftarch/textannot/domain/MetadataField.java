@@ -52,7 +52,6 @@ public class MetadataField extends UriEntity<Integer> {
         this.type = type;
     }
 
-    //*CREATE RELATION WITH "METADATAVALUE".
      @OneToMany(mappedBy = "values")
      @JsonIdentityReference(alwaysAsId = true)
      private List<MetadataValue> valued = new ArrayList<>();
