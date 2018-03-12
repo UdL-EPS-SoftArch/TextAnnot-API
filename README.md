@@ -37,4 +37,4 @@ Moreover, authorised users can define samples metadata and the error tags hierar
 
 ## Entities Model
 
-![Entities Model Diagram](http://www.plantuml.com/plantuml/svg/5Sqn3W8X44RXtbFe0M1wgwMmCB7OPDq388n20iDc-8bwUzVgDL_ofWwl6BKSJbb26P67bcC2jducKl-shumq7gEpXYPWWGsjqXflvZ8lPcbFE0s9xlo14samRhvIzHsijEkChwajSh7R_pAnnBq_)
+![Entities Model Diagram](http://www.plantuml.com/plantuml/svg/5Sqn3W8X44RXtbFe0M1wgwMmCB7OPDq388n20iDc-8bwUzVgDL_ofWwl6BKSJbb26P67bcC2jducKl-shumq7gEpXYPWWGsjqXflvZ8lPcbFE0s9xlo14samRhvIzHsijEkChwajSh7R_pAnnBq_?v=1)
