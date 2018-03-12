@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import cat.udl.eps.entsoftarch.textannot.repository.XmlSampleRepository;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import net.minidev.json.JSONObject;
@@ -56,7 +55,7 @@ public class XmlSampleStepDefs {
         sample.put("text", text);
         sample.put("content", content);
         stepDefs.result = stepDefs.mockMvc.perform(
-                post("/samples")
+                post("/xmlSamples")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(sample.toString())
                         .accept(MediaType.APPLICATION_JSON)
