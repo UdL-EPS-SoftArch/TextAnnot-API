@@ -49,4 +49,14 @@ public abstract class User extends UriEntity<String> implements UserDetails {
 
   @Override
   public boolean isEnabled() { return true; }
+
+  @Override
+  public String getPassword() {
+    return password;
+  }
+
+  @Override
+  public String getUsername(){
+    return username;
+  }
 }
