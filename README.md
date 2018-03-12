@@ -2,7 +2,7 @@
 
 Class project for the Enterprise Software Architectures 2017-18 Course, Polytechnic School, Universitat de Lleida, Spain
 
-[![Build Status](https://travis-ci.org/UdL-EPS-SoftArch/textannot-api.svg?branch=master)](https://travis-ci.org/UdL-EPS-SoftArch/textannot-api/branches) 
+[![Build Status](https://travis-ci.org/UdL-EPS-SoftArch/TextAnnot-API.svg?branch=master)](https://travis-ci.org/UdL-EPS-SoftArch/TextAnnot-API/branches) 
 <a href="https://zenhub.com"><img src="https://cdn.rawgit.com/ZenHubIO/support/master/zenhub-badge.svg"></a>
 
 ## Vision
@@ -37,4 +37,4 @@ Moreover, authorised users can define samples metadata and the error tags hierar
 
 ## Entities Model
 
-![Entities Model Diagram](http://www.plantuml.com/plantuml/svg/5Sqn3W8X44RXtbFe0M1wgwMmCB7OPDq388n20iDc-8bwUzVgDL_ofWwl6BKSJbb26P67bcC2jducKl-shumq7gEpXYPWWGsjqXflvZ8lPcbFE0s9xlo14samRhvIzHsijEkChwajSh7R_pAnnBq_)
+![Entities Model Diagram](http://www.plantuml.com/plantuml/svg/5Sqn3W8X44RXtbFe0M1wgwMmCB7OPDq388n20iDc-8bwUzVgDL_ofWwl6BKSJbb26P67bcC2jducKl-shumq7gEpXYPWWGsjqXflvZ8lPcbFE0s9xlo14samRhvIzHsijEkChwajSh7R_pAnnBq_?v=1)

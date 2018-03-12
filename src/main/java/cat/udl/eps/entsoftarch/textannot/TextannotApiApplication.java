@@ -9,4 +9,5 @@ public class TextannotApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TextannotApiApplication.class, args);
 	}
+
 }
