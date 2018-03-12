@@ -79,8 +79,14 @@ public class CreateMetadataValueStepDefs {
     }
 
 
-    @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+) for Sample (\\d+) with text \"([^\"]*)\"$")
-    public void itHasBeenCreatedANewMetadataValueWithValueAndIdForSampleWithText(String arg0, int arg1, int arg2, String arg3) throws Throwable {
+    @When("^I register a new metadataValue with value \"([^\"]*)\" for Sample \"([^\"]*)\"$")
+    public void iRegisterANewMetadataValueWithValueForSample(String arg0, String arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+) for Sample with text \"([^\"]*)\"$")
+    public void itHasBeenCreatedANewMetadataValueWithValueAndIdForSampleWithText(String arg0, int arg1, String arg2) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }

@@ -22,6 +22,10 @@ public class MetadataValue extends UriEntity<Integer>{
     @JsonIdentityReference(alwaysAsId = true)
     private	Sample has;
 
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private	MetadataField valued;
+
     public MetadataValue(){}
 
     public MetadataValue(String value){
