@@ -1,5 +1,7 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
 
+import cat.udl.eps.entsoftarch.textannot.domain.MetadataField;
+import cat.udl.eps.entsoftarch.textannot.domain.MetadataValue;
 import cat.udl.eps.entsoftarch.textannot.domain.Sample;
 import cat.udl.eps.entsoftarch.textannot.repository.SampleRepository;
 import cucumber.api.PendingException;
@@ -24,6 +26,15 @@ public class CreateMetadataValueStepDefs {
 
     @Autowired
     private StepDefs stepDefs;
+
+    @Autowired
+    private Sample sample;
+
+    @Autowired
+    private MetadataValue metaValue;
+
+    @Autowired
+    private MetadataField metaField;
 
     @When("^I register a new metadataValue with value \"([^\"]*)\"$")
     public void iRegisterANewMetadataValueWithValue(String testValue) throws Throwable {
@@ -74,8 +85,7 @@ public class CreateMetadataValueStepDefs {
 
     @And("^there is a created Sample with text \"([^\"]*)\"$")
     public void thereIsACreatedSampleWithText(String text) throws Throwable {
-        //Sample test_sample = new Sample(text);
-        throw new PendingException();
+            Sample test_sample = new Sample(text);
     }
 
 

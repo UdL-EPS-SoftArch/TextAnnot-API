@@ -2,13 +2,11 @@ package cat.udl.eps.entsoftarch.textannot.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 
 @Entity
-@Data
 public class MetadataValue extends UriEntity<Integer>{
 
     @Id
@@ -32,7 +30,33 @@ public class MetadataValue extends UriEntity<Integer>{
         this.value = value;
     }
 
-    @ManyToOne
-    @JsonIdentityReference(alwaysAsId = true)
-    private MetadataField values;
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public Sample getHas() {
+        return has;
+    }
+
+    public void setHas(Sample has) {
+        this.has = has;
+    }
+
+    public MetadataField getValued() {
+        return valued;
+    }
+
+    public void setValued(MetadataField valued) {
+        this.valued = valued;
+    }
 }
