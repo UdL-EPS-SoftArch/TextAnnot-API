@@ -26,7 +26,7 @@ public class MetadataValue extends UriEntity<Integer>{
         this.value = value;
     }
 
-    //*CREATE RELATION WITH "METADATAVALUE".
+    //*CREATE RELATION WITH "METADATAFIELD".
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     private MetadataField values;
