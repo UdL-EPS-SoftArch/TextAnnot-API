@@ -3,7 +3,6 @@ package cat.udl.eps.entsoftarch.textannot.steps;
 import cat.udl.eps.entsoftarch.textannot.domain.MetadataField;
 import cat.udl.eps.entsoftarch.textannot.domain.MetadataValue;
 import cat.udl.eps.entsoftarch.textannot.domain.Sample;
-import cat.udl.eps.entsoftarch.textannot.repository.SampleRepository;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
@@ -25,16 +24,10 @@ public class CreateMetadataValueStepDefs {
     private static final Logger logger = LoggerFactory.getLogger(CreateMetadataValueStepDefs.class);
 
     @Autowired
-    private StepDefs stepDefs;
-
-    @Autowired
-    private Sample sample;
-
-    @Autowired
-    private MetadataValue metaValue;
-
-    @Autowired
-    private MetadataField metaField;
+    StepDefs stepDefs;
+    Sample sample;
+    MetadataValue metaValue = new MetadataValue();
+    MetadataField metaField;
 
     @When("^I register a new metadataValue with value \"([^\"]*)\"$")
     public void iRegisterANewMetadataValueWithValue(String testValue) throws Throwable {
@@ -85,14 +78,23 @@ public class CreateMetadataValueStepDefs {
 
     @And("^there is a created Sample with text \"([^\"]*)\"$")
     public void thereIsACreatedSampleWithText(String text) throws Throwable {
-            Sample test_sample = new Sample(text);
+            sample = new Sample(text);
     }
 
 
     @When("^I register a new metadataValue with value \"([^\"]*)\" for Sample \"([^\"]*)\"$")
     public void iRegisterANewMetadataValueWithValueForSample(String arg0, String arg1) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        JSONObject metadatavalue = new JSONObject();
+        metadatavalue.put("value", arg0);
+        metadatavalue.put("has", sample);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/metadataValues")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(metadatavalue.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
     }
 
     @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+) for Sample with text \"([^\"]*)\"$")

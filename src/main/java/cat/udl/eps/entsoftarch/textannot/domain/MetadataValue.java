@@ -16,13 +16,13 @@ public class MetadataValue extends UriEntity<Integer>{
     @NotBlank
     private String value;
 
-    @ManyToOne
+   @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     private	Sample has;
 
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
-    private	MetadataField valued;
+    private	MetadataField values;
 
     public MetadataValue(){}
 
@@ -53,10 +53,10 @@ public class MetadataValue extends UriEntity<Integer>{
     }
 
     public MetadataField getValued() {
-        return valued;
+        return values;
     }
 
     public void setValued(MetadataField valued) {
-        this.valued = valued;
+        this.values = valued;
     }
 }
