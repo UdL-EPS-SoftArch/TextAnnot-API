@@ -1,9 +1,12 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -48,5 +51,10 @@ public class MetadataField extends UriEntity<Integer> {
     public void setType(String type) {
         this.type = type;
     }
+
+     @OneToMany(mappedBy = "values")
+     @JsonIdentityReference(alwaysAsId = true)
+     private List<MetadataValue> valued = new ArrayList<>();
+
 
 }
