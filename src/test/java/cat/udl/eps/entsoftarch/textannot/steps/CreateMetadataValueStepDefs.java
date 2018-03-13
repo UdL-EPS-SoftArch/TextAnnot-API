@@ -75,7 +75,7 @@ public class CreateMetadataValueStepDefs {
                 .andExpect(jsonPath("$.value", is(testValue)))
                 .andExpect(jsonPath("$.id", is(testId)));
     }
-
+/*
     @And("^there is a created Sample with text \"([^\"]*)\"$")
     public void thereIsACreatedSampleWithText(String text) throws Throwable {
             sample = new Sample(text);
@@ -119,5 +119,5 @@ public class CreateMetadataValueStepDefs {
     public void thereIsACreatedMetadataFieldWithTextAndType(String arg0, String arg1) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
-    }
+    }*/
 }
