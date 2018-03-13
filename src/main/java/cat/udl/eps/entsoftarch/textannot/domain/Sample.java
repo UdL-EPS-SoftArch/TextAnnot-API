@@ -16,6 +16,10 @@ public class Sample {
 
     @NotNull
     private String text;
+
+    @OneToMany(mappedBy = "forA")
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<MetadataValue> has = new ArrayList<>();
     
     public Sample() { }
     
@@ -50,7 +54,15 @@ public class Sample {
     public void setText(String text) {
         this.text=text;
     }
-    
+
+    public List<MetadataValue> getHas() {
+        return has;
+    }
+
+    public void setHas(List<MetadataValue> has) {
+        this.has = has;
+    }
+
     /**
      * Returns the string equivalent of this entity.
      * @return the string equivalent of this entity.
@@ -58,8 +70,4 @@ public class Sample {
     public String toString() {
         return this.text;
     }
-
-    @OneToMany(mappedBy = "has")
-    @JsonIdentityReference(alwaysAsId = true)
-    private List<MetadataValue> forA = new ArrayList<>();
 }

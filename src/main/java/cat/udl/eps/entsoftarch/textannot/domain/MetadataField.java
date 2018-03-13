@@ -20,6 +20,9 @@ public class MetadataField extends UriEntity<Integer> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @OneToMany(mappedBy = "valued")
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<MetadataValue> values = new ArrayList<>();
 
     @Override
     public Integer getId() {
@@ -43,7 +46,6 @@ public class MetadataField extends UriEntity<Integer> {
         this.name = name;
     }
 
-
     public String getType() {
         return type;
     }
@@ -52,9 +54,11 @@ public class MetadataField extends UriEntity<Integer> {
         this.type = type;
     }
 
-     @OneToMany(mappedBy = "values")
-     @JsonIdentityReference(alwaysAsId = true)
-     private List<MetadataValue> valued = new ArrayList<>();
+    public List<MetadataValue> getValues() {
+        return values;
+    }
 
-
+    public void setValues(List<MetadataValue> values) {
+        this.values = values;
+    }
 }
