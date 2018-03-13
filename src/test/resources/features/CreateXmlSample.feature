@@ -7,4 +7,4 @@ Feature: Create XML Sample
     Given I login as "user" with password "password"
     When I upload a XmlSample with text "text" and content "content"
     Then The response code is 201
-    And It has been created a XmlSample with text "text" and content "content" and Id "1"
+    And It has been created a XmlSample with text "text" and content "content"

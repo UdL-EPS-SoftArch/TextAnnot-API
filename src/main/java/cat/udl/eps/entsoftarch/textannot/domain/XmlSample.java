@@ -8,10 +8,6 @@ import javax.persistence.Id;
 @Entity
 public class XmlSample extends Sample{
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private int id;
-
     private String content;
 
     public XmlSample() {}
