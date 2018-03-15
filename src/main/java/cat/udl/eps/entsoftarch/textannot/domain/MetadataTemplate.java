@@ -19,14 +19,13 @@ public class MetadataTemplate {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime startDate;
 
-    @OneToMany
-    private List<MetadataField> mtFs;
 
-    @OneToMany
-    private List<Sample> samples;
+    @OneToMany(mappedBy = "definedIn")
+    private List<MetadataField> defines;
+
 
     @OneToMany(mappedBy = "describedBy")
-    private List<Sample> listOfSamples;
+    private List<Sample> describes;
 
 
     public String getName() {
@@ -45,28 +44,20 @@ public class MetadataTemplate {
         this.startDate = startDate;
     }
 
-    public List<MetadataField> getMtFs() {
-        return mtFs;
+    public List<MetadataField> getDefines() {
+        return defines;
     }
 
-    public void setMtFs(List<MetadataField> mtFs) {
-        this.mtFs = mtFs;
+    public void setDefines(List<MetadataField> defines) {
+        this.defines = defines;
     }
 
-    public List<Sample> getSamples() {
-        return samples;
+    public List<Sample> getDescribes() {
+        return describes;
     }
 
-    public void setSamples(List<Sample> samples) {
-        this.samples = samples;
-    }
-
-    public List<Sample> getListOfSamples() {
-        return listOfSamples;
-    }
-
-    public void setListOfSamples(List<Sample> samples) {
-        this.listOfSamples = samples;
+    public void setDescribes(List<Sample> describes) {
+        this.describes = describes;
     }
 
 }
