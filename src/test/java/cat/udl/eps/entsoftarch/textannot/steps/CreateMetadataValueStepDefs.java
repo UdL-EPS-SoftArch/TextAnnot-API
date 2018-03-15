@@ -3,6 +3,7 @@ package cat.udl.eps.entsoftarch.textannot.steps;
 import cat.udl.eps.entsoftarch.textannot.domain.MetadataField;
 import cat.udl.eps.entsoftarch.textannot.domain.MetadataValue;
 import cat.udl.eps.entsoftarch.textannot.domain.Sample;
+import cat.udl.eps.entsoftarch.textannot.repository.SampleRepository;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
@@ -28,6 +29,9 @@ public class CreateMetadataValueStepDefs {
     Sample sample;
     MetadataValue metaValue = new MetadataValue();
     MetadataField metaField;
+
+    @Autowired
+    SampleRepository sampleRepository;
 
     @When("^I register a new metadataValue with value \"([^\"]*)\"$")
     public void iRegisterANewMetadataValueWithValue(String testValue) throws Throwable {
@@ -75,19 +79,28 @@ public class CreateMetadataValueStepDefs {
                 .andExpect(jsonPath("$.value", is(testValue)))
                 .andExpect(jsonPath("$.id", is(testId)));
     }
-/*
+
     @And("^there is a created Sample with text \"([^\"]*)\"$")
     public void thereIsACreatedSampleWithText(String text) throws Throwable {
-            sample = new Sample(text);
+
+        JSONObject samplev = new JSONObject();
+        samplev.put("text", text);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/samples")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(samplev.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
     }
 
 
-    @When("^I register a new metadataValue with value \"([^\"]*)\" for Sample \"([^\"]*)\"$")
-    public void iRegisterANewMetadataValueWithValueForSample(String arg0, String arg1) throws Throwable {
+    @When("^I register a new metadataValue with value \"([^\"]*)\" for Sample with id (\\d+)$")
+    public void iRegisterANewMetadataValueWithValueForSampleWithId(String value, int id) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         JSONObject metadatavalue = new JSONObject();
-        metadatavalue.put("value", arg0);
-        metadatavalue.put("has", sample);
+        metadatavalue.put("value", value);
+        metadatavalue.put("ForA", get("samples/{id}",id));
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/metadataValues")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -97,27 +110,58 @@ public class CreateMetadataValueStepDefs {
                 .andDo(print());
     }
 
-    @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+) for Sample with text \"([^\"]*)\"$")
-    public void itHasBeenCreatedANewMetadataValueWithValueAndIdForSampleWithText(String arg0, int arg1, String arg2) throws Throwable {
+    @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+) for Sample id (\\d+)$")
+    public void itHasBeenCreatedANewMetadataValueWithValueAndIdForSampleId(String value, int id, int arg2) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+) for metadataField with text \"([^\"]*)\" and type \"([^\"]*)\"$")
-    public void itHasBeenCreatedANewMetadataValueWithValueAndIdForMetadataFieldWithTextAndType(String arg0, int arg1, String arg2, String arg3) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @When("^I register a new metadataValue with value \"([^\"]*)\" for metadataField \"([^\"]*)\"$")
-    public void iRegisterANewMetadataValueWithValueForMetadataField(String arg0, String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/metadataValues/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.value", is(value)));
+        //falta comprobar el sample
+        //.andExpect(jsonPath("$,ForA", is("samples/"+arg2+"")));
     }
 
     @And("^there is a created metadataField with text \"([^\"]*)\" and type \"([^\"]*)\"$")
-    public void thereIsACreatedMetadataFieldWithTextAndType(String arg0, String arg1) throws Throwable {
+    public void thereIsACreatedMetadataFieldWithTextAndType(String name, String type) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }*/
+        JSONObject metadataField = new JSONObject();
+        metadataField.put("name", name);
+        metadataField.put("type", type);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/metadataFields")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(metadataField.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
+
+    @When("^I register a new metadataValue with value \"([^\"]*)\" for metadataField with id (\\d+)$")
+    public void iRegisterANewMetadataValueWithValueForMetadataFieldWithId(String value, int id) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        JSONObject metadatavalue = new JSONObject();
+        metadatavalue.put("value", value);
+        metadatavalue.put("Valued", get("metadataField/{id}",id));
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/metadataValues")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(metadatavalue.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
+
+    @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+) for metadataField with text \"([^\"]*)\" and type \"([^\"]*)\"$")
+    public void itHasBeenCreatedANewMetadataValueWithValueAndIdForMetadataFieldWithTextAndType(String value, int id, String arg2, String arg3) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/metadataValues/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.value", is(value)));
+        //falta comprobar el metadafield
+    }
 }
