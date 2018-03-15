@@ -110,7 +110,7 @@ public class CreateMetadataValueStepDefs {
                 .andDo(print());
     }
 
-    @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+) for Sample id (\\d+)$")
+    @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+) for Sample with id (\\d+)$")
     public void itHasBeenCreatedANewMetadataValueWithValueAndIdForSampleId(String value, int id, int arg2) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -152,10 +152,9 @@ public class CreateMetadataValueStepDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
     }
-
-    @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+) for metadataField with text \"([^\"]*)\" and type \"([^\"]*)\"$")
-    public void itHasBeenCreatedANewMetadataValueWithValueAndIdForMetadataFieldWithTextAndType(String value, int id, String arg2, String arg3) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+    
+    @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+) for metadataField with id \"([^\"]*)\"$")
+    public void itHasBeenCreatedANewMetadataValueWithValueAndIdForMetadataFieldWithId(String value, int id, String arg2) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/metadataValues/{id}", id)
                         .accept(MediaType.APPLICATION_JSON)

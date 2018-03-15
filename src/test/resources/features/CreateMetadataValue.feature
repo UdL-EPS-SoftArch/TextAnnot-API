@@ -26,11 +26,11 @@ Feature: Create New metadataValue
     And there is a created metadataField with text "test_field" and type "test_type"
     When I register a new metadataValue with value "test_metadata" for metadataField with id 1
     Then The response code is 201
-    And It has been created a new metadataValue with value "test" and Id 1 for metadataField with text "test_field" and type "test_type"
+    And It has been created a new metadataValue with value "test_metadata" and Id 1 for metadataField with id "1"
 
   Scenario: Register new metadataValue for existing Sample
     Given I login as "user" with password "password"
     And there is a created Sample with text "test_sample"
     When I register a new metadataValue with value "test_metadata" for Sample with id 1
     Then The response code is 201
-    And It has been created a new metadataValue with value "test_metadata" and Id 1 for Sample id 1
+    And It has been created a new metadataValue with value "test_metadata" and Id 1 for Sample with id 1
