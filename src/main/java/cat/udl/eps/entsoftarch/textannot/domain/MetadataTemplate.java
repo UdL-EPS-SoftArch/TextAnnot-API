@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.time.ZonedDateTime;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Entity
 public class MetadataTemplate {
@@ -22,6 +24,10 @@ public class MetadataTemplate {
 
     @OneToMany
     private List<Sample> samples;
+
+    @OneToMany(mappedBy = "describedBy")
+    private List<Sample> listOfSamples;
+
 
     public String getName() {
         return name;
@@ -53,6 +59,14 @@ public class MetadataTemplate {
 
     public void setSamples(List<Sample> samples) {
         this.samples = samples;
+    }
+
+    public List<Sample> getListOfSamples() {
+        return listOfSamples;
+    }
+
+    public void setListOfSamples(List<Sample> samples) {
+        this.listOfSamples = samples;
     }
 
 }
