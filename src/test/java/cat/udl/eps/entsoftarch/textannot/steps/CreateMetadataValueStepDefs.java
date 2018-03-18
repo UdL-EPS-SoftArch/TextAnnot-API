@@ -25,13 +25,13 @@ public class CreateMetadataValueStepDefs {
     private static final Logger logger = LoggerFactory.getLogger(CreateMetadataValueStepDefs.class);
 
     @Autowired
-    StepDefs stepDefs;
-    Sample sample;
-    MetadataValue metaValue = new MetadataValue();
-    MetadataField metaField;
+    private StepDefs stepDefs;
+    private Sample sample;
+    private MetadataValue metaValue;
+    private MetadataField metaField;
 
     @Autowired
-    SampleRepository sampleRepository;
+    private SampleRepository sampleRepository;
 
     @When("^I register a new metadataValue with value \"([^\"]*)\"$")
     public void iRegisterANewMetadataValueWithValue(String testValue) throws Throwable {
@@ -100,7 +100,7 @@ public class CreateMetadataValueStepDefs {
         // Write code here that turns the phrase above into concrete actions
         JSONObject metadatavalue = new JSONObject();
         metadatavalue.put("value", value);
-        metadatavalue.put("ForA", get("samples/{id}",id));
+        metadatavalue.put("forA", "/samples/"+id+"");
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/metadataValues")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -111,7 +111,7 @@ public class CreateMetadataValueStepDefs {
     }
 
     @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+) for Sample with id (\\d+)$")
-    public void itHasBeenCreatedANewMetadataValueWithValueAndIdForSampleId(String value, int id, int arg2) throws Throwable {
+    public void itHasBeenCreatedANewMetadataValueWithValueAndIdForSampleId(String value, int id, int id2) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/metadataValues/{id}", id)
@@ -119,8 +119,13 @@ public class CreateMetadataValueStepDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
                 .andExpect(jsonPath("$.value", is(value)));
-        //falta comprobar el sample
-        //.andExpect(jsonPath("$,ForA", is("samples/"+arg2+"")));
+
+        stepDefs.mockMvc.perform(
+                get("/metadataValues/"+id2+"/forA")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print()).andExpect(status().is(200));
+
     }
 
     @And("^there is a created metadataField with text \"([^\"]*)\" and type \"([^\"]*)\"$")
@@ -143,7 +148,7 @@ public class CreateMetadataValueStepDefs {
         // Write code here that turns the phrase above into concrete actions
         JSONObject metadatavalue = new JSONObject();
         metadatavalue.put("value", value);
-        metadatavalue.put("Valued", get("metadataField/{id}",id));
+        metadatavalue.put("valued", "/metadataFields/"+id+"");
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/metadataValues")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -153,14 +158,19 @@ public class CreateMetadataValueStepDefs {
                 .andDo(print());
     }
     
-    @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+) for metadataField with id \"([^\"]*)\"$")
-    public void itHasBeenCreatedANewMetadataValueWithValueAndIdForMetadataFieldWithId(String value, int id, String arg2) throws Throwable {
+    @And("^It has been created a new metadataValue with value \"([^\"]*)\" and Id (\\d+) for metadataField with id (\\d+)$")
+    public void itHasBeenCreatedANewMetadataValueWithValueAndIdForMetadataFieldWithId(String value, int id, String id2) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/metadataValues/{id}", id)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
                 .andExpect(jsonPath("$.value", is(value)));
-        //falta comprobar el metadafield
+        stepDefs.mockMvc.perform(
+                get("/metadataValues/"+id2+"/valued")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print()).andExpect(status().is(200));
+
     }
 }
