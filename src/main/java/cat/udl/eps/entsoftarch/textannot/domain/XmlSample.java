@@ -10,12 +10,7 @@ public class XmlSample extends Sample{
 
     private String content;
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private int id;
-
     public XmlSample() {}
-
     public XmlSample(String text, String content) {
         super(text);
         this.content = content;

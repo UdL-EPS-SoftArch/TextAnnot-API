@@ -1,9 +1,6 @@
 package cat.udl.eps.entsoftarch.textannot.config;
 
-import cat.udl.eps.entsoftarch.textannot.domain.Admin;
-import cat.udl.eps.entsoftarch.textannot.domain.MetadataField;
-import cat.udl.eps.entsoftarch.textannot.domain.MetadataTemplate;
-import cat.udl.eps.entsoftarch.textannot.domain.MetadataValue;
+import cat.udl.eps.entsoftarch.textannot.domain.*;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
@@ -19,6 +16,7 @@ public class RepositoryRestConfig extends RepositoryRestConfigurerAdapter {
         config.exposeIdsFor(MetadataValue.class);
         config.exposeIdsFor(MetadataField.class);
         config.exposeIdsFor(MetadataTemplate.class);
+        config.exposeIdsFor(XmlSample.class);
     }
 
     @PostConstruct
