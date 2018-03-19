@@ -1,6 +1,7 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
 
 import cat.udl.eps.entsoftarch.textannot.repository.XmlSampleRepository;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,31 +23,8 @@ public class XmlSampleStepDefs {
     @Autowired
     XmlSampleRepository xmlSampleRepository;
 
-    /*
 
-    @When("^I upload a XmlSample with content \"([^\"]*)\"$")
-    public void iUploadAXmlSampleWithContent(String content, String text) throws Throwable {
-        org.json.JSONObject XmlSample = new org.json.JSONObject();
-        XmlSample.put("content",content);
-        XmlSample.put("text",text);
-        stepDefs.result = stepDefs.mockMvc.perform(
-                post("/xmlSamples")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(XmlSample.toString())
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print());
-
-
-        newResourceUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
-    }
-
-    */
-
-
-
-
-    @When("^I upload a XmlSample with text \"([^\"]*)\" and content \"([^\"]*)\"$")
+    @When("^I upload a XmlSample with text \"([^\"]*)\" and content$")
     public void iUploadAXmlSampleWithTextAndContent(String text, String content) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         org.json.JSONObject xmlSamples = new org.json.JSONObject();
@@ -63,11 +41,7 @@ public class XmlSampleStepDefs {
     }
 
 
-
-
-
-
-    @And("^It has been created a XmlSample with text \"([^\"]*)\" and content \"([^\"]*)\"$")
+    @And("^It has been created a XmlSample with text \"([^\"]*)\" and content$")
     public void itHasBeenCreatedAXmlSampleWithTextAndContent(String text, String content) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         stepDefs.result = stepDefs.mockMvc.perform(
