@@ -18,6 +18,7 @@ public class Sample {
     private String text;
 
     @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
     private MetadataTemplate describedBy;
 
     @OneToMany(mappedBy = "forA")

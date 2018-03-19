@@ -8,7 +8,7 @@ import javax.persistence.OneToMany;
 import java.util.List;
 
 @Entity
-public class MetadataTemplate {
+public class MetadataTemplate extends UriEntity<String> {
 
     @Id @NotBlank
     private String name;
@@ -33,4 +33,8 @@ public class MetadataTemplate {
         this.listOfSamples = samples;
     }
 
+    @Override
+    public String getId() {
+        return name;
+    }
 }

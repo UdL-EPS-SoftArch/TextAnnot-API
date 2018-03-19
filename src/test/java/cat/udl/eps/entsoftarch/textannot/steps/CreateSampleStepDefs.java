@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
 
+import cat.udl.eps.entsoftarch.textannot.repository.MetadataTemplateRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.SampleRepository;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
@@ -25,6 +26,9 @@ public class CreateSampleStepDefs {
 
     @Autowired
     private SampleRepository sampleRepository;
+
+    @Autowired
+    private MetadataTemplateRepository metadataTemplateRepository;
 
     private String newResourceUri;
 
@@ -66,9 +70,49 @@ public class CreateSampleStepDefs {
                 post("/samples")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(sample.toString())
-                        .accept(MediaType.APPLICATION_JSON)
+                       .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
         newResourceUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
+    }
+
+    @When("^I create a new sample with text \"([^\"]*)\" with metadata template \"([^\"]+)\"$")
+    public void iCreateANewSampleWithMetadataTemplate(String text, String mtName) throws Throwable{
+        JSONObject sample = new JSONObject();
+        sample.put("text", text);
+        String mturi = metadataTemplateRepository.findOne(mtName).getUri();
+        sample.put("describedBy", mturi);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/samples")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(sample.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+
+        newResourceUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
+    }
+
+    @And("^The sample with text \"([^\"]+)\" has a metadata template \"([^\"]+)\"$")
+    public void theSampleWithTextHasMetadataTemplate(String text, String mtName) throws Throwable {
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get(newResourceUri)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+
+        JSONObject jsonObject = new JSONObject(stepDefs.result.andReturn().getResponse().getContentAsString());
+        JSONObject links = (JSONObject)jsonObject.get("_links");
+        JSONObject descBy = (JSONObject)links.get("describedBy");
+        String mtUrl = descBy.getString("href");
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get(mtUrl)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.text", is(mtName)));
+
+
     }
 }
