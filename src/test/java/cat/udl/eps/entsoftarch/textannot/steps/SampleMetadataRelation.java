@@ -40,12 +40,14 @@ public class SampleMetadataRelation {
     @Autowired
     private MetadataValueRepository metadataValueRepository;
 
+    private List<Sample> samples;
+
 
     @Given("^A Sample with text \"([^\"]*)\" with MetadataValue value \"([^\"]*)\" and MetadataField name \"([^\"]*)\"$")
     public void aSampleWithTextWithMetadataValueValueAndMetadataFieldName(String text, String value, String name) throws Throwable {
         Sample s = new Sample(text);
         MetadataValue mv = new MetadataValue(value);
-        MetadataField mf = new MetadataField(name, "");
+        MetadataField mf = new MetadataField(name, "type");
 
         mv.setValued(mf);
         mv.setForA(s);
@@ -57,14 +59,12 @@ public class SampleMetadataRelation {
     }
 
     @When("^I find Samples by MetadataValue value \"([^\"]*)\" and MetadataField name \"([^\"]*)\"$")
-    public void iFindSamplesByMetadataValueValueAndMetadataFieldName(String arg0, String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    public void iFindSamplesByMetadataValueValueAndMetadataFieldName(String value, String name) throws Throwable {
+        samples = sampleRepository.findByHasValuedNameAndHasValue(name, value);
     }
 
     @Then("^I get the list with the Sample with text \"([^\"]*)\"$")
     public void iGetTheListWithTheSampleWithText(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+
     }
 }
