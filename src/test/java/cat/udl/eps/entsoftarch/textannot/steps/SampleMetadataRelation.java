@@ -13,15 +13,18 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.isIn;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -60,11 +63,15 @@ public class SampleMetadataRelation {
 
     @When("^I find Samples by MetadataValue value \"([^\"]*)\" and MetadataField name \"([^\"]*)\"$")
     public void iFindSamplesByMetadataValueValueAndMetadataFieldName(String value, String name) throws Throwable {
-        samples = sampleRepository.findByHasValuedNameAndHasValue(name, value);
+        this.samples = sampleRepository.findByHasValuedNameAndHasValue(name, value);
     }
 
     @Then("^I get the list with the Sample with text \"([^\"]*)\"$")
-    public void iGetTheListWithTheSampleWithText(String arg0) throws Throwable {
+    public void iGetTheListWithTheSampleWithText(String text) throws Throwable {
+        this.samples.contains(new Sample(text));
+        List list = new LinkedList();
+        for(Sample s: samples) list.add(s.getText());
 
+        Assert.assertThat(text , isIn(list));
     }
 }
