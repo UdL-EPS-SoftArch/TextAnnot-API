@@ -1,10 +1,11 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Sample {
@@ -15,7 +16,14 @@ public class Sample {
 
     @NotNull
     private String text;
-    
+
+    @ManyToOne
+    private MetadataTemplate describedBy;
+
+    @OneToMany(mappedBy = "forA")
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<MetadataValue> has = new ArrayList<>();
+
     public Sample() { }
     
     /**
@@ -49,7 +57,15 @@ public class Sample {
     public void setText(String text) {
         this.text=text;
     }
-    
+
+    public List<MetadataValue> getHas() {
+        return has;
+    }
+
+    public void setHas(List<MetadataValue> has) {
+        this.has = has;
+    }
+
     /**
      * Returns the string equivalent of this entity.
      * @return the string equivalent of this entity.
