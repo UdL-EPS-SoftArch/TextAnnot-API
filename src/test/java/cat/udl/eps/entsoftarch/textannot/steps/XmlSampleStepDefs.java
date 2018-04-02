@@ -1,6 +1,7 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
 
 import cat.udl.eps.entsoftarch.textannot.repository.XmlSampleRepository;
+import cat.udl.eps.entsoftarch.textannot.service.XMLService;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
@@ -38,6 +39,9 @@ public class XmlSampleStepDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
         newResourceUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
+
+        XMLService xml = new XMLService();
+        xml.XMLParser(content);
     }
 
 
