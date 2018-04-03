@@ -16,6 +16,8 @@ public class XMLService {
 
     public static void XMLParser(String content) {
 
+
+
         try {
 
             SAXParserFactory factory = SAXParserFactory.newInstance();
