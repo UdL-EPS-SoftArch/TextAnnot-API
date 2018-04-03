@@ -7,47 +7,40 @@ Feature: Create XML Sample
     Given I login as "user" with password "password"
     When I upload a XmlSample with text "text" and content
     """
-    <sample>
-      <book>
-         <author>Gambardella, Matthew</author>
-         <title>XML Developer Guide</title>
-         <genre>Computer</genre>
-         <price>44.95</price>
-         <date>2000-11-01</date>
-         <description>An in-depth look at creating applications with XML.</description>
-      </book>
-    </sample>
+    <book>
+       <author>Gambardella, Matthew</author>
+       <title>XML Developer Guide</title>
+       <genre>Computer</genre>
+       <price>44.95</price>
+       <date>2000-11-01</date>
+       <description>An in-depth look at creating applications with XML.</description>
+    </book>
     """
     Then The response code is 201
     And It has been created a XmlSample with text "text" and content
     """
-    <sample>
-      <book>
-         <author>Gambardella, Matthew</author>
-         <title>XML Developer Guide</title>
-         <genre>Computer</genre>
-         <price>44.95</price>
-         <date>2000-11-01</date>
-         <description>An in-depth look at creating applications with XML.</description>
-      </book>
-    </sample>
+    <book>
+       <author>Gambardella, Matthew</author>
+       <title>XML Developer Guide</title>
+       <genre>Computer</genre>
+       <price>44.95</price>
+       <date>2000-11-01</date>
+       <description>An in-depth look at creating applications with XML.</description>
+    </book>
     """
 
   Scenario: Upload a xml sample as linguist
     Given  I login as "user" with password "password"
     When I upload a XmlSample with text "text" and content
     """
-    <sample>
-      <book>
-         <author>Gambardella, Matthew</author>
-         <title>XML Developer Guide</title>
-         <genre>Computer</genre>
-         <price>44.95</price>
-         <date>2000-11-01</date>
-         <description>An in-depth look at creating applications with XML.</description>
-      </book>
-    </sample>
+    <book>
+       <author>Gambardella, Matthew</author>
+       <title>XML Developer Guide</title>
+       <genre>Computer</genre>
+       <price>44.95</price>
+       <date>2000-11-01</date>
+       <description>An in-depth look at creating applications with XML.</description>
+    </book>
     """
     Then The response code is 201
-    And
 

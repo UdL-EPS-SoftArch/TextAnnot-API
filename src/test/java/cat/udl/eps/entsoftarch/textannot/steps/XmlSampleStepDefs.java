@@ -1,7 +1,6 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
 
 import cat.udl.eps.entsoftarch.textannot.repository.XmlSampleRepository;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
