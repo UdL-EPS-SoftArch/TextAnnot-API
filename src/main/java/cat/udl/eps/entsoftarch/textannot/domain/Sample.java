@@ -1,8 +1,8 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
+import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +17,13 @@ public class Sample {
     @NotNull
     private String text;
 
+    @ManyToOne
+    private MetadataTemplate describedBy;
+
     @OneToMany(mappedBy = "forA")
     @JsonIdentityReference(alwaysAsId = true)
     private List<MetadataValue> has = new ArrayList<>();
-    
+
     public Sample() { }
     
     /**
@@ -70,4 +73,6 @@ public class Sample {
     public String toString() {
         return this.text;
     }
+
+
 }

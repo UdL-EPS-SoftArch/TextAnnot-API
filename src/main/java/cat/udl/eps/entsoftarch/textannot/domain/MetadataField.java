@@ -24,6 +24,9 @@ public class MetadataField extends UriEntity<Integer> {
     @JsonIdentityReference(alwaysAsId = true)
     private List<MetadataValue> values = new ArrayList<>();
 
+    @ManyToOne
+    private MetadataTemplate definedIn;
+
     @Override
     public Integer getId() {
         return id;
@@ -61,4 +64,8 @@ public class MetadataField extends UriEntity<Integer> {
     public void setValues(List<MetadataValue> values) {
         this.values = values;
     }
+
+    public MetadataTemplate getDefinedIn() { return definedIn; }
+
+    public void setDefinedIn(MetadataTemplate definedIn) { this.definedIn = definedIn; }
 }

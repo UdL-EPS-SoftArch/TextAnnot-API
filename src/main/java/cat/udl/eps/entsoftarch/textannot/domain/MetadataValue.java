@@ -16,7 +16,7 @@ public class MetadataValue extends UriEntity<Integer>{
     @NotBlank
     private String value;
 
-   @ManyToOne
+    @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     private	Sample forA;
 
@@ -31,32 +31,17 @@ public class MetadataValue extends UriEntity<Integer>{
     }
 
     @Override
-    public Integer getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
 
+    public String getValue() { return value; }
 
-    public String getValue() {
-        return value;
-    }
+    public void setValue(String value) { this.value = value; }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+    public Sample getForA() { return forA; }
 
-    public Sample getForA() {
-        return forA;
-    }
+    public void setForA(Sample forA) { this.forA = forA; }
 
-    public void setForA(Sample forA) {
-        this.forA = forA;
-    }
+    public MetadataField getValued() { return valued; }
 
-    public MetadataField getValued() {
-        return valued;
-    }
-
-    public void setValued(MetadataField valued) {
-        this.valued = valued;
-    }
+    public void setValued(MetadataField valued) { this.valued = valued; }
 }
