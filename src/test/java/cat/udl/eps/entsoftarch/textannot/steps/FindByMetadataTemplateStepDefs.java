@@ -55,6 +55,14 @@ public class FindByMetadataTemplateStepDefs {
                 .andDo(print());
     }
 
+    @When("^I search a sample with an inexistent Metadata Template named \"([^\"]*)\"$")
+    public void inexistentMetadataTemplate(String word) throws Throwable {
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/samples/search/findByDescribedByName?text={text}", word)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
 
     @And("There is a sample with text \"([^\"]*)\" defined by \"([^\"]*)\"$")
     public void addSamples(String sam, String metadata) throws Throwable{
