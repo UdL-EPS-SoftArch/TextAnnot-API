@@ -34,6 +34,16 @@ public abstract class User extends UriEntity<String> implements UserDetails {
     return username;
   }
 
+  @Override
+  public String getUsername(){
+    return username;
+  }
+
+  @Override
+  public String getPassword() {
+    return password;
+  }
+
   public void encodePassword() {
     this.password = passwordEncoder.encode(this.password);
   }

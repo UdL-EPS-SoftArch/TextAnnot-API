@@ -20,3 +20,11 @@ Feature: Create Sample
     When I create a new sample with no text field
     Then The response code is 400
     And The error message is "may not be null"
+
+  Scenario: Create a new sample with a metadata template
+    Given I login as "user" with password "password"
+    And There is a single metadata template with name "mtTest"
+    When I create a new sample with text "Lorem ipsum text" with metadata template "mtTest"
+    Then The response code is 201
+    And It has been created a sample with text "Lorem ipsum text"
+    And The sample with text "Lorem ipsum text" has a metadata template "mtTest"
