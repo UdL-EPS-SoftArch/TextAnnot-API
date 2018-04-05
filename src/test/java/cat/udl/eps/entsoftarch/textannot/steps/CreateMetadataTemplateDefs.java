@@ -4,6 +4,7 @@ import cat.udl.eps.entsoftarch.textannot.domain.MetadataTemplate;
 import cat.udl.eps.entsoftarch.textannot.repository.MetadataTemplateRepository;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,4 +51,11 @@ public class CreateMetadataTemplateDefs {
                 .andDo(print())
                 .andExpect(jsonPath("$.name", is(name)));
     }
+
+    @Then("^The metadataTemplate with name \"([^\"]*)\" have (\\d+) samples$")
+    public void theMetadataTemplateWithNameHaveSamples(String arg0, int arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+    //.andExpect(jsonPath("$._embedded.sample", hasSize(0)));
 }
