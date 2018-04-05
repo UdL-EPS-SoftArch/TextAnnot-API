@@ -23,3 +23,4 @@ Feature: Search Sample
     When I search a sample with the word "i"
     Then The response code is 200
     And The samples are empty
+
