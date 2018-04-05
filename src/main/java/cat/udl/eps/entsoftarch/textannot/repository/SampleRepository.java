@@ -15,5 +15,5 @@ public interface SampleRepository extends PagingAndSortingRepository<Sample, Int
 
     List<Sample> findByHasValuedNameAndHasValue(String fieldName, String value);
     Sample findByText(@Param("text") String text);
-    List<Sample> findByMetadataTemplate(MetadataTemplate mdtemplate);
+    List<Sample> findByDescribedByName(@Param("text") String text);
 }
