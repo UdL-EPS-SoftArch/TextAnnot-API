@@ -22,13 +22,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class FindByMetadataTemplateStepDefs {
 
-    private static Map<String, MetadataTemplate> map;
-    private static List<Sample> sampleList;
-    private static List<Sample> result;
 
     @Autowired
     private StepDefs stepDefs;
-
 
     @Autowired
     private SampleRepository sampleRepository;
@@ -38,15 +34,12 @@ public class FindByMetadataTemplateStepDefs {
 
     @And("^There are some Metadata Templates with text \"([^\"]*)\" \"([^\"]*)\" and \"([^\"]*)\"$")
     public void saveTheMetadataTemplate(String md1, String md2, String md3) throws Throwable{
-        FindByMetadataTemplateStepDefs.map = new HashMap<String, MetadataTemplate>();
-        MetadataTemplate metadata1 = new MetadataTemplate(md1);
-        MetadataTemplate metadata2 = new MetadataTemplate(md2);
-        MetadataTemplate metadata3 = new MetadataTemplate(md3);
-
-        FindByMetadataTemplateStepDefs.map.put(md1, metadata1);
-        FindByMetadataTemplateStepDefs.map.put(md2, metadata2);
-        FindByMetadataTemplateStepDefs.map.put(md1, metadata3);
-
+        MetadataTemplate metadata1 = new MetadataTemplate();
+        metadata1.setName(md1);
+        MetadataTemplate metadata2 = new MetadataTemplate();
+        metadata2.setName(md2);
+        MetadataTemplate metadata3 = new MetadataTemplate();
+        metadata3.setName(md3);
         metadataTemplateRepository.save(metadata1);
         metadataTemplateRepository.save(metadata2);
         metadataTemplateRepository.save(metadata3);
@@ -56,7 +49,7 @@ public class FindByMetadataTemplateStepDefs {
     @When("^I search a sample which is defined by the Metadata Template \"([^\"]*)\"$")
     public void searchMetadataTemplate(String word) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/samples/search/findByTextContains?word={word}", word)
+                get("/samples/search/findByDescribedByName?text={text}", word)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
@@ -66,13 +59,14 @@ public class FindByMetadataTemplateStepDefs {
     @And("There is a sample with text \"([^\"]*)\" defined by \"([^\"]*)\"$")
     public void addSamples(String sam, String metadata) throws Throwable{
         Sample sample = new Sample(sam);
-        sample.setDescribedBy(this.map.get(metadata));
+        sample.setDescribedBy(metadataTemplateRepository.findOne(metadata));
         sampleRepository.save(sample);
     }
 
-    @And("The samples are empty$")
-    public void theSamplesAreEmpty() throws Throwable{
-        stepDefs.result.andExpect(jsonPath("$._embedded.samples", hasSize(0)));
+    @And("The sample is \"([^\"]*)\"$")
+    public void theSampleIs(String s) throws Throwable{
+        stepDefs.result.andExpect(jsonPath("$._embedded.samples.*.text", hasItem(s)));
     }
 
 }
+
