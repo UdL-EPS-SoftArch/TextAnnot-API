@@ -27,7 +27,6 @@ public class MetadataTemplate extends UriEntity<String> {
     @OneToMany(mappedBy = "describedBy")
     private List<Sample> describes;
 
-
     public String getName() {
         return name;
     }
