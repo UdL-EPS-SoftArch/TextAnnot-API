@@ -10,7 +10,9 @@ import org.springframework.data.repository.query.Param;
 @RepositoryRestResource
 public interface SampleRepository extends PagingAndSortingRepository<Sample, Integer> {
     List<Sample> findByTextContaining(String text);
-    List<Sample> findByHasValuedNameAndHasValue(String fieldName, String value);
     List<Sample> findByTextContains (@Param("word") String word);
+
+    List<Sample> findByHasValuedNameAndHasValue(String fieldName, String value);
     Sample findByText(@Param("text") String text);
+    List<Sample> findByDescribedByName(@Param("text") String text);
 }
