@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -53,9 +54,13 @@ public class CreateMetadataTemplateDefs {
     }
 
     @Then("^The metadataTemplate with name \"([^\"]*)\" have (\\d+) samples$")
-    public void theMetadataTemplateWithNameHaveSamples(String arg0, int arg1) throws Throwable {
+    public void theMetadataTemplateWithNameHaveSamples(String name, int size) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/metadataTemplates/{name}/defines", name)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$._embedded.describes", hasSize(size)));
     }
-    //.andExpect(jsonPath("$._embedded.sample", hasSize(0)));
 }
