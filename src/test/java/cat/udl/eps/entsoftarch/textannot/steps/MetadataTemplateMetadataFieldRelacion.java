@@ -45,4 +45,6 @@ public class MetadataTemplateMetadataFieldRelacion {
         MetadataTemplate metadataTemplate = MetadataTemplatesList.get(0);
         Assert.assertTrue(metadataTemplate.getName().equals(name));
     }
+
+
 }
