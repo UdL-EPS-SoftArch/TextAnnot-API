@@ -10,5 +10,7 @@ import java.util.List;
 @RepositoryRestResource
 public interface MetadataTemplateRepository extends PagingAndSortingRepository<MetadataTemplate, String> {
     public List<MetadataTemplate> findByDefinesNameAndDefinesType(@Param("name") String name, @Param("type") String type);
+    public List<MetadataTemplate> findByDefinesName(@Param("name") String name);
+    public List<MetadataTemplate> findByDefinesType(@Param("type") String type);
     MetadataTemplate findByName (@Param("name") String name);
 }

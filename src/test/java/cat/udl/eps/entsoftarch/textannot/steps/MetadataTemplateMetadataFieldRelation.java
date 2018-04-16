@@ -23,10 +23,10 @@ public class MetadataTemplateMetadataFieldRelation {
     private List<MetadataTemplate> MetadataTemplatesList;
 
     @Given("^A MetadataTemplate with name \"([^\"]*)\" defines a MetadataField with name \"([^\"]*)\" and type \"([^\"]*)\"$")
-    public void aMetadataTemplateWithNameDefinesAMetadataFieldWithNameAndType(String name, String FName, String Ftype) throws Throwable {
+    public void aMetadataTemplateWithNameDefinesAMetadataFieldWithNameAndType(String name, String FName, String FType) throws Throwable {
         MetadataTemplate mt = new MetadataTemplate();
         mt.setName(name);
-        MetadataField mf = new MetadataField(FName, Ftype);
+        MetadataField mf = new MetadataField(FName, FType);
 
         mt = mtr.save(mt);
         mf.setDefinedIn(mt);
@@ -34,8 +34,8 @@ public class MetadataTemplateMetadataFieldRelation {
     }
 
     @When("^I find MetadataTemplates by MetadataField name \"([^\"]*)\" and type \"([^\"]*)\"$")
-    public void iFindMetadataTemplateByMetadataFieldNameAndType(String FName, String Ftype) throws Throwable {
-        this.MetadataTemplatesList = mtr.findByDefinesNameAndDefinesType(FName, Ftype);
+    public void iFindMetadataTemplateByMetadataFieldNameAndType(String FName, String FType) throws Throwable {
+        this.MetadataTemplatesList = mtr.findByDefinesNameAndDefinesType(FName, FType);
     }
 
     @Then("^I get the list with a MetadataTemplate with name \"([^\"]*)\"$")
@@ -48,26 +48,35 @@ public class MetadataTemplateMetadataFieldRelation {
 
 
     @Given("^A MetadataTemplate with name \"([^\"]*)\" which defines a MetadataFields with name \"([^\"]*)\"$")
-    public void aMetadataTemplateWithNameWhichDefinesAMetadataFieldsWithName(String arg0, String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    public void aMetadataTemplateWithNameWhichDefinesAMetadataFieldsWithName(String name, String FName) throws Throwable {
+        MetadataTemplate m = new MetadataTemplate();
+        m.setName(name);
+        MetadataField f = new MetadataField(FName,"NTp"); //no type
+
+        m = mtr.save(m);
+        f.setDefinedIn(m);
+        mtfr.save(f);
+
     }
 
     @When("^I find MetadataTemplate by MetadataField name \"([^\"]*)\"$")
-    public void iFindMetadataTemplateByMetadataFieldName(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    public void iFindMetadataTemplateByMetadataFieldName(String FName) throws Throwable {
+        this.MetadataTemplatesList = mtr.findByDefinesName(FName);
     }
 
-    @Given("^A MetadataTemplate with name \"([^\"]*)\" defines a MedatataField with type \"([^\"]*)\"$")
-    public void aMetadataTemplateWithNameDefinesAMedatataFieldWithType(String arg0, String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    @Given("^A MetadataTemplate with name \"([^\"]*)\" defines a MetadataField with type \"([^\"]*)\"$")
+    public void aMetadataTemplateWithNameDefinesAMedatataFieldWithType(String name, String FType) throws Throwable {
+        MetadataTemplate m = new MetadataTemplate();
+        m.setName(name);
+        MetadataField f = new MetadataField("NName",FType); //no name
+
+        m = mtr.save(m);
+        f.setDefinedIn(m);
+        mtfr.save(f);
     }
 
     @When("^I find MetadataTemplate by MetadataField type \"([^\"]*)\"$")
-    public void iFindMetadataTemplateByMetadataFieldType(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    public void iFindMetadataTemplateByMetadataFieldType(String FType) throws Throwable {
+        this.MetadataTemplatesList = mtr.findByDefinesType(FType);
     }
 }
