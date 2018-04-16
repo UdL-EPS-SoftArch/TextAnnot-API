@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public class MetadataTemplateMetadataFieldRelacion {
+public class MetadataTemplateMetadataFieldRelation {
     @Autowired
     private MetadataTemplateRepository mtr;
 
@@ -33,7 +33,7 @@ public class MetadataTemplateMetadataFieldRelacion {
         mtfr.save(mf);
     }
 
-    @When("^I find MetadataTemplate by MetadataField name \"([^\"]*)\" and type \"([^\"]*)\"$")
+    @When("^I find MetadataTemplates by MetadataField name \"([^\"]*)\" and type \"([^\"]*)\"$")
     public void iFindMetadataTemplateByMetadataFieldNameAndType(String FName, String Ftype) throws Throwable {
         this.MetadataTemplatesList = mtr.findByDefinesNameAndDefinesType(FName, Ftype);
     }
@@ -47,4 +47,27 @@ public class MetadataTemplateMetadataFieldRelacion {
     }
 
 
+    @Given("^A MetadataTemplate with name \"([^\"]*)\" which defines a MetadataFields with name \"([^\"]*)\"$")
+    public void aMetadataTemplateWithNameWhichDefinesAMetadataFieldsWithName(String arg0, String arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @When("^I find MetadataTemplate by MetadataField name \"([^\"]*)\"$")
+    public void iFindMetadataTemplateByMetadataFieldName(String arg0) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @Given("^A MetadataTemplate with name \"([^\"]*)\" defines a MedatataField with type \"([^\"]*)\"$")
+    public void aMetadataTemplateWithNameDefinesAMedatataFieldWithType(String arg0, String arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @When("^I find MetadataTemplate by MetadataField type \"([^\"]*)\"$")
+    public void iFindMetadataTemplateByMetadataFieldType(String arg0) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
 }
