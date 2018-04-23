@@ -20,9 +20,8 @@ Feature: Create new Metadata Template
     Then The response code is 400
     And The error message is "may not be empty"
 
-  Scenario: Check that a Metadata Template has 2 samples
+  Scenario: Check that a Metadata Template has 1 sample
     Given I login as "admin" with password "password"
-    When There is a single metadata template with name "mtTest"
-    When I create a new sample with text "Test1" with metadata template "mtTest"
-    When I create a new sample with text "Test2" with metadata template "mtTest"
-    Then The metadataTemplate with name "mtTest" have 2 samples
+    When There is a single Sample with text "Test"
+    When I create a new metadata Template "mtTest" with the previous sample
+    Then The metadataTemplate with name "mtTest" have 1 samples
