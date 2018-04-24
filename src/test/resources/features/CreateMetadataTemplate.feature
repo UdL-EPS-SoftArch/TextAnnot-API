@@ -19,3 +19,9 @@ Feature: Create new Metadata Template
     When I create a new Metadata Template with name ""
     Then The response code is 400
     And The error message is "may not be empty"
+
+  Scenario: Check that a Metadata Template has 1 sample
+    Given I login as "admin" with password "password"
+    When There is a single Sample with text "Test"
+    When I create a new metadata Template "mtTest" with the previous sample
+    Then The metadataTemplate with name "mtTest" have 1 samples
