@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Sample {
+public class Sample extends UriEntity<Integer>{
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @NotNull
     private String text;
@@ -31,7 +31,7 @@ public class Sample {
         this.text=text;
     }
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
