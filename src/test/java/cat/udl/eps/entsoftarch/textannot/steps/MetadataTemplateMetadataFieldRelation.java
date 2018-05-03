@@ -46,7 +46,7 @@ public class MetadataTemplateMetadataFieldRelation {
 
     @When("^I find MetadataTemplates by MetadataField name \"([^\"]*)\" and type \"([^\"]*)\"$")
     public void iFindMetadataTemplateByMetadataFieldNameAndType(String FName, String FType) throws Throwable {
-        //this.MetadataTemplatesList = mtr.findByDefinesNameAndDefinesType(FName, FType);
+
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/metadataTemplates/search/findByDefinesNameAndDefinesType?name={FName}&type={FType}", FName, FType)
                 .accept(MediaType.APPLICATION_JSON)
@@ -59,9 +59,6 @@ public class MetadataTemplateMetadataFieldRelation {
 
         stepDefs.result.andExpect(jsonPath("$._embedded.metadataTemplates.*.name", hasItem(name)));
 
-        //Assert.assertTrue(MetadataTemplatesList.size() == 1);
-        //MetadataTemplate metadataTemplate = MetadataTemplatesList.get(0);
-        //Assert.assertTrue(metadataTemplate.getName().equals(name));
     }
 
 
@@ -79,7 +76,7 @@ public class MetadataTemplateMetadataFieldRelation {
 
     @When("^I find MetadataTemplate by MetadataField name \"([^\"]*)\"$")
     public void iFindMetadataTemplateByMetadataFieldName(String FName) throws Throwable {
-        //this.MetadataTemplatesList = mtr.findByDefinesName(FName);
+
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/metadataTemplates/search/findByDefinesName?name={FName}", FName)
                 .accept(MediaType.APPLICATION_JSON)
@@ -100,7 +97,7 @@ public class MetadataTemplateMetadataFieldRelation {
 
     @When("^I find MetadataTemplate by MetadataField type \"([^\"]*)\"$")
     public void iFindMetadataTemplateByMetadataFieldType(String FType) throws Throwable {
-        //this.MetadataTemplatesList = mtr.findByDefinesType(FType);
+
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/metadataTemplates/search/findByDefinesType?type={FType}",FType)
                 .accept(MediaType.APPLICATION_JSON)

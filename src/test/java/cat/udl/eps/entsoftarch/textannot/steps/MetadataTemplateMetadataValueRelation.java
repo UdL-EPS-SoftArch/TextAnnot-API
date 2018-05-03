@@ -11,10 +11,14 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import javax.transaction.Transactional;
 
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import java.util.List;
 
@@ -50,13 +54,16 @@ public class MetadataTemplateMetadataValueRelation {
     @When("^I find MetadataTemplates by MetadataValue with value \"([^\"]*)\"$")
     @Transactional
     public void iFindMetadataTemplatesByMetadataValueWithValue(String VValue) throws Throwable {
-        this.metadataTemplateList = metadataTemplateRepository.findByDefinesValuesValue(VValue);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/metadataTemplates/search/findByDefinesValuesValue?value={VValue}", VValue)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(AuthenticationStepDefs.authenticate()))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     @Then("^I get a list with a MetadataTemplate with name \"([^\"]*)\"$")
     public void iGetAListWithAMetadataTemplateWithName(String name) throws Throwable {
-        Assert.assertTrue(this.metadataTemplateList.size() == 1);
-        MetadataTemplate metadataTemplate = metadataTemplateList.get(0);
-        Assert.assertTrue(metadataTemplate.getName().equals(name));
+        stepDefs.result.andExpect(jsonPath("$._embedded.metadataTemplates.*.name", hasItem(name)));
+
     }
 }
