@@ -96,6 +96,8 @@ public class MetadataTemplateMetadataFieldRelation {
 
     @When("^I find MetadataTemplate by MetadataField type \"([^\"]*)\"$")
     public void iFindMetadataTemplateByMetadataFieldType(String FType) throws Throwable {
-        this.MetadataTemplatesList = mtr.findByDefinesType(FType);
+        //this.MetadataTemplatesList = mtr.findByDefinesType(FType);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/metadataTemplate/findByDefinesNameAndDefinesType?type={FType}",FType).with(AuthenticationStepDefs.authenticate())).andDo(MockMvcResultHandlers.print());
     }
 }
