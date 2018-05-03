@@ -48,15 +48,16 @@ public class MetadataTemplateMetadataFieldRelation {
     public void iFindMetadataTemplateByMetadataFieldNameAndType(String FName, String FType) throws Throwable {
         //this.MetadataTemplatesList = mtr.findByDefinesNameAndDefinesType(FName, FType);
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/metadataTemplate/findByDefinesNameAndDefinesType?name={FName}&type={FType}", FName, FType).with(AuthenticationStepDefs.authenticate())).andDo(MockMvcResultHandlers.print());
+                get("/metadataTemplates/search/findByDefinesNameAndDefinesType?name={FName}&type={FType}", FName, FType)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(AuthenticationStepDefs.authenticate()))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     @Then("^I get the list with a MetadataTemplate with name \"([^\"]*)\"$")
     public void iGetTheListWithAMetadataTemplateWithName(String name) throws Throwable {
-        MetadataTemplate mdt = new MetadataTemplate();
-        mdt.setName(name);
-        List<MetadataTemplate> mdtl =  new ArrayList<>();
-        stepDefs.result.;
+
+        stepDefs.result.andExpect(jsonPath("$._embedded.metadataTemplates.*.name", hasItem(name)));
 
         //Assert.assertTrue(MetadataTemplatesList.size() == 1);
         //MetadataTemplate metadataTemplate = MetadataTemplatesList.get(0);
@@ -80,7 +81,10 @@ public class MetadataTemplateMetadataFieldRelation {
     public void iFindMetadataTemplateByMetadataFieldName(String FName) throws Throwable {
         //this.MetadataTemplatesList = mtr.findByDefinesName(FName);
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/metadataTemplate/findByDefinesName?name={FName}", FName).with(AuthenticationStepDefs.authenticate())).andDo(MockMvcResultHandlers.print());
+                get("/metadataTemplates/search/findByDefinesName?name={FName}", FName)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(AuthenticationStepDefs.authenticate()))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     @Given("^A MetadataTemplate with name \"([^\"]*)\" defines a MetadataField with type \"([^\"]*)\"$")
@@ -98,6 +102,9 @@ public class MetadataTemplateMetadataFieldRelation {
     public void iFindMetadataTemplateByMetadataFieldType(String FType) throws Throwable {
         //this.MetadataTemplatesList = mtr.findByDefinesType(FType);
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/metadataTemplate/findByDefinesNameAndDefinesType?type={FType}",FType).with(AuthenticationStepDefs.authenticate())).andDo(MockMvcResultHandlers.print());
+                get("/metadataTemplates/search/findByDefinesType?type={FType}",FType)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(AuthenticationStepDefs.authenticate()))
+                .andDo(MockMvcResultHandlers.print());
     }
 }
