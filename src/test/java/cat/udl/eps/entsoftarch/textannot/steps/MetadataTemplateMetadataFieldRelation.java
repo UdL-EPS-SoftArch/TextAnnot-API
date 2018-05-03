@@ -10,8 +10,16 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
-import java.util.List;
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
+import java.util.*;
 
 public class MetadataTemplateMetadataFieldRelation {
     @Autowired
@@ -19,6 +27,9 @@ public class MetadataTemplateMetadataFieldRelation {
 
     @Autowired
     private MetadataFieldRepository mtfr;
+
+    @Autowired
+    private StepDefs stepDefs;
 
     private List<MetadataTemplate> MetadataTemplatesList;
 
@@ -35,15 +46,21 @@ public class MetadataTemplateMetadataFieldRelation {
 
     @When("^I find MetadataTemplates by MetadataField name \"([^\"]*)\" and type \"([^\"]*)\"$")
     public void iFindMetadataTemplateByMetadataFieldNameAndType(String FName, String FType) throws Throwable {
-        this.MetadataTemplatesList = mtr.findByDefinesNameAndDefinesType(FName, FType);
+        //this.MetadataTemplatesList = mtr.findByDefinesNameAndDefinesType(FName, FType);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/metadataTemplate/findByDefinesNameAndDefinesType?name={FName}&type={FType}", FName, FType).with(AuthenticationStepDefs.authenticate())).andDo(MockMvcResultHandlers.print());
     }
 
     @Then("^I get the list with a MetadataTemplate with name \"([^\"]*)\"$")
     public void iGetTheListWithAMetadataTemplateWithName(String name) throws Throwable {
+        MetadataTemplate mdt = new MetadataTemplate();
+        mdt.setName(name);
+        List<MetadataTemplate> mdtl =  new ArrayList<>();
+        stepDefs.result.;
 
-        Assert.assertTrue(MetadataTemplatesList.size() == 1);
-        MetadataTemplate metadataTemplate = MetadataTemplatesList.get(0);
-        Assert.assertTrue(metadataTemplate.getName().equals(name));
+        //Assert.assertTrue(MetadataTemplatesList.size() == 1);
+        //MetadataTemplate metadataTemplate = MetadataTemplatesList.get(0);
+        //Assert.assertTrue(metadataTemplate.getName().equals(name));
     }
 
 
