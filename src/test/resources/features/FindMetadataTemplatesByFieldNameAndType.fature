@@ -1,7 +1,0 @@
-Feature: Find Metadata Templates by Field name and type.
-  "explicació"
-
-  Scenario: Search MetadataTemplate wich defines a specific Field with a specific name and type
-    Given A MetadataTemplate with name "name" defines a MetadataField with name "FName" and type "Ftype"
-    When I find MetadataTemplate by MetadataField name "FName" and type "Ftype"
-    Then I get the list with a MetadataTemplate with name "name"
