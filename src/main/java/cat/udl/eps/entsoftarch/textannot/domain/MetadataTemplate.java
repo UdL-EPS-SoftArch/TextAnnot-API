@@ -7,11 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.time.ZonedDateTime;
-import javax.persistence.OneToMany;
 import java.util.List;
 
 @Entity
-public class MetadataTemplate {
+public class MetadataTemplate extends UriEntity<String> {
 
     @Id @NotBlank
     private String name;
@@ -26,7 +25,6 @@ public class MetadataTemplate {
 
     @OneToMany(mappedBy = "describedBy")
     private List<Sample> describes;
-
 
     public String getName() {
         return name;
@@ -60,4 +58,8 @@ public class MetadataTemplate {
         this.describes = describes;
     }
 
+    @Override
+    public String getId() {
+        return name;
+    }
 }

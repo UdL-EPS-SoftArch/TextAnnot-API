@@ -33,6 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class SampleMetadataRelation {
+    @Autowired
+    private StepDefs stepDefs;
 
     @Autowired
     private SampleRepository sampleRepository;
@@ -63,15 +65,15 @@ public class SampleMetadataRelation {
 
     @When("^I find Samples by MetadataValue value \"([^\"]*)\" and MetadataField name \"([^\"]*)\"$")
     public void iFindSamplesByMetadataValueValueAndMetadataFieldName(String value, String name) throws Throwable {
-        this.samples = sampleRepository.findByHasValuedNameAndHasValue(name, value);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/samples/search/findByHasValuedNameAndHasValue?name={name}&value={value}", name, value)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(AuthenticationStepDefs.authenticate())
+        ).andDo(print());
     }
 
     @Then("^I get the list with the Sample with text \"([^\"]*)\"$")
     public void iGetTheListWithTheSampleWithText(String text) throws Throwable {
-        this.samples.contains(new Sample(text));
-        List list = new LinkedList();
-        for(Sample s: samples) list.add(s.getText());
-
-        Assert.assertThat(text , isIn(list));
+        stepDefs.result.andExpect(jsonPath("$._embedded.samples.*.text", hasItem(text)));
     }
 }

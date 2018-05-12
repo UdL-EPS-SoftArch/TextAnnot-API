@@ -17,6 +17,8 @@ public class RepositoryRestConfig extends RepositoryRestConfigurerAdapter {
         config.exposeIdsFor(MetadataField.class);
         config.exposeIdsFor(MetadataTemplate.class);
         config.exposeIdsFor(XmlSample.class);
+        config.exposeIdsFor(Sample.class);
+        config.exposeIdsFor(Linguist.class);
     }
 
     @PostConstruct

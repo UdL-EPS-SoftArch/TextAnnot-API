@@ -7,20 +7,16 @@ import cat.udl.eps.entsoftarch.textannot.repository.AdminRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.LinguistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
 
 @Configuration
 public class AuthenticationConfig extends GlobalAuthenticationConfigurerAdapter {
-
-  @Autowired
-  BasicUserDetailsService basicUserDetailsService;
-
-  @Autowired
-  AdminRepository adminRepository;
-
-  @Autowired
-  LinguistRepository linguistRepository;
+  @Autowired Environment environment;
+  @Autowired BasicUserDetailsService basicUserDetailsService;
+  @Autowired AdminRepository adminRepository;
+  @Autowired LinguistRepository linguistRepository;
 
   @Override
   public void init(AuthenticationManagerBuilder auth) throws Exception {
@@ -28,21 +24,40 @@ public class AuthenticationConfig extends GlobalAuthenticationConfigurerAdapter 
         .userDetailsService(basicUserDetailsService)
         .passwordEncoder(User.passwordEncoder);
 
-    if (!adminRepository.exists("admin")) {
-      Admin admin = new Admin();
-      admin.setEmail("admin@textannot.org");
-      admin.setUsername("admin");
-      admin.setPassword("password");
-      admin.encodePassword();
-      adminRepository.save(admin);
+    // Use encrypted secret password when deploying publicly in Heroku
+    if(environment.acceptsProfiles("heroku")) {
+      if (!adminRepository.exists("admin")) {
+        Admin admin = new Admin();
+        admin.setEmail("admin@textannot.org");
+        admin.setUsername("admin");
+        admin.setPassword("$2a$10$B1dcscvS/lgiBnGdkhhupew8AhbjqUL7TjdA2ggvxQhs5jN7KVSMC");
+        adminRepository.save(admin);
+      }
+      if (!linguistRepository.exists("user")) {
+        Linguist user = new Linguist();
+        user.setEmail("user@textannot.org");
+        user.setUsername("user");
+        user.setPassword("$2a$10$B1dcscvS/lgiBnGdkhhupew8AhbjqUL7TjdA2ggvxQhs5jN7KVSMC");
+        linguistRepository.save(user);
+      }
     }
-    if (!linguistRepository.exists("user")) {
-      Linguist user = new Linguist();
-      user.setEmail("user@textannot.org");
-      user.setUsername("user");
-      user.setPassword("password");
-      user.encodePassword();
-      linguistRepository.save(user);
+    else {
+      if (!adminRepository.exists("admin")) {
+        Admin admin = new Admin();
+        admin.setEmail("admin@textannot.org");
+        admin.setUsername("admin");
+        admin.setPassword("password");
+        admin.encodePassword();
+        adminRepository.save(admin);
+      }
+      if (!linguistRepository.exists("user")) {
+        Linguist user = new Linguist();
+        user.setEmail("user@textannot.org");
+        user.setUsername("user");
+        user.setPassword("password");
+        user.encodePassword();
+        linguistRepository.save(user);
+      }
     }
   }
 }

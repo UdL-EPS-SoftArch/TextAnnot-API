@@ -8,16 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Sample {
+public class Sample extends UriEntity<Integer>{
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @NotNull
     private String text;
 
     @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
     private MetadataTemplate describedBy;
 
     @OneToMany(mappedBy = "forA")
@@ -25,38 +26,26 @@ public class Sample {
     private List<MetadataValue> has = new ArrayList<>();
 
     public Sample() { }
-    
-    /**
-     * Constructor for the class.
-     * @param text the text of the sample
-     */
+
     public Sample(String text) {
         this.text=text;
     }
 
-    /**
-     * Returns the ID for this entity.
-     * @return the id for this entity
-     */
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    /**
-     * Returns the text of this sample.
-     * @return the text of this sample
-     */
     public String getText() {
         return this.text;
     }
 
-    /**
-     * Sets the text of this sample.
-     * @param text the text for this sample.
-     */
     public void setText(String text) {
         this.text=text;
     }
+
+    public MetadataTemplate getDescribedBy() { return describedBy; }
+
+    public void setDescribedBy(MetadataTemplate describedBy) { this.describedBy = describedBy; }
 
     public List<MetadataValue> getHas() {
         return has;
@@ -66,13 +55,7 @@ public class Sample {
         this.has = has;
     }
 
-    /**
-     * Returns the string equivalent of this entity.
-     * @return the string equivalent of this entity.
-     */
     public String toString() {
         return this.text;
     }
-
-
 }
