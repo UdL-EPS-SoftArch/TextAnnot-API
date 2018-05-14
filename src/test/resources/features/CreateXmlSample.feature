@@ -53,5 +53,5 @@ Feature: Create XML Sample
     </book>
     """
     Then The response code is 201
-    And It has been created a new metadataValue with value "Gambardella, Matthew" for metadataField with name "author"
     And It has been created a new metadatafield with name "author" and type "string" and Id 1
+    And It has been created a new metadataValue with value "Gambardella, Matthew" for metadataField with name "author"

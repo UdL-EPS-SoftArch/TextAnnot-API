@@ -2,6 +2,7 @@ package cat.udl.eps.entsoftarch.textannot.steps;
 
 import cat.udl.eps.entsoftarch.textannot.domain.MetadataField;
 import cat.udl.eps.entsoftarch.textannot.domain.MetadataValue;
+import cat.udl.eps.entsoftarch.textannot.domain.XmlSample;
 import cat.udl.eps.entsoftarch.textannot.repository.MetadataValueRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.XmlSampleRepository;
 import cat.udl.eps.entsoftarch.textannot.service.XMLService;
@@ -47,9 +48,6 @@ public class XmlSampleStepDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
         newResourceUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
-
-        XMLService xml = new XMLService();
-        xml.XMLParser(content);
     }
 
 
@@ -93,7 +91,7 @@ public class XmlSampleStepDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
-                .andExpect(jsonPath("$.name", is(metaField.getName())))
+                .andExpect(jsonPath("$.name", is(name)))
                 .andExpect(status().is(200));
     }
 
