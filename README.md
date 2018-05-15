@@ -3,6 +3,7 @@
 Class project for the Enterprise Software Architectures 2017-18 Course, Polytechnic School, Universitat de Lleida, Spain
 
 [![Build Status](https://travis-ci.org/UdL-EPS-SoftArch/TextAnnot-API.svg?branch=master)](https://travis-ci.org/UdL-EPS-SoftArch/TextAnnot-API/branches) 
+[![codebeat badge](https://codebeat.co/badges/79a45b06-8de1-4af5-81c8-39d789e1c67c)](https://codebeat.co/projects/github-com-udl-eps-softarch-textannot-api-master)
 <a href="https://zenhub.com"><img src="https://cdn.rawgit.com/ZenHubIO/support/master/zenhub-badge.svg"></a>
 
 ## Vision
