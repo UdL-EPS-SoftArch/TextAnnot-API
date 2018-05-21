@@ -112,7 +112,7 @@ public class CreateMetadataValueStepDefs {
                 .andDo(print());
     }
 
-    @And("^It has been created a new metadataValue with value \"([^\"]*)\"  for metadataField with text \"([^\"]*)\"$")
+    @And("^It has been created a new metadataValue with value \"([^\"]*)\" for metadataField with text \"([^\"]*)\"$")
     public void itHasBeenCreatedANewMetadataValueWithValueForMetadataFieldWithText(String value, String name) throws Throwable {
 
         metaValue=metadataValueRepository.findByValue(value);

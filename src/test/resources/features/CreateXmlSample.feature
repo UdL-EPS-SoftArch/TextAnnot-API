@@ -44,3 +44,14 @@ Feature: Create XML Sample
     """
     Then The response code is 201
 
+  Scenario: Upload a xml sample as linguist
+    Given I login as "user" with password "password"
+    When I upload a XmlSample with text "text" and content
+    """
+    <book>
+       <author>Gambardella, Matthew</author>
+    </book>
+    """
+    Then The response code is 201
+    And It has been created a new metadatafield with name "author" and type "string" and Id 1
+    And It has been created a new metadataValue with value "Gambardella, Matthew" for metadataField with name "author"
