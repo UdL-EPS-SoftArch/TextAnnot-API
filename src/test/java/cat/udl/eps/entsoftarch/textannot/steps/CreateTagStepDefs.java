@@ -2,6 +2,7 @@ package cat.udl.eps.entsoftarch.textannot.steps;
 
 import cat.udl.eps.entsoftarch.textannot.domain.Tag;
 import cat.udl.eps.entsoftarch.textannot.repository.TagRepository;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
@@ -24,6 +25,7 @@ public class CreateTagStepDefs {
     @Autowired
     private StepDefs stepDefs;
     private Tag tag;
+    private Tag parent;
 
 
     @Autowired
@@ -66,4 +68,51 @@ public class CreateTagStepDefs {
     }
 
 
+    @And("^there is a created tag with name \"([^\"]*)\"$")
+    public void thereIsACreatedTagWithName(String parentName) throws Throwable {
+        JSONObject parent = new JSONObject();
+        parent.put("name", parentName);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/tags")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(parent.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
+
+
+    @When("^I register a new tag with name \"([^\"]*)\" for tag with name \"([^\"]*)\"$")
+    public void iRegisterANewTagWithNameForTagWithName(String childName, String parentName) throws Throwable {
+        JSONObject child = new JSONObject();
+        parent=tagRepository.findByName(parentName);
+        child.put("name", childName);
+        child.put("parent", "/tags/"+parent.getId()+"");
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/tags")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(child.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
+
+    @And("^It has been created a new tag with name \"([^\"]*)\" for tag with text \"([^\"]*)\"$")
+    public void itHasBeenCreatedANewTagWithNameForTagWithText(String chidlName, String parentName) throws Throwable {
+        tag=tagRepository.findByName(chidlName);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/tags/{id}", tag.getId())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.name", is(chidlName)));
+
+        stepDefs.mockMvc.perform(
+                get("/tags/"+tag.getId()+"/parent")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.name", is(parentName)))
+                .andExpect(status().is(200));
+    }
 }

@@ -20,3 +20,10 @@ Feature: Create New Tag
     When I register a new tag with name ""
     Then The response code is 400
     And The error message is "may not be empty"
+
+  Scenario: Register new tag with parent tag
+    Given I login as "user" with password "password"
+    And there is a created tag with name "parent"
+    When I register a new tag with name "child" for tag with name "parent"
+    Then The response code is 201
+    And It has been created a new tag with name "child" for tag with text "parent"
