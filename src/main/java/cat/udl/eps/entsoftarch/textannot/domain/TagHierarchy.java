@@ -3,13 +3,11 @@ package cat.udl.eps.entsoftarch.textannot.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class TagHierarchy extends UriEntity<Integer> {
 
     @Id
@@ -18,16 +16,16 @@ public class TagHierarchy extends UriEntity<Integer> {
 
     @NotBlank
     private String name;
-
+/*
     @OneToMany(mappedBy = "taggedBy")
     @JsonIdentityReference(alwaysAsId = true)
     private List<Sample> tags = new ArrayList<>();
-
+*/
    /* @OneToMany(mappedBy = "definedIn")
     @JsonIdentityReference(alwaysAsId = true)
     private List<Tag> defines = new ArrayList<>();
 */
-
+/*
     public List<Sample> getTags() {
         return tags;
     }
@@ -35,7 +33,7 @@ public class TagHierarchy extends UriEntity<Integer> {
     public void setTags(List<Sample> tags) {
         this.tags = tags;
     }
-
+*/
     @Override
     public Integer getId() {
         return id;

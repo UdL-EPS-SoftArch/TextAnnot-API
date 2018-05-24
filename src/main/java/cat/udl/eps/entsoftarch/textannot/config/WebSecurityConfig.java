@@ -35,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         .antMatchers(HttpMethod.GET, "/identity").authenticated()
         .antMatchers(HttpMethod.GET, "/metadataTemplates*/**").authenticated()
+        .antMatchers(HttpMethod.GET, "/tagHierarchies*/**").authenticated()
 
         .antMatchers(HttpMethod.POST, "/**/*").authenticated()
         .antMatchers(HttpMethod.PUT, "/**/*").authenticated()
