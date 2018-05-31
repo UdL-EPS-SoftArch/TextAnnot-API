@@ -21,10 +21,10 @@ public class TagHierarchy extends UriEntity<Integer> {
     @JsonIdentityReference(alwaysAsId = true)
     private List<Sample> tags = new ArrayList<>();
 */
-   /* @OneToMany(mappedBy = "definedIn")
+    @OneToMany(mappedBy = "definedIn")
     @JsonIdentityReference(alwaysAsId = true)
     private List<Tag> defines = new ArrayList<>();
-*/
+
 /*
     public List<Sample> getTags() {
         return tags;
@@ -49,5 +49,13 @@ public class TagHierarchy extends UriEntity<Integer> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Tag> getDefines() {
+        return defines;
+    }
+
+    public void setDefines(List<Tag> defines) {
+        this.defines = defines;
     }
 }

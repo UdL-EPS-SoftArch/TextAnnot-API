@@ -26,13 +26,22 @@ public class Tag extends UriEntity<Integer> {
     @JsonIdentityReference(alwaysAsId = true)
     private List<Tag> child = new ArrayList<>();
 
-//    @ManyToOne
-//    @JsonIdentityReference(alwaysAsId = true)
-//    private TagHierarchy defines;
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private TagHierarchy definedIn;
 
 //    @OneToMany(mappedBy = "uses")
 //    @JsonIdentityReference(alwaysAsId = true)
 //    private List<Annotation> usedIn = new ArrayList<>();
+
+
+    public TagHierarchy getDefinedIn() {
+        return definedIn;
+    }
+
+    public void setDefinedIn(TagHierarchy definedIn) {
+        this.definedIn = definedIn;
+    }
 
     public Tag() {
     }
