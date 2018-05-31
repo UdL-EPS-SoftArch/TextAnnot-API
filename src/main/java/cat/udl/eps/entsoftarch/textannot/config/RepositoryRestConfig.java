@@ -20,6 +20,7 @@ public class RepositoryRestConfig extends RepositoryRestConfigurerAdapter {
         config.exposeIdsFor(Sample.class);
         config.exposeIdsFor(Linguist.class);
         config.exposeIdsFor(Tag.class);
+        config.exposeIdsFor(TagHierarchy.class);
     }
 
     @PostConstruct
