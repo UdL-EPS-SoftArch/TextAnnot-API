@@ -25,6 +25,18 @@ public class Sample extends UriEntity<Integer>{
     @JsonIdentityReference(alwaysAsId = true)
     private List<MetadataValue> has = new ArrayList<>();
 
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private TagHierarchy taggedBy;
+
+    public TagHierarchy getTaggedBy() {
+        return taggedBy;
+    }
+
+    public void setTaggedBy(TagHierarchy taggedBy) {
+        this.taggedBy = taggedBy;
+    }
+
     public Sample() { }
 
     public Sample(String text) {

@@ -16,16 +16,16 @@ public class TagHierarchy extends UriEntity<Integer> {
 
     @NotBlank
     private String name;
-/*
+
     @OneToMany(mappedBy = "taggedBy")
     @JsonIdentityReference(alwaysAsId = true)
     private List<Sample> tags = new ArrayList<>();
-*/
+
     @OneToMany(mappedBy = "definedIn")
     @JsonIdentityReference(alwaysAsId = true)
     private List<Tag> defines = new ArrayList<>();
 
-/*
+
     public List<Sample> getTags() {
         return tags;
     }
@@ -33,7 +33,7 @@ public class TagHierarchy extends UriEntity<Integer> {
     public void setTags(List<Sample> tags) {
         this.tags = tags;
     }
-*/
+
     @Override
     public Integer getId() {
         return id;
