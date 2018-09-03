@@ -44,4 +44,6 @@ public class MetadataValue extends UriEntity<Integer>{
     public MetadataField getValued() { return valued; }
 
     public void setValued(MetadataField valued) { this.valued = valued; }
+
+    public String getFieldName() { return this.valued.getName(); }
 }

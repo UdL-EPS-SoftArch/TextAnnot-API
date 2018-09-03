@@ -1,11 +1,16 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
-import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Sample extends UriEntity<Integer>{
@@ -14,7 +19,8 @@ public class Sample extends UriEntity<Integer>{
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
-    @NotNull
+    @Column(length = 16 * 1024) // 16KB
+    @Size(max = 16 * 1024)
     private String text;
 
     @ManyToOne
@@ -56,6 +62,6 @@ public class Sample extends UriEntity<Integer>{
     }
 
     public String toString() {
-        return this.text;
+        return "Sample " + this.id + " text: " + this.text;
     }
 }

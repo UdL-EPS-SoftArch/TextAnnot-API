@@ -1,18 +1,16 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
 //Daniel Galan i Roger Capdevila                                                                                        //
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
 import cat.udl.eps.entsoftarch.textannot.domain.MetadataTemplate;
 import cat.udl.eps.entsoftarch.textannot.repository.MetadataTemplateRepository;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 // It's necessary to know the type of the metadata templates are recived. Is a List, a Set, an Iterable?//
 
@@ -23,9 +21,8 @@ public class ListMetadataTemplatesDefs {
     @Autowired
     private MetadataTemplateRepository mtR;
 
-    @And("^There is a single metadata template with name \"([^\"]*)\"$")
+    @And("^There is a metadata template with name \"([^\"]*)\"$")
     public void thereIsASingleMetadataTemplateWithName(String mtName) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
         MetadataTemplate mt;
         mt = new MetadataTemplate();
         mt.setName(mtName);

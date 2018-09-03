@@ -1,0 +1,75 @@
+package cat.udl.eps.entsoftarch.textannot.service;
+
+import cat.udl.eps.entsoftarch.textannot.domain.MetadataField;
+import cat.udl.eps.entsoftarch.textannot.domain.MetadataTemplate;
+import cat.udl.eps.entsoftarch.textannot.domain.MetadataValue;
+import cat.udl.eps.entsoftarch.textannot.domain.XmlSample;
+import cat.udl.eps.entsoftarch.textannot.repository.MetadataFieldRepository;
+import cat.udl.eps.entsoftarch.textannot.repository.MetadataValueRepository;
+import java.io.IOException;
+import java.io.StringReader;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+@Service
+public class XMLIngestionService {
+    final Logger logger = LoggerFactory.getLogger(XMLIngestionService.class);
+
+    @Autowired private MetadataFieldRepository metadataFieldRepository;
+    @Autowired private MetadataValueRepository metadataValueRepository;
+
+    public void ingest(XmlSample xmlSample)
+        throws SAXException, ParserConfigurationException, IOException {
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        SAXParser parser = factory.newSAXParser();
+        parser.parse(
+            new InputSource(new StringReader(xmlSample.getContent())),
+            new XmlSampleHandler(xmlSample));
+    }
+
+    class XmlSampleHandler extends DefaultHandler {
+
+        private final XmlSample xmlSample;
+        private String currentField;
+
+        public XmlSampleHandler(XmlSample xmlSample) {
+            this.xmlSample = xmlSample;
+        }
+
+        public void startElement(String uri, String localName,String qName, Attributes attributes)
+            throws SAXException {
+            logger.info("Starts XML element: {}", qName);
+            this.currentField = qName;
+        }
+
+        public void characters(char ch[], int start, int length) {
+            String value = new String(ch, start, length).trim();
+            if (value.isEmpty()) return;
+            if (currentField.equals("texto")) {
+                xmlSample.setText(value.trim());
+                return;
+            }
+            logger.info("Content for XML element \"{}\": {}", currentField, value);
+
+            MetadataTemplate template = xmlSample.getDescribedBy();
+            Assert.notNull(template, "The XMLSample lacks an associated MetadataTemplate");
+            MetadataField metadataField = metadataFieldRepository.findByName(currentField);
+            Assert.notNull(metadataField, "The metadata field "+currentField+
+                " is not defined in template "+template.getName());
+            MetadataValue metadataValue = new MetadataValue(value);
+            metadataValue.setValued(metadataField);
+            metadataValue.setForA(xmlSample);
+            metadataValueRepository.save(metadataValue);
+        }
+    }
+}
