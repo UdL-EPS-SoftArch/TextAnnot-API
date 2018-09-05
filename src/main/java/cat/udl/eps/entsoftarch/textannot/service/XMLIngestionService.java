@@ -70,7 +70,7 @@ public class XMLIngestionService {
                 xmlSample.setText(value.trim());
                 return;
             } else if (currentField.equals("texto") && currentSubfield.equals("párrafo")) {
-                if (xmlSample.getText() == null) {
+                if (xmlSample.getText() == null || xmlSample.getText().equals("")) {
                     xmlSample.setText(value.trim());
                 } else {
                     xmlSample.setText(xmlSample.getText() + "\n" + value.trim());

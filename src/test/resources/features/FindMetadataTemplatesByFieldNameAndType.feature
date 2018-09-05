@@ -1,5 +1,4 @@
-Feature: Find Metadata Templates by Field name and type.
-  "explicació"
+Feature: Find Metadata Templates by Field name and type
 
   Scenario: Search MetadataTemplates which defines a specific Field with a specific name and type
     Given I login as "admin" with password "password"

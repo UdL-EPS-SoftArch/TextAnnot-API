@@ -6,9 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-public class XmlSample extends Sample{
-
-    private String text;
+public class XmlSample extends Sample {
 
     @NotNull
     @Column(length = 16 * 1024) // 16KB
@@ -27,6 +25,7 @@ public class XmlSample extends Sample{
     }
 
     public void setContent(String content) {
+        if (getText() == null) setText("");
         if (content.charAt(0) == '\uFEFF') // Remove invalid char
             this.content = content.substring(1);
         else

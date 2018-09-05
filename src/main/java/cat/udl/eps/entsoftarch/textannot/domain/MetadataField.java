@@ -13,7 +13,9 @@ import java.util.List;
 public class MetadataField extends UriEntity<Integer> {
 
     @NotBlank
-    String category, name, type;
+    String name, type;
+
+    String category;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
