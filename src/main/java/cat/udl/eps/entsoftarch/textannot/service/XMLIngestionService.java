@@ -63,12 +63,20 @@ public class XMLIngestionService {
 
         public void characters(char ch[], int start, int length) {
             String value = new String(ch, start, length).trim();
+            logger.info("Content for XML element \"{} > {}\": {}", currentField, currentSubfield, value);
+
             if (value.isEmpty()) return;
             if (currentSubfield.equals("texto")) {
                 xmlSample.setText(value.trim());
                 return;
+            } else if (currentField.equals("texto") && currentSubfield.equals("párrafo")) {
+                if (xmlSample.getText() == null) {
+                    xmlSample.setText(value.trim());
+                } else {
+                    xmlSample.setText(xmlSample.getText() + "\n" + value.trim());
+                }
+                return;
             }
-            logger.info("Content for XML element \"{} > {}\": {}", currentField, currentSubfield, value);
 
             MetadataTemplate template = xmlSample.getDescribedBy();
             Assert.notNull(template, "The XMLSample lacks an associated MetadataTemplate");

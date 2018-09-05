@@ -1,30 +1,65 @@
 ﻿<?xml version='1.0' encoding='UTF-8'?>
 <ficha>
+
 <datos_generales>
-    <número_muestra>0608</número_muestra>
-    <código_informante>0608_A1m1b0n20170523</código_informante>
-    <transliteración>David Benioff</transliteración>
-    <revisión_primera></revisión_primera>
-    <revisión_segunda></revisión_segunda>
-    <etiquetado></etiquetado>
-  </datos_generales>
-  <datos_muestra>
-    <fecha_recogida>23-05-2017</fecha_recogida>
-    <palabras>14</palabras>
-    <género_discursivo>descripción</género_discursivo>
-    <observaciones></observaciones>
-  </datos_muestra>
-  <datos_informante>
-    <nombre>Cersei Lannister</nombre>
-    <sexo>mujer</sexo>
-    <nivel_referencia>A1</nivel_referencia>
-    <curso>2</curso>
-    <universidad>King's University</universidad>
-    <nivel_CET>4</nivel_CET>
-    <estancia_España>Nunca</estancia_España>
-    <observaciones>No ha anotado el curso, pero el texto está en el mismo paquete que todos los de la misma fecha.</observaciones>
-  </datos_informante>
-  <texto>
-    <p>Vivo en la capital, que tiene sus peligros, pero por lo general es segura.</p>
+
+  <número_muestra>0608</número_muestra>
+
+  <código_informante>0608_A1m1b0n20170523</código_informante>
+
+  <transliteración>David Benioff</transliteración>
+
+  <revisión_primera></revisión_primera>
+
+  <revisión_segunda></revisión_segunda>
+
+  <etiquetado></etiquetado>
+
+
+</datos_generales>
+
+
+
+<datos_muestra>
+
+  <fecha_recogida>23-05-2017</fecha_recogida>
+
+  <palabras>99</palabras>
+
+  <género_discursivo>descripción</género_discursivo>
+  <observaciones></observaciones>
+
+</datos_muestra>
+
+
+
+<datos_informante>
+
+  <nombre>Cersei Lannister</nombre>
+
+  <sexo>mujer</sexo>
+
+  <nivel_referencia>A1</nivel_referencia>
+
+  <curso>2</curso>
+
+  <universidad>King's University</universidad>
+  <nivel_CET>no consta</nivel_CET>
+
+  <estancia_España>nunca</estancia_España>
+
+  <observaciones>No ha anotado el curso, pero el texto está en el mismo paquete que todos los de la misma fecha.</observaciones>
+
+</datos_informante>
+
+
+
+<texto>
+
+  <párrafo>¿Cómo es mi ciudad?</párrafo>
+
+  <párrafo>Vivo en la capital, que tiene sus peligros, pero por lo general es segura.</párrafo>
+
 </texto>
+
 </ficha>
