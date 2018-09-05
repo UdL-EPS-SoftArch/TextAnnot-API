@@ -22,7 +22,6 @@ import cucumber.api.java.en.When;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.Map;
 import org.hamcrest.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -121,7 +120,7 @@ public class XmlSampleStepDefs {
     }
 
     @And("^It has been created a XmlSample with the following (\\d+) values")
-    public void itHasBeenCreatedAXmlSampleWith(int count, Map<String, String> expectedFieldValues)
+    public void itHasBeenCreatedAXmlSampleWith(int count, List<List<String>> expectedFieldValues)
         throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
             get(newResourceUri+"/has")
@@ -131,10 +130,13 @@ public class XmlSampleStepDefs {
             .andExpect(status().is(200))
             .andExpect(jsonPath("$._embedded.metadataValues", hasSize(count)));
 
-        expectedFieldValues.forEach((k,v) -> {
+        expectedFieldValues.forEach(expectedFieldValue -> {
             try {
-                stepDefs.result.andExpect(jsonPath("$._embedded.metadataValues[?(@.fieldName=='"+k+"')].value",
-                    hasItem(v)));
+                stepDefs.result.andExpect(jsonPath(
+                    "$._embedded.metadataValues[?(" +
+                        "@.fieldCategory=='"+expectedFieldValue.get(0)+"' && "+
+                        "@.fieldName=='"+expectedFieldValue.get(1)+"')].value",
+                    hasItem(expectedFieldValue.get(2))));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -146,8 +148,9 @@ public class XmlSampleStepDefs {
         MetadataTemplate template = metadataTemplateRepository.findByName(templateName);
         fields.forEach(fieldNameType -> {
             MetadataField field = new MetadataField();
-            field.setName(fieldNameType.get(0));
-            field.setType(fieldNameType.get(1));
+            field.setCategory(fieldNameType.get(0));
+            field.setName(fieldNameType.get(1));
+            field.setType(fieldNameType.get(2));
             field.setDefinedIn(template);
             metadataFieldRepository.save(field);
         });

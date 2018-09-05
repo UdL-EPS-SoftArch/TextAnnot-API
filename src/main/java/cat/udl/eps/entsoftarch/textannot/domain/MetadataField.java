@@ -13,8 +13,7 @@ import java.util.List;
 public class MetadataField extends UriEntity<Integer> {
 
     @NotBlank
-    String name, type;
-
+    String category, name, type;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,31 +40,4 @@ public class MetadataField extends UriEntity<Integer> {
         this.type = type;
 
     }
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public List<MetadataValue> getValues() {
-        return values;
-    }
-
-    public void setValues(List<MetadataValue> values) {
-        this.values = values;
-    }
-
-    public MetadataTemplate getDefinedIn() { return definedIn; }
-
-    public void setDefinedIn(MetadataTemplate definedIn) { this.definedIn = definedIn; }
 }

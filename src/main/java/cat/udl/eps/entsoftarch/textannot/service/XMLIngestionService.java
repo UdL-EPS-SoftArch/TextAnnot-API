@@ -40,7 +40,8 @@ public class XMLIngestionService {
     class XmlSampleHandler extends DefaultHandler {
 
         private final XmlSample xmlSample;
-        private String currentField;
+        private String currentSubfield = "";
+        private String currentField = "";
 
         public XmlSampleHandler(XmlSample xmlSample) {
             this.xmlSample = xmlSample;
@@ -49,23 +50,32 @@ public class XMLIngestionService {
         public void startElement(String uri, String localName,String qName, Attributes attributes)
             throws SAXException {
             logger.info("Starts XML element: {}", qName);
-            this.currentField = qName;
+            this.currentField = this.currentSubfield;
+            this.currentSubfield = qName;
+        }
+
+        @Override
+        public void endElement(String uri, String localName, String qName) throws SAXException {
+            logger.info("Ends XML element: {}", qName);
+            this.currentSubfield = this.currentField;
+            this.currentField = "";
         }
 
         public void characters(char ch[], int start, int length) {
             String value = new String(ch, start, length).trim();
             if (value.isEmpty()) return;
-            if (currentField.equals("texto")) {
+            if (currentSubfield.equals("texto")) {
                 xmlSample.setText(value.trim());
                 return;
             }
-            logger.info("Content for XML element \"{}\": {}", currentField, value);
+            logger.info("Content for XML element \"{} > {}\": {}", currentField, currentSubfield, value);
 
             MetadataTemplate template = xmlSample.getDescribedBy();
             Assert.notNull(template, "The XMLSample lacks an associated MetadataTemplate");
-            MetadataField metadataField = metadataFieldRepository.findByName(currentField);
-            Assert.notNull(metadataField, "The metadata field "+currentField+
-                " is not defined in template "+template.getName());
+            MetadataField metadataField =
+                metadataFieldRepository.findByCategoryAndName(currentField, currentSubfield);
+            Assert.notNull(metadataField, "The metadata field \"" + currentField + ">" +
+                currentSubfield + "\" is not defined in template " + template.getName());
             MetadataValue metadataValue = new MetadataValue(value);
             metadataValue.setValued(metadataField);
             metadataValue.setForA(xmlSample);

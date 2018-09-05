@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
 
 @Entity
-public class MetadataValue extends UriEntity<Integer>{
+public class MetadataValue extends UriEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,4 +46,6 @@ public class MetadataValue extends UriEntity<Integer>{
     public void setValued(MetadataField valued) { this.valued = valued; }
 
     public String getFieldName() { return this.valued.getName(); }
+
+    public String getFieldCategory() { return this.valued.getCategory(); }
 }
