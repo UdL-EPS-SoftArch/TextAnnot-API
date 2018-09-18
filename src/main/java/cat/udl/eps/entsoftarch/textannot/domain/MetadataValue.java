@@ -2,9 +2,10 @@ package cat.udl.eps.entsoftarch.textannot.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import org.hibernate.validator.constraints.NotBlank;
+
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class MetadataValue extends UriEntity<Integer> {

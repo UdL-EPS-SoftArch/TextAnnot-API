@@ -67,7 +67,7 @@ public class FindByMetadataTemplateStepDefs {
     @And("There is a sample with text \"([^\"]*)\" defined by \"([^\"]*)\"$")
     public void addSamples(String sam, String metadata) throws Throwable{
         Sample sample = new Sample(sam);
-        sample.setDescribedBy(metadataTemplateRepository.findOne(metadata));
+        sample.setDescribedBy(metadataTemplateRepository.findByName(metadata));
         sampleRepository.save(sample);
     }
 
