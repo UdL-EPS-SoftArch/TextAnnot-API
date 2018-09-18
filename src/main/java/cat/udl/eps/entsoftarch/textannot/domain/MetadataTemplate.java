@@ -1,11 +1,11 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 import java.time.ZonedDateTime;
 import java.util.List;
 

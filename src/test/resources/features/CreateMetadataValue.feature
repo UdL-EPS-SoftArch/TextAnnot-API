@@ -19,7 +19,7 @@ Feature: Create New metadataValue
     Given I login as "user" with password "password"
     When I register a new metadataValue with value ""
     Then The response code is 400
-    And The error message is "may not be empty"
+    And The error message is "must not be blank"
 
   Scenario: Register new metadataValue for existing metadataField
     Given I login as "user" with password "password"

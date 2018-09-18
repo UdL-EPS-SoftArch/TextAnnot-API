@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 import lombok.Data;
-import org.hibernate.validator.constraints.Email;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Entity
 @Table(name = "TextAnnotUser") //Avoid collision with system table User in Postgres
 @Data
+@EqualsAndHashCode(callSuper = true)
 public abstract class User extends UriEntity<String> implements UserDetails {
 
   public static PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

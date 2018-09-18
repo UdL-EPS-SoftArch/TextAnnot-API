@@ -20,7 +20,7 @@ Feature: Add MetaDataField
     Given I login as "admin" with password "password"
     When I create a new metadatafield with text "" and type ""
     Then The response code is 400
-    And The error message is "may not be empty"
+    And The error message is "must not be blank"
 
   Scenario: Try to register new metadataField as a linguistic
     Given I login as "linguist" with password "password"

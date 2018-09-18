@@ -43,7 +43,7 @@ public class SearchSampleStepDefs {
         sampleList.add(new Sample(sample1));
         sampleList.add(new Sample(sample2));
         sampleList.add(new Sample(sample3));
-        sampleRepository.save(sampleList);
+        sampleRepository.saveAll(sampleList);
 
     }
 
