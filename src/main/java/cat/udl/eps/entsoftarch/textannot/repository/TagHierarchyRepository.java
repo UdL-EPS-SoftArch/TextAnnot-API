@@ -8,6 +8,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.List;
 
 @RepositoryRestResource
-public interface TagHierarchyRepository extends PagingAndSortingRepository<TagHierarchy, String> {
+public interface TagHierarchyRepository extends PagingAndSortingRepository<TagHierarchy, Integer> {
     TagHierarchy findByName(@Param("name") String name);
 }
