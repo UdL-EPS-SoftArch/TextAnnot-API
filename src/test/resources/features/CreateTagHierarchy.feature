@@ -14,3 +14,8 @@ Feature: Create new Tag Hierarchy
     When I create a new Tag Hierarchy with name ""
     Then The response code is 400
     And The error message is "must not be blank"
+
+  Scenario: Create a new Tag Hierarchy as linguist is not allowed
+    Given I login as "linguist" with password "password"
+    When I create a new Metadata Template with name "tag hierarchy"
+    Then The response code is 401
