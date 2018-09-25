@@ -17,5 +17,13 @@ Feature: Create new Tag Hierarchy
 
   Scenario: Create a new Tag Hierarchy as linguist is not allowed
     Given I login as "linguist" with password "password"
-    When I create a new Metadata Template with name "tag hierarchy"
+    When I create a new Tag Hierarchy with name "tag hierarchy"
     Then The response code is 401
+
+  @Current
+  Scenario: Check that a Tag Hierarchy has 1 sample
+    Given I login as "admin" with password "password"
+    And Exists a Sample with text "Test"
+    And Exists a Tag Hierarchy with name "tag hierarchy"
+    When I set the previous Sample tagged by the previous Tag Hierarchy
+    Then The Tag Hierarchy has the sample associated
