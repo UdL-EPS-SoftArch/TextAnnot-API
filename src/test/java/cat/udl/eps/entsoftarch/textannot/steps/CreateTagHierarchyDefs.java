@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 
 import java.util.Arrays;
 
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -94,7 +95,7 @@ public class CreateTagHierarchyDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
-                .andExpect(jsonPath("$.samples[1]", is(1)));
+                .andExpect(jsonPath("$._embedded.samples[0].id", is(sample.getId())));
     }
 
     @Then("^The Tag Hierarchy have (\\d+) samples$")
