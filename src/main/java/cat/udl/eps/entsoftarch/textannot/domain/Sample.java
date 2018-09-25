@@ -29,6 +29,10 @@ public class Sample extends UriEntity<Integer>{
     @JsonIdentityReference(alwaysAsId = true)
     private MetadataTemplate describedBy;
 
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private TagHierarchy taggedBy;
+
     @OneToMany(mappedBy = "forA")
     @JsonIdentityReference(alwaysAsId = true)
     private List<MetadataValue> has = new ArrayList<>();
