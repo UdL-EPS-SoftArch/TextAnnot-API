@@ -6,6 +6,7 @@ import cat.udl.eps.entsoftarch.textannot.domain.MetadataField;
 import cat.udl.eps.entsoftarch.textannot.domain.MetadataTemplate;
 import cat.udl.eps.entsoftarch.textannot.domain.MetadataValue;
 import cat.udl.eps.entsoftarch.textannot.domain.Sample;
+import cat.udl.eps.entsoftarch.textannot.domain.Tag;
 import cat.udl.eps.entsoftarch.textannot.domain.XmlSample;
 import cat.udl.eps.entsoftarch.textannot.repository.MetadataFieldRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.MetadataTemplateRepository;
@@ -32,6 +33,7 @@ public class RepositoryRestConfig extends RepositoryRestConfigurerAdapter {
         config.exposeIdsFor(XmlSample.class);
         config.exposeIdsFor(Sample.class);
         config.exposeIdsFor(Linguist.class);
+        config.exposeIdsFor(Tag.class);
     }
 
     @PostConstruct
