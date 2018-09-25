@@ -30,4 +30,7 @@ public class TagHierarchy extends UriEntity<Integer> {
 
     @OneToMany(mappedBy = "taggedBy")
     private List<Sample> tags;
+
+    @OneToMany(mappedBy = "definedIn")
+    private List<Tag> defines;
 }
