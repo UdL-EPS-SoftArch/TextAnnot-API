@@ -36,6 +36,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.GET, "/identity").authenticated()
         .antMatchers(HttpMethod.GET, "/metadataTemplates*/**").authenticated()
 
+        .antMatchers(HttpMethod.POST, "/tagHierarchies*/**").hasRole("ADMIN")
+        .antMatchers(HttpMethod.DELETE, "/tagHierarchies*/**").hasRole("ADMIN")
+
         .antMatchers(HttpMethod.POST, "/**/*").authenticated()
         .antMatchers(HttpMethod.PUT, "/**/*").authenticated()
         .antMatchers(HttpMethod.PATCH, "/**/*").authenticated()
@@ -46,7 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .cors()
         .and()
-        .csrf().disable();
+        .csrf().disable()
+        .headers().frameOptions().sameOrigin();
   }
 
   @Bean
@@ -55,6 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     corsConfiguration.setAllowedOrigins(Arrays.asList(allowedOrigins));
     corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
     corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
+    corsConfiguration.setAllowCredentials(true);
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", corsConfiguration);
     return source;

@@ -6,6 +6,7 @@ import cat.udl.eps.entsoftarch.textannot.domain.MetadataValue;
 import cat.udl.eps.entsoftarch.textannot.domain.XmlSample;
 import cat.udl.eps.entsoftarch.textannot.repository.MetadataFieldRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.MetadataValueRepository;
+import cat.udl.eps.entsoftarch.textannot.repository.XmlSampleRepository;
 import java.io.IOException;
 import java.io.StringReader;
 import javax.xml.parsers.ParserConfigurationException;
@@ -25,6 +26,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class XMLIngestionService {
     final Logger logger = LoggerFactory.getLogger(XMLIngestionService.class);
 
+    @Autowired private XmlSampleRepository xmlSampleRepository;
     @Autowired private MetadataFieldRepository metadataFieldRepository;
     @Autowired private MetadataValueRepository metadataValueRepository;
 
@@ -68,6 +70,7 @@ public class XMLIngestionService {
             if (value.isEmpty()) return;
             if (currentSubfield.equals("texto")) {
                 xmlSample.setText(value.trim());
+                xmlSampleRepository.save(xmlSample);
                 return;
             } else if (currentField.equals("texto") && currentSubfield.equals("párrafo")) {
                 if (xmlSample.getText() == null || xmlSample.getText().equals("")) {
@@ -75,6 +78,7 @@ public class XMLIngestionService {
                 } else {
                     xmlSample.setText(xmlSample.getText() + "\n" + value.trim());
                 }
+                xmlSampleRepository.save(xmlSample);
                 return;
             }
 
