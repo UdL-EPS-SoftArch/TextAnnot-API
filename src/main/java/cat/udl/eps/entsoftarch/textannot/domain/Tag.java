@@ -1,8 +1,6 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
-import com.sun.jndi.toolkit.url.Uri;
 import lombok.Data;
-import lombok.Generated;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
