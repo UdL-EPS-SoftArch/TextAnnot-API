@@ -15,3 +15,4 @@ public interface AnnotationRepository extends PagingAndSortingRepository<Annotat
     List<Annotation> findByAnnotated(@Param("value") Sample value);
 
 }
+

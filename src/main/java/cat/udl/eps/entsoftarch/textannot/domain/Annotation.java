@@ -1,9 +1,6 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import lombok.Data;
 import lombok.NonNull;
@@ -23,13 +20,13 @@ public class Annotation extends UriEntity<Integer> {
     private Integer end;
 
     @NonNull
+    @OneToMany(mappedBy = "annotatedBy")
     private Sample annotated;
 
     private Boolean reviewed;
 
     public Annotation() {
     }
-
 
     @Override
     public Integer getId() {
@@ -60,9 +57,10 @@ public class Annotation extends UriEntity<Integer> {
         this.reviewed = reviewed;
     }
 
-    public void setSample(Sample annotated) { this.annotated = annotated; }
+    public void setAnnotated(Sample annotated) { this.annotated = annotated; }
 
-    public Sample getSample() { return this.annotated; }
+    public Sample getAnnotated(){ return this.annotated; }
+
 
     @Override
     public String toString() {
