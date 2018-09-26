@@ -44,7 +44,7 @@ public class ListTagsStepDefs {
 
     @And("^The tag with name \"([^\"]*)\" is in the response$")
     public void theTagWithNameIsInTheResponse(String name) throws Throwable {
-        stepDefs.result.andExpect(jsonPath("$._embedded.tag.*.name", hasItem(name)));
+        stepDefs.result.andExpect(jsonPath("$._embedded.tags.*.name", hasItem(name)));
     }
 
     @And("^The tags' list is empty$")
