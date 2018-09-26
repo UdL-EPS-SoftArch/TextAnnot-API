@@ -76,7 +76,7 @@ public class XMLIngestionService {
             if (currentSubfield.equals("texto")) {
                 xmlSample.setText(value.trim());
                 return;
-            } else if (currentField.equals("texto") && currentSubfield.equals("párrafo")) {
+            } else if (currentField.equals("texto"))  {
                 if (xmlSample.getText() == null || xmlSample.getText().equals("")) {
                     xmlSample.setText(value.trim());
                 } else {
