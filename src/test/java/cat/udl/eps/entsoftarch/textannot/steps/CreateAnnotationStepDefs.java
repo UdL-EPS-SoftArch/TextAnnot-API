@@ -6,6 +6,8 @@ import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
@@ -17,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 public class CreateAnnotationStepDefs {
+
     @Autowired
     private StepDefs stepDefs;
 
@@ -31,6 +34,8 @@ public class CreateAnnotationStepDefs {
 
     @When("^I create a new annotation with start (\\d+) and end (\\d+)$")
     public void iCreateANewAnnotationWithStartAndEnd(int start, int end) throws Throwable {
+
+
         JSONObject annotation = new JSONObject();
         annotation.put("start", start);
         annotation.put("end", end);
