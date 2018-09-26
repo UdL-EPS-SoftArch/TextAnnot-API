@@ -11,9 +11,6 @@ import cucumber.api.java.en.When;
 import org.json.JSONObject;
 import org.springframework.http.MediaType;
 
-import java.util.Arrays;
-
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -65,7 +62,6 @@ public class CreateTagHierarchyDefs {
 
     @Given("^Exists a Sample with text \"([^\"]*)\"$")
     public void thereIsASingleSampleWithText(String text) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
         sample = new Sample(text);
         sampleRepository.save(sample);
     }
@@ -79,13 +75,12 @@ public class CreateTagHierarchyDefs {
 
     @When("^I set the previous Sample tagged by the previous Tag Hierarchy$")
     public void iSetThePreviousSampleTaggedByThePreviousTagHierarchy() throws Throwable {
-        stepDefs.mockMvc.perform(
+        stepDefs.result = stepDefs.mockMvc.perform(
                 put("/samples/"+ sample.getId() +"/taggedBy")
                         .contentType("text/uri-list")
                         .content(tagHierarchy.getUri())
                         .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate()))
-                .andExpect(status().is(204));
+                        .with(AuthenticationStepDefs.authenticate()));
     }
 
     @Then("^The Tag Hierarchy has the sample associated$")
@@ -105,5 +100,27 @@ public class CreateTagHierarchyDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
+    }
+
+    @When("^I set the previous Tag Hierarchy this one tags an existent Sample$")
+    public void iSetThePreviousTagHierarchyThisOneTagsAnExistentSample() throws Throwable {
+        stepDefs.mockMvc.perform(
+                put("/tagHierarchies/"+ tagHierarchy.getId() +"/tags")
+                        .contentType("text/uri-list")
+                        .content(sample.getUri())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(status().is(204));
+    }
+
+    @Then("^The Sample is taged by the Tag Hierarchy$")
+    public void theSampleIsTagedByTheTagHierarchy() throws Throwable {
+        stepDefs.mockMvc.perform(
+                get("/samples/" + sample.getId() + "/taggedBy")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.id", is(tagHierarchy.getId())));
     }
 }

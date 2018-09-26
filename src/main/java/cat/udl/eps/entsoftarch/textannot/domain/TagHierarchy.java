@@ -3,9 +3,6 @@ package cat.udl.eps.entsoftarch.textannot.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.GeneratorType;
-import org.hibernate.annotations.NotFound;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
