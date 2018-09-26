@@ -5,15 +5,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import cat.udl.eps.entsoftarch.textannot.domain.validator.RangeConstraint;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@RangeConstraint
 public class Annotation extends UriEntity<Integer> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Integer id;
 
     @NonNull
@@ -22,48 +26,5 @@ public class Annotation extends UriEntity<Integer> {
     @NonNull
     private Integer end;
 
-
     private Boolean reviewed;
-
-    public Annotation() {
-    }
-
-    @Override
-    public Integer getId() {
-        return this.id;
-    }
-
-    public Integer getStart() {
-        return start;
-    }
-
-    public void setStart(Integer start) {
-        this.start = start;
-    }
-
-    public Integer getEnd() {
-        return end;
-    }
-
-    public void setEnd(Integer end) {
-        this.end = end;
-    }
-
-    public Boolean getReviewed() {
-        return reviewed;
-    }
-
-    public void setReviewed(Boolean reviewed) {
-        this.reviewed = reviewed;
-    }
-
-    @Override
-    public String toString() {
-        return "Annotation{" +
-                "id=" + id +
-                ", start=" + start +
-                ", end=" + end +
-                ", reviewed=" + reviewed +
-                '}';
-    }
 }
