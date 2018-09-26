@@ -9,4 +9,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource
 public interface AnnotationRepository extends PagingAndSortingRepository<Annotation, Integer> {
     Annotation findByid(@Param("id") Integer id);
+    //List<Annotation> findBySampleId(@Param("value") String value);
+
 }
