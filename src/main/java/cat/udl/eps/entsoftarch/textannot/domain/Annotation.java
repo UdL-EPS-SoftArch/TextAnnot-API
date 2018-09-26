@@ -22,10 +22,16 @@ public class Annotation extends UriEntity<Integer> {
     @NonNull
     private Integer end;
 
+    @NonNull
+    private Sample annotated;
 
     private Boolean reviewed;
 
     public Annotation() {
+    }
+
+    public Annotation(Sample annotated){
+        this.annotated = annotated;
     }
 
     @Override
