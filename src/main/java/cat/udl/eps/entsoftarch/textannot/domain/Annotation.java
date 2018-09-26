@@ -30,9 +30,6 @@ public class Annotation extends UriEntity<Integer> {
     public Annotation() {
     }
 
-    public Annotation(Sample annotated){
-        this.annotated = annotated;
-    }
 
     @Override
     public Integer getId() {
@@ -62,6 +59,10 @@ public class Annotation extends UriEntity<Integer> {
     public void setReviewed(Boolean reviewed) {
         this.reviewed = reviewed;
     }
+
+    public void setSample(Sample annotated) { this.annotated = annotated; }
+
+    public Sample getSample() { return this.annotated; }
 
     @Override
     public String toString() {
