@@ -32,7 +32,7 @@ public class CreateAnnotationStepDefs {
 
     private String newResourceUri;
 
-    @When("^I create a new annotation with start (\\d+) and end (\\d+)$")
+    @When("^I create a new annotation with start (\\d+|-\\d+) and end (\\d+|-\\d+)$")
     public void iCreateANewAnnotationWithStartAndEnd(int start, int end) throws Throwable {
 
 
