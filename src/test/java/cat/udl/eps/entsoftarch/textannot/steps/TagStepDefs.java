@@ -1,8 +1,10 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
 
+import cat.udl.eps.entsoftarch.textannot.repository.TagRepository;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
@@ -17,6 +19,9 @@ public class TagStepDefs {
 
     @Autowired
     private StepDefs stepDefs;
+
+    @Autowired
+    private TagRepository tagRepository;
 
     @When("^I create a new tag with name \"([^\"]*)\"$")
     public void iCreateANewTagWithName(String name) throws Throwable {
@@ -44,9 +49,7 @@ public class TagStepDefs {
 
     @And("^It has not been created a tag with name \"([^\"]*)\" and Id (\\d+)$")
     public void itHasNotBeenCreatedATagWithNameAndId(String name, Integer id) throws Throwable {
-        stepDefs.result = stepDefs.mockMvc.perform(
-                get("/tags/{id}", id)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+        Assert.assertEquals(0,tagRepository.count());
+        Assert.assertEquals(0,tagRepository.findByNameContaining(name).size());
     }
 }
