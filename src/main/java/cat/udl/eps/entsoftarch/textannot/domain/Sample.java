@@ -1,6 +1,8 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;

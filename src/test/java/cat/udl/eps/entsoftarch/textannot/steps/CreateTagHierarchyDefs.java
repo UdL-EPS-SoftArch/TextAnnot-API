@@ -4,6 +4,7 @@ import cat.udl.eps.entsoftarch.textannot.domain.Sample;
 import cat.udl.eps.entsoftarch.textannot.domain.TagHierarchy;
 import cat.udl.eps.entsoftarch.textannot.repository.SampleRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.TagHierarchyRepository;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -52,8 +53,9 @@ public class CreateTagHierarchyDefs {
 
     @And("^The Tag Hierarchy name is \"([^\"]*)\"$")
     public void theTagHierarchyNameIs(String name) throws Exception {
-        stepDefs.mockMvc.perform(
-                get("/tagHierarchies/1")
+        String location = stepDefs.result.andReturn().getResponse().getHeader("Location");
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get(location)
                     .accept(MediaType.APPLICATION_JSON)
                     .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
@@ -100,18 +102,6 @@ public class CreateTagHierarchyDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
-    }
-
-    @When("^I set the previous Tag Hierarchy this one tags an existent Sample$")
-    public void iSetThePreviousTagHierarchyThisOneTagsAnExistentSample() throws Throwable {
-        stepDefs.mockMvc.perform(
-                put("/tagHierarchies/"+ tagHierarchy.getId() +"/tags")
-                        .contentType("text/uri-list")
-                        .content(sample.getUri())
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print())
-                .andExpect(status().is(204));
     }
 
     @Then("^The Sample is taged by the Tag Hierarchy$")

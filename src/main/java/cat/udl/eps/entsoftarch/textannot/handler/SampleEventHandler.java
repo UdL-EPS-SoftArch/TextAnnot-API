@@ -38,8 +38,7 @@ public class SampleEventHandler {
 
     @HandleBeforeLinkSave
     public void handleSamplePreLinkSave(Sample Sample, Object o) {
-        if(o !=  null)
-            logger.info("Before linking: {} to {}", Sample.toString(), o.toString());
+        logger.info("Before linking: {} to {}", Sample, o);
     }
 
     @HandleAfterCreate
@@ -58,14 +57,13 @@ public class SampleEventHandler {
 
     @HandleAfterDelete
     @Transactional
-    public void handleSamplePostDelete(Sample Sample){
+    public void handleSamplePostDelete(Sample Sample) {
         logger.info("After deleting: {}", Sample.toString());
     }
 
     @HandleAfterLinkSave
     public void handleSamplePostLinkSave(Sample Sample, Object o) {
-        if(o !=  null)
-            logger.info("After linking: {} to {}", Sample.toString(), o.toString());
+        logger.info("After linking: {} to {}", Sample, o);
     }
 }
 
