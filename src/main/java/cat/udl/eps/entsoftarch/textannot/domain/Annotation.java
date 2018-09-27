@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import lombok.Data;
 import lombok.NonNull;
+import javax.persistence.ManyToOne;
 
 @Entity
 @Data
@@ -20,7 +21,7 @@ public class Annotation extends UriEntity<Integer> {
     private Integer end;
 
     @NonNull
-    @OneToMany(mappedBy = "annotatedBy")
+    @ManyToOne
     private Sample annotated;
 
     private Boolean reviewed;
