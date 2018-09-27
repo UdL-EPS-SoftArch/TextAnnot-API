@@ -50,7 +50,6 @@ public class UploadController {
     }
     xmlSample.setContent(result.toString("UTF-8"));
     xmlSample.setDescribedBy(template);
-    xmlSampleRepository.save(xmlSample);
     xmlService.ingest(xmlSample);
   }
 }

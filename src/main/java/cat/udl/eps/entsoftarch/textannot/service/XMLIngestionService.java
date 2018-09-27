@@ -9,6 +9,8 @@ import cat.udl.eps.entsoftarch.textannot.repository.MetadataValueRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.XmlSampleRepository;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -44,11 +46,13 @@ public class XMLIngestionService {
         private final XmlSample xmlSample;
         private String currentSubfield = "";
         private String currentField = "";
+        private List<MetadataValue> metadataValues = new ArrayList();
 
         public XmlSampleHandler(XmlSample xmlSample) {
             this.xmlSample = xmlSample;
         }
 
+        @Override
         public void startElement(String uri, String localName,String qName, Attributes attributes)
             throws SAXException {
             logger.info("Starts XML element: {}", qName);
@@ -63,6 +67,7 @@ public class XMLIngestionService {
             this.currentField = "";
         }
 
+        @Override
         public void characters(char ch[], int start, int length) {
             String value = new String(ch, start, length).trim();
             logger.info("Content for XML element \"{} > {}\": {}", currentField, currentSubfield, value);
@@ -70,7 +75,6 @@ public class XMLIngestionService {
             if (value.isEmpty()) return;
             if (currentSubfield.equals("texto")) {
                 xmlSample.setText(value.trim());
-                xmlSampleRepository.save(xmlSample);
                 return;
             } else if (currentField.equals("texto") && currentSubfield.equals("párrafo")) {
                 if (xmlSample.getText() == null || xmlSample.getText().equals("")) {
@@ -78,10 +82,8 @@ public class XMLIngestionService {
                 } else {
                     xmlSample.setText(xmlSample.getText() + "\n" + value.trim());
                 }
-                xmlSampleRepository.save(xmlSample);
                 return;
             }
-
             MetadataTemplate template = xmlSample.getDescribedBy();
             Assert.notNull(template, "The XMLSample lacks an associated MetadataTemplate");
             MetadataField metadataField =
@@ -91,7 +93,13 @@ public class XMLIngestionService {
             MetadataValue metadataValue = new MetadataValue(value);
             metadataValue.setValued(metadataField);
             metadataValue.setForA(xmlSample);
-            metadataValueRepository.save(metadataValue);
+            metadataValues.add(metadataValue);
+        }
+
+        @Override
+        public void endDocument() throws SAXException {
+            xmlSampleRepository.save(this.xmlSample);
+            metadataValues.forEach(metadataValue -> metadataValueRepository.save(metadataValue));
         }
     }
 }
