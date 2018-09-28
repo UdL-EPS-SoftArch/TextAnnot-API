@@ -1,25 +1,25 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
 
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import cat.udl.eps.entsoftarch.textannot.domain.Sample;
 import cat.udl.eps.entsoftarch.textannot.domain.TagHierarchy;
 import cat.udl.eps.entsoftarch.textannot.repository.SampleRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.TagHierarchyRepository;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import java.util.Optional;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.springframework.http.MediaType;
-
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class CreateTagHierarchyDefs {
 
@@ -112,5 +112,33 @@ public class CreateTagHierarchyDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
                 .andExpect(jsonPath("$.id", is(tagHierarchy.getId())));
+    }
+
+    @When("^I create a new sample with text \"([^\"]*)\" tagged by the tag hierarchy \"([^\"]*)\"$")
+    public void iCreateANewSampleWithTextTaggedByTheTagHierarchy(String text, String tagHierarchyName) throws Throwable {
+        Optional<TagHierarchy> tagHierarchy = tagHierarchyRepository.findByName(tagHierarchyName);
+        Assert.assertTrue("Tag hiearchy must exist", tagHierarchy.isPresent());
+        Sample sample = new Sample();
+        sample.setText(text);
+        sample.setTaggedBy(tagHierarchy.get());
+        stepDefs.mockMvc.perform(post("/samples")
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(stepDefs.mapper.writeValueAsString(sample))
+            .accept(MediaType.APPLICATION_JSON_UTF8)
+            .with(AuthenticationStepDefs.authenticate()))
+            .andDo(print())
+            .andExpect(status().isCreated());
+    }
+
+    @Then("^The tag hierarchy \"([^\"]*)\" tags a sample with text \"([^\"]*)\"$")
+    public void theTagHierarchyTagsASampleWithText(String tagHierarchyName, String text) throws Throwable {
+        Optional<TagHierarchy> tagHierarchy = tagHierarchyRepository.findByName(tagHierarchyName);
+        Assert.assertTrue("Tag hiearchy must exist", tagHierarchy.isPresent());
+        stepDefs.mockMvc.perform(
+            get(tagHierarchy.get().getUri() + "/tags")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .with(AuthenticationStepDefs.authenticate()))
+            .andDo(print())
+            .andExpect(jsonPath("$._embedded.samples[0].text", is(text)));
     }
 }
