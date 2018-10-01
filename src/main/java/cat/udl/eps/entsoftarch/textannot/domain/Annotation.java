@@ -20,7 +20,7 @@ public class Annotation extends UriEntity<Integer> {
     @NonNull
     private Integer end;
 
-    @NonNull
+
     @ManyToOne
     private Sample annotated;
 
