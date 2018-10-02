@@ -1,11 +1,9 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -18,6 +16,10 @@ public class Tag extends UriEntity<Integer> {
 
     @NotBlank
     private String name;
+
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private TagHierarchy definedIn;
 
     public Tag(String name) {
         this.setName(name);
