@@ -17,7 +17,6 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import java.util.Optional;
-import org.json.JSONObject;
 import org.junit.Assert;
 import org.springframework.http.MediaType;
 
@@ -40,12 +39,12 @@ public class CreateTagHierarchyDefs {
 
     @When("^I create a new Tag Hierarchy with name \"([^\"]*)\"$")
     public void iCreateANewTagHierarchyWithName(String name) throws Exception {
-        JSONObject tagHierarchy = new JSONObject();
-        tagHierarchy.put("name", name);
+        TagHierarchy tagHierarchy = new TagHierarchy();
+        tagHierarchy.setName(name);
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/tagHierarchies")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(tagHierarchy.toString())
+                        .content(stepDefs.mapper.writeValueAsString(tagHierarchy))
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
