@@ -1,15 +1,18 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Tag extends UriEntity<Integer> {
 
     @Id
@@ -19,7 +22,19 @@ public class Tag extends UriEntity<Integer> {
     @NotBlank
     private String name;
 
+//    @OneToMany(mappedBy = "uses")
+//    @JsonIdentityReference(alwaysAsId = true)
+//    private List<Annotation> usedIn = new ArrayList<>();
+
+    @ManyToOne
+    private TagHierarchy definedIn;
+
     public Tag(String name) {
+        this.setName(name);
+    }
+
+    public Tag(String name, TagHierarchy definedIn){
+        this.setDefinedIn(definedIn);
         this.setName(name);
     }
 

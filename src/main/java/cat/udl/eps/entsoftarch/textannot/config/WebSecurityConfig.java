@@ -36,6 +36,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.GET, "/identity").authenticated()
         .antMatchers(HttpMethod.GET, "/metadataTemplates*/**").authenticated()
 
+        .antMatchers(HttpMethod.POST, "/tags*/**").hasRole("ADMIN")
+        .antMatchers(HttpMethod.DELETE, "/tags*/**").hasRole("ADMIN")
+
         .antMatchers(HttpMethod.POST, "/tagHierarchies*/**").hasRole("ADMIN")
         .antMatchers(HttpMethod.DELETE, "/tagHierarchies*/**").hasRole("ADMIN")
 
