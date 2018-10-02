@@ -25,7 +25,7 @@ Feature: Create new Tag Hierarchy
     And Exists a Sample with text "Test"
     And Exists a Tag Hierarchy with name "tag hierarchy"
     When I set the previous Sample tagged by the previous Tag Hierarchy
-    Then The Tag Hierarchy has the sample associated
+    Then The tag hierarchy "tag hierarchy" tags a sample with text "Test"
 
   Scenario: Link a Sample with a Tag Hierarchy as linguist
     Given I login as "linguist" with password "password"

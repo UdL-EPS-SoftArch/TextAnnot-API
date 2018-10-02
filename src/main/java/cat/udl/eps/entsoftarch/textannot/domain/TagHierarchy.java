@@ -18,15 +18,13 @@ public class TagHierarchy extends UriEntity<Integer> {
     private Integer tagHierachyId;
 
     @NotBlank
+    @Column(unique = true)
     private String name;
 
     @Override
     public Integer getId() {
         return this.tagHierachyId;
     }
-
-    @OneToMany(mappedBy = "taggedBy")
-    private List<Sample> tags;
 
     @OneToMany(mappedBy = "definedIn")
     private List<Tag> defines;

@@ -84,16 +84,6 @@ public class CreateTagHierarchyDefs {
                         .with(AuthenticationStepDefs.authenticate()));
     }
 
-    @Then("^The Tag Hierarchy has the sample associated$")
-    public void theTagHierarchyHasTheSampleAssociated() throws Throwable {
-        stepDefs.mockMvc.perform(
-                get("/tagHierarchies/" + tagHierarchy.getId() + "/tags")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print())
-                .andExpect(jsonPath("$._embedded.samples[0].id", is(sample.getId())));
-    }
-
     @Then("^The Tag Hierarchy have (\\d+) samples$")
     public void theTagHierarchyWithNameHaveSamples(String name, int numSamples) throws Exception {
         stepDefs.mockMvc.perform(
@@ -134,7 +124,7 @@ public class CreateTagHierarchyDefs {
         Optional<TagHierarchy> tagHierarchy = tagHierarchyRepository.findByName(tagHierarchyName);
         Assert.assertTrue("Tag hiearchy must exist", tagHierarchy.isPresent());
         stepDefs.mockMvc.perform(
-            get(tagHierarchy.get().getUri() + "/tags")
+            get("/samples/search/findByTaggedBy?taggedBy=" + tagHierarchy.get().getUri())
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .with(AuthenticationStepDefs.authenticate()))
             .andDo(print())
