@@ -8,7 +8,7 @@ Feature: Create Annotation
     And I create a new sample with text "abcdef"
     When I create a new annotation with start 0 and end 4
     Then The response code is 201
-    And It has been created a new annotation with start 0 and end 4
+    And It has been created a new annotation with start 0, end 4 and reviewed is false
 
   Scenario: Create a new annotation with a wrong start as a linguist
     Given I login as "user" with password "password"

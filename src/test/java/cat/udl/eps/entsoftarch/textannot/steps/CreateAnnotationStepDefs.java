@@ -55,7 +55,7 @@ public class CreateAnnotationStepDefs {
         newResourceUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
     }
 
-    @And("^It has been created a new annotation with start (\\d+) and end (\\d+)$")
+    @And("^It has been created a new annotation with start (\\d+), end (\\d+) and reviewed is false$")
     public void itHasBeenCreatedANewAnnotationWithStartAndEndAndId(int start, int end) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
                 get(newResourceUri)
@@ -63,8 +63,8 @@ public class CreateAnnotationStepDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
                 .andExpect(jsonPath("$.start", is(start)))
-                .andExpect(jsonPath("$.end", is(end)));
-
+                .andExpect(jsonPath("$.end", is(end)))
+                .andExpect(jsonPath("$.reviewed", is(false)));
     }
 
     @When("^I create a new annotation with null start and end (\\d+)$")
