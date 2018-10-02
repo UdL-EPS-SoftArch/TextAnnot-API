@@ -2,12 +2,16 @@ package cat.udl.eps.entsoftarch.textannot.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class MetadataValue extends UriEntity<Integer> {
 
     @Id
@@ -33,20 +37,4 @@ public class MetadataValue extends UriEntity<Integer> {
 
     @Override
     public Integer getId() { return id; }
-
-    public String getValue() { return value; }
-
-    public void setValue(String value) { this.value = value; }
-
-    public Sample getForA() { return forA; }
-
-    public void setForA(Sample forA) { this.forA = forA; }
-
-    public MetadataField getValued() { return valued; }
-
-    public void setValued(MetadataField valued) { this.valued = valued; }
-
-    public String getFieldName() { return this.valued != null? this.valued.getName() : ""; }
-
-    public String getFieldCategory() { return this.valued != null? this.valued.getCategory() : ""; }
 }

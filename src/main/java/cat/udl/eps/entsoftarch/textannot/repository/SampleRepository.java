@@ -13,8 +13,6 @@ public interface SampleRepository extends PagingAndSortingRepository<Sample, Int
     List<Sample> findByTextContaining(@Param("text") String text);
     List<Sample> findByTextContains (@Param("word") String word);
 
-    List<Sample> findByHasValuedNameAndHasValue(@Param("name") String name, @Param("value") String value);
-    List<Sample> findByHasValuedName(@Param("name") String name);
     Sample findByText(@Param("text") String text);
     List<Sample> findByDescribedByName(@Param("text") String text);
 
