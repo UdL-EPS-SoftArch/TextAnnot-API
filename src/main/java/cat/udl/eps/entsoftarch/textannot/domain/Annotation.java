@@ -2,12 +2,19 @@ package cat.udl.eps.entsoftarch.textannot.domain;
 
 import javax.persistence.*;
 
+import cat.udl.eps.entsoftarch.textannot.domain.validator.RangeConstraint;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-import javax.persistence.ManyToOne;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@RangeConstraint
 public class Annotation extends UriEntity<Integer> {
 
     @Id
@@ -20,56 +27,9 @@ public class Annotation extends UriEntity<Integer> {
     @NonNull
     private Integer end;
 
+    private Boolean reviewed;
 
     @ManyToOne
     private Sample annotated;
 
-    private Boolean reviewed;
-
-    public Annotation() {
-    }
-
-    @Override
-    public Integer getId() {
-        return this.id;
-    }
-
-    public Integer getStart() {
-        return start;
-    }
-
-    public void setStart(Integer start) {
-        this.start = start;
-    }
-
-    public Integer getEnd() {
-        return end;
-    }
-
-    public void setEnd(Integer end) {
-        this.end = end;
-    }
-
-    public Boolean getReviewed() {
-        return reviewed;
-    }
-
-    public void setReviewed(Boolean reviewed) {
-        this.reviewed = reviewed;
-    }
-
-    public void setAnnotated(Sample annotated) { this.annotated = annotated; }
-
-    public Sample getAnnotated(){ return this.annotated; }
-
-
-    @Override
-    public String toString() {
-        return "Annotation{" +
-                "id=" + id +
-                ", start=" + start +
-                ", end=" + end +
-                ", reviewed=" + reviewed +
-                '}';
-    }
 }
