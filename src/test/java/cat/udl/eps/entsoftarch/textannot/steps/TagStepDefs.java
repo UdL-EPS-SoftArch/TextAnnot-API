@@ -40,9 +40,6 @@ public class TagStepDefs {
     private Tag tag;
     private TagHierarchy tagHierarchy;
 
-    @Autowired
-    private TagRepository tagRepository;
-
     @When("^I create a new tag with name \"([^\"]*)\"$")
     public void iCreateANewTagWithName(String name) throws Throwable {
         JSONObject AddTag = new JSONObject();
