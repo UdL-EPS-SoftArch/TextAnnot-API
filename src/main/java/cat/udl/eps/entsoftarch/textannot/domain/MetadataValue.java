@@ -2,10 +2,14 @@ package cat.udl.eps.entsoftarch.textannot.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class MetadataValue extends UriEntity<Integer> {
@@ -15,6 +19,8 @@ public class MetadataValue extends UriEntity<Integer> {
     private Integer id;
 
     @NotBlank
+    @Column(length = 512) // 512B
+    @Size(max = 512)
     private String value;
 
     @ManyToOne
