@@ -12,8 +12,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class Sample extends UriEntity<Integer>{
 
     @Id
@@ -29,6 +33,10 @@ public class Sample extends UriEntity<Integer>{
     @JsonIdentityReference(alwaysAsId = true)
     private MetadataTemplate describedBy;
 
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+    private TagHierarchy taggedBy;
+
     @OneToMany(mappedBy = "forA")
     @JsonIdentityReference(alwaysAsId = true)
     private List<MetadataValue> has = new ArrayList<>();
@@ -37,33 +45,5 @@ public class Sample extends UriEntity<Integer>{
 
     public Sample(String text) {
         this.text=text;
-    }
-
-    public Integer getId() {
-        return this.id;
-    }
-
-    public String getText() {
-        return this.text;
-    }
-
-    public void setText(String text) {
-        this.text=text;
-    }
-
-    public MetadataTemplate getDescribedBy() { return describedBy; }
-
-    public void setDescribedBy(MetadataTemplate describedBy) { this.describedBy = describedBy; }
-
-    public List<MetadataValue> getHas() {
-        return has;
-    }
-
-    public void setHas(List<MetadataValue> has) {
-        this.has = has;
-    }
-
-    public String toString() {
-        return "Sample " + this.id + " text: " + this.text;
     }
 }
