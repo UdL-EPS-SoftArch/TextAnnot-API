@@ -32,6 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.DELETE, "/linguists*/**").hasRole("ADMIN")
 
         .antMatchers(HttpMethod.GET, "/samples*/**").authenticated()
+        .antMatchers(HttpMethod.GET, "/tags*/**").authenticated()
 
         .antMatchers(HttpMethod.GET, "/identity").authenticated()
         .antMatchers(HttpMethod.GET, "/metadataTemplates*/**").authenticated()

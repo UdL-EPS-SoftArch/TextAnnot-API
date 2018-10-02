@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
 
+
 import cat.udl.eps.entsoftarch.textannot.domain.Tag;
 import cat.udl.eps.entsoftarch.textannot.domain.TagHierarchy;
 import cat.udl.eps.entsoftarch.textannot.repository.TagHierarchyRepository;
@@ -10,6 +11,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
@@ -37,6 +39,9 @@ public class TagStepDefs {
 
     private Tag tag;
     private TagHierarchy tagHierarchy;
+
+    @Autowired
+    private TagRepository tagRepository;
 
     @When("^I create a new tag with name \"([^\"]*)\"$")
     public void iCreateANewTagWithName(String name) throws Throwable {
