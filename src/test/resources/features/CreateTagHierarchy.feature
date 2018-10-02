@@ -20,6 +20,11 @@ Feature: Create new Tag Hierarchy
     When I create a new Tag Hierarchy with name "tag hierarchy"
     Then The response code is 401
 
+  Scenario: Create a new Tag Hierarchy as linguist is not allowed
+    Given I'm not logged in
+    When I create a new Tag Hierarchy with name "tag hierarchy"
+    Then The response code is 401
+
   Scenario: Check that a Tag Hierarchy has 1 sample
     Given I login as "admin" with password "password"
     And Exists a Sample with text "Test"
