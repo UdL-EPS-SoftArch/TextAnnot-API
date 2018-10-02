@@ -32,4 +32,12 @@ public class Annotation extends UriEntity<Integer> {
     @ManyToOne
     private Sample annotated;
 
+    public Annotation(){
+
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
 }
