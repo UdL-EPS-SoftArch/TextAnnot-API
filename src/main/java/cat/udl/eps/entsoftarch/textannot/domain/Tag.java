@@ -22,11 +22,9 @@ public class Tag extends UriEntity<Integer> {
     @NotBlank
     private String name;
 
-//    @OneToMany(mappedBy = "uses")
-//    @JsonIdentityReference(alwaysAsId = true)
-//    private List<Annotation> usedIn = new ArrayList<>();
-
     @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
+
     private TagHierarchy definedIn;
 
     public Tag(String name) {
