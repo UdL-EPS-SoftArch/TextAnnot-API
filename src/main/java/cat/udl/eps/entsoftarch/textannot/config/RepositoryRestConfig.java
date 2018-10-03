@@ -70,7 +70,7 @@ public class RepositoryRestConfig extends RepositoryRestConfigurerAdapter {
                 field.setCategory(fieldData[0]);
                 field.setName(fieldData[1]);
                 field.setType(fieldData[2]);
-                field.setDefinedIn(template);
+                field.setDefinedAt(template);
                 metadataFieldRepository.save(field);
             }
         }

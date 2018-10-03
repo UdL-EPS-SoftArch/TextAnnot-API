@@ -38,14 +38,14 @@ public class MetadataTemplateMetadataValueRelation {
     private List<MetadataTemplate> metadataTemplateList;
 
     @Given("^A MetadataTemplate with name \"([^\"]*)\" defines a MetadataField with name \"([^\"]*)\" and type \"([^\"]*)\" that values a MetadataValue with value \"([^\"]*)\"$")
-    public void aMetadataTemplateWithNameDefinesAMetadataFieldWithNameAndTypeThatValuesAMetadataValueWithValue(String name, String FName, String FType, String VValue) throws Throwable {
+    public void aMetadataTemplateWithNameDefinesAMetadataFieldWithNameAndTypeThatValuesAMetadataValueWithValue(String name, String FName, String FType, String VValue) {
         MetadataTemplate mt = new MetadataTemplate();
         mt.setName(name);
         MetadataField mf = new MetadataField(FName, FType);
         MetadataValue mv = new MetadataValue(VValue);
 
         mt = metadataTemplateRepository.save(mt);
-        mf.setDefinedIn(mt);
+        mf.setDefinedAt(mt);
         metadataFieldRepository.save(mf);
         mv.setValued(mf);
         metadataValueRepository.save(mv);

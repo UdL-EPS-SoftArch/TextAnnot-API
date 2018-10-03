@@ -28,7 +28,7 @@ public class MetadataField extends UriEntity<Integer> {
     private List<MetadataValue> values = new ArrayList<>();
 
     @ManyToOne
-    private MetadataTemplate definedIn;
+    private MetadataTemplate definedAt;
 
     @Override
     public Integer getId() {
@@ -36,12 +36,11 @@ public class MetadataField extends UriEntity<Integer> {
     }
 
     public MetadataField(){
-        this.name="";
+        this.name = "";
     }
 
     public MetadataField(String name, String type){
         this.name = name;
         this.type = type;
-
     }
 }

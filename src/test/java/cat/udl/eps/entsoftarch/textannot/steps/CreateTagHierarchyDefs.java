@@ -53,6 +53,7 @@ public class CreateTagHierarchyDefs {
     @And("^The Tag Hierarchy name is \"([^\"]*)\"$")
     public void theTagHierarchyNameIs(String name) throws Exception {
         String location = stepDefs.result.andReturn().getResponse().getHeader("Location");
+        Assert.assertTrue("location is not null", location != null);
         stepDefs.result = stepDefs.mockMvc.perform(
                 get(location)
                     .accept(MediaType.APPLICATION_JSON)
@@ -62,13 +63,13 @@ public class CreateTagHierarchyDefs {
     }
 
     @Given("^Exists a Sample with text \"([^\"]*)\"$")
-    public void thereIsASingleSampleWithText(String text) throws Throwable {
+    public void thereIsASingleSampleWithText(String text) {
         sample = new Sample(text);
         sampleRepository.save(sample);
     }
 
     @And("^Exists a Tag Hierarchy with name \"([^\"]*)\"$")
-    public void existsATagHierarchyWithName(String name) throws Throwable {
+    public void existsATagHierarchyWithName(String name) {
         tagHierarchy = new TagHierarchy();
         tagHierarchy.setName(name);
         tagHierarchyRepository.save(tagHierarchy);
@@ -106,7 +107,7 @@ public class CreateTagHierarchyDefs {
     @When("^I create a new sample with text \"([^\"]*)\" tagged by the tag hierarchy \"([^\"]*)\"$")
     public void iCreateANewSampleWithTextTaggedByTheTagHierarchy(String text, String tagHierarchyName) throws Throwable {
         Optional<TagHierarchy> tagHierarchy = tagHierarchyRepository.findByName(tagHierarchyName);
-        Assert.assertTrue("Tag hiearchy must exist", tagHierarchy.isPresent());
+        Assert.assertTrue("Tag hierarchy must exist", tagHierarchy.isPresent());
         Sample sample = new Sample();
         sample.setText(text);
         sample.setTaggedBy(tagHierarchy.get());

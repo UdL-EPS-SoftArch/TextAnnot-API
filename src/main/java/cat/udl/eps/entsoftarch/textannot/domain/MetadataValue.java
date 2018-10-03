@@ -37,4 +37,9 @@ public class MetadataValue extends UriEntity<Integer> {
 
     @Override
     public Integer getId() { return id; }
+
+    public String getFieldName() { return this.valued != null? this.valued.getName() : ""; }
+
+    public String getFieldCategory() { return this.valued != null? this.valued.getCategory() : ""; }
+
 }

@@ -1,7 +1,9 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
 
+import cat.udl.eps.entsoftarch.textannot.domain.MetadataField;
 import cat.udl.eps.entsoftarch.textannot.domain.MetadataTemplate;
 import cat.udl.eps.entsoftarch.textannot.domain.Sample;
+import cat.udl.eps.entsoftarch.textannot.repository.MetadataFieldRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.MetadataTemplateRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.SampleRepository;
 import cucumber.api.PendingException;
@@ -22,6 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class CreateMetadataTemplateDefs {
 
@@ -91,4 +94,5 @@ public class CreateMetadataTemplateDefs {
         sampleRepository.save(s);
 
     }
+
 }

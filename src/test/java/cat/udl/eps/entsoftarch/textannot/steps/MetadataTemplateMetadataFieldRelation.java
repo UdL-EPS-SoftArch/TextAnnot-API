@@ -34,13 +34,13 @@ public class MetadataTemplateMetadataFieldRelation {
     private List<MetadataTemplate> MetadataTemplatesList;
 
     @Given("^A MetadataTemplate with name \"([^\"]*)\" defines a MetadataField with name \"([^\"]*)\" and type \"([^\"]*)\"$")
-    public void aMetadataTemplateWithNameDefinesAMetadataFieldWithNameAndType(String name, String FName, String FType) throws Throwable {
+    public void aMetadataTemplateWithNameDefinesAMetadataFieldWithNameAndType(String name, String FName, String FType) {
         MetadataTemplate mt = new MetadataTemplate();
         mt.setName(name);
         MetadataField mf = new MetadataField(FName, FType);
 
         mt = mtr.save(mt);
-        mf.setDefinedIn(mt);
+        mf.setDefinedAt(mt);
         mtfr.save(mf);
     }
 
@@ -63,13 +63,13 @@ public class MetadataTemplateMetadataFieldRelation {
 
 
     @Given("^A MetadataTemplate with name \"([^\"]*)\" which defines a MetadataFields with name \"([^\"]*)\"$")
-    public void aMetadataTemplateWithNameWhichDefinesAMetadataFieldsWithName(String name, String FName) throws Throwable {
+    public void aMetadataTemplateWithNameWhichDefinesAMetadataFieldsWithName(String name, String FName) {
         MetadataTemplate m = new MetadataTemplate();
         m.setName(name);
         MetadataField f = new MetadataField(FName,"NTp"); //no type
 
         m = mtr.save(m);
-        f.setDefinedIn(m);
+        f.setDefinedAt(m);
         mtfr.save(f);
 
     }
@@ -85,13 +85,13 @@ public class MetadataTemplateMetadataFieldRelation {
     }
 
     @Given("^A MetadataTemplate with name \"([^\"]*)\" defines a MetadataField with type \"([^\"]*)\"$")
-    public void aMetadataTemplateWithNameDefinesAMedatataFieldWithType(String name, String FType) throws Throwable {
+    public void aMetadataTemplateWithNameDefinesAMedatataFieldWithType(String name, String FType) {
         MetadataTemplate m = new MetadataTemplate();
         m.setName(name);
         MetadataField f = new MetadataField("NName",FType); //no name
 
         m = mtr.save(m);
-        f.setDefinedIn(m);
+        f.setDefinedAt(m);
         mtfr.save(f);
     }
 

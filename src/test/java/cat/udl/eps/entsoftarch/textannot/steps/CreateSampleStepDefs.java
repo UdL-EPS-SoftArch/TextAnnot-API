@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+import cat.udl.eps.entsoftarch.textannot.domain.MetadataTemplate;
 import cat.udl.eps.entsoftarch.textannot.repository.MetadataTemplateRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.SampleRepository;
 import cucumber.api.java.en.And;
@@ -16,6 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+
+import java.util.Optional;
 
 public class CreateSampleStepDefs {
     private static final Logger logger = LoggerFactory.getLogger(RegisterLinguistStepDef.class);
@@ -57,7 +60,7 @@ public class CreateSampleStepDefs {
     }
 
     @And("^It has not been created a sample with text \"([^\"]*)\"$")
-    public void itHasNotBeenCreatedASample(String text) throws Throwable {
+    public void itHasNotBeenCreatedASample(String text) {
         Assert.assertEquals(0,sampleRepository.count());
         Assert.assertEquals(0,sampleRepository.findByTextContaining(text).size());
     }
@@ -79,8 +82,9 @@ public class CreateSampleStepDefs {
     public void iCreateANewSampleWithMetadataTemplate(String text, String mtName) throws Throwable{
         JSONObject sample = new JSONObject();
         sample.put("text", text);
-        String mturi = metadataTemplateRepository.findByName(mtName).getUri();
-        sample.put("describedBy", mturi);
+        Optional<MetadataTemplate> metadataTemplateOptional = metadataTemplateRepository.findByName(mtName);
+        Assert.assertTrue("metadataTemplate is present", metadataTemplateOptional.isPresent());
+        sample.put("describedBy", metadataTemplateOptional.get().getUri());
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/samples")
                         .contentType(MediaType.APPLICATION_JSON)
