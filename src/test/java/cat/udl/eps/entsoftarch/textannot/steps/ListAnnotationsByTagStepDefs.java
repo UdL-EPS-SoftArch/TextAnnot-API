@@ -76,7 +76,7 @@ public class ListAnnotationsByTagStepDefs {
     public void iTagTheAnnotationWithTheTag() throws Throwable {
 
         JSONObject tagged = new JSONObject();
-        tagged.put("tagged",taggedBy);
+        tagged.put("tag",taggedBy);
 
         stepDefs.mockMvc.perform(patch(taggedAnnotation).content(tagged.toString())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -89,7 +89,7 @@ public class ListAnnotationsByTagStepDefs {
 
     @Then("^The annotation has been tagged with the Tag named \"([^\"]*)\"$")
     public void theAnnotationHasBeenTaggedWithTheTagNamed(String arg0) throws Throwable {
-        stepDefs.mockMvc.perform(get(taggedAnnotation + "/tagged")
+        stepDefs.mockMvc.perform(get(taggedAnnotation + "/tag")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate()))
@@ -109,7 +109,7 @@ public class ListAnnotationsByTagStepDefs {
             Annotation toAdd = new Annotation();
             toAdd.setStart(1 + i);
             toAdd.setEnd(2 + i);
-            toAdd.setTagged(taggedBy);
+            toAdd.setTag(taggedBy);
             annotationRepository.save(toAdd);
         }
 
@@ -117,7 +117,7 @@ public class ListAnnotationsByTagStepDefs {
 
     @When("^I search the annotations by Tagged as the created Tag$")
     public void iSearchTheAnnotationsByTaggedAsTheCreatedTag() {
-        taggedAnnotations = annotationRepository.findByTagged(expectedTag);
+        taggedAnnotations = annotationRepository.findByTag(expectedTag);
     }
 
     @Then("^I get a List with the said number of tagged annotations$")

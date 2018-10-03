@@ -1,11 +1,9 @@
-Feature: In order to see the annotations tagged with a certain Tag
-  As a Linguist
-  I want to list all the annotations tagged with this certain Tag
+Feature: List all the annotations tagged with a certain Tag
 
 
 
   Scenario: List 1 Annotation tagged with a certain Tag
-    Given I login as "user" with password "password"
+    Given I login as "admin" with password "password"
     Given I create one annotation with start 0 and end 10
     Given I create a certain Tag with the name "ExpectedTagName"
     When  I tag the annotation with the Tag
