@@ -3,6 +3,7 @@ package cat.udl.eps.entsoftarch.textannot.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,11 +12,12 @@ import java.util.List;
 
 @Entity
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class MetadataField extends UriEntity<Integer> {
 
     @NotBlank
-    String name, type;
+    String name="", type;
 
     String category;
 
@@ -33,10 +35,6 @@ public class MetadataField extends UriEntity<Integer> {
     @Override
     public Integer getId() {
         return id;
-    }
-
-    public MetadataField(){
-        this.name="";
     }
 
     public MetadataField(String name, String type){
