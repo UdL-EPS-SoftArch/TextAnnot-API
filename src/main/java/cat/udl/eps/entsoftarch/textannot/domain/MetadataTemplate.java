@@ -9,6 +9,9 @@ import javax.validation.constraints.NotBlank;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+import lombok.Data;
+
+@Data
 @Entity
 public class MetadataTemplate extends UriEntity<String> {
 
@@ -32,30 +35,6 @@ public class MetadataTemplate extends UriEntity<String> {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public ZonedDateTime getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(ZonedDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    public List<MetadataField> getDefines() {
-        return defines;
-    }
-
-    public void setDefines(List<MetadataField> defines) {
-        this.defines = defines;
-    }
-
-    public List<Sample> getDescribes() {
-        return describes;
-    }
-
-    public void setDescribes(List<Sample> describes) {
-        this.describes = describes;
     }
 
     @Override
