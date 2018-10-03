@@ -40,9 +40,6 @@ public class TagStepDefs {
     private Tag tag;
     private TagHierarchy tagHierarchy;
 
-    @Autowired
-    private TagRepository tagRepository;
-
     @When("^I create a new tag with name \"([^\"]*)\"$")
     public void iCreateANewTagWithName(String name) throws Throwable {
         JSONObject AddTag = new JSONObject();
@@ -65,24 +62,6 @@ public class TagStepDefs {
                 .andDo(print())
                 .andExpect(jsonPath("$.name", is(name)))
                 .andExpect(jsonPath("$.id", is(id)));
-    }
-
-    @And("^It hasn't been created a tag with name \"([^\"]*)\" and Id (\\d+)$")
-    public void itHasnTBeenCreatedATagWithNameAndId(String arg0, Integer id) throws Throwable {
-        stepDefs.result = stepDefs.mockMvc.perform(
-                get("/tags/{id}", id)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate()))
-                .andExpect(status().isNotFound());
-    }
-
-    @And("^It has not been created a tag with name \"([^\"]*)\" and Id (\\d+)$")
-    public void itHasNotBeenCreatedATagWithNameAndId(String name, Integer id) throws Throwable {
-        stepDefs.result = stepDefs.mockMvc.perform(
-                get("/tags/{id}", id)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate()))
-                .andExpect(status().isUnauthorized());
     }
 
     @And("^Exists a TagHierarchy with name \"([^\"]*)\"$")
