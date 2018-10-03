@@ -14,9 +14,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Sample extends UriEntity<Integer>{
 
@@ -40,8 +42,6 @@ public class Sample extends UriEntity<Integer>{
     @OneToMany(mappedBy = "forA")
     @JsonIdentityReference(alwaysAsId = true)
     private List<MetadataValue> has = new ArrayList<>();
-
-    public Sample() { }
 
     public Sample(String text) {
         this.text=text;
