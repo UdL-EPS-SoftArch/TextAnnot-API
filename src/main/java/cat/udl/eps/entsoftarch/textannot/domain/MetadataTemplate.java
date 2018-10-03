@@ -1,5 +1,7 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
+import lombok.NoArgsConstructor;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
@@ -9,10 +11,9 @@ import javax.validation.constraints.NotBlank;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import lombok.Data;
-
-@Data
 @Entity
+@Data
+@NoArgsConstructor
 public class MetadataTemplate extends UriEntity<String> {
 
     @Id @NotBlank
@@ -28,14 +29,6 @@ public class MetadataTemplate extends UriEntity<String> {
 
     @OneToMany(mappedBy = "describedBy")
     private List<Sample> describes;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public String getId() {
