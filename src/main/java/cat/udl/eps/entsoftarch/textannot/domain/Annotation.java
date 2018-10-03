@@ -5,6 +5,7 @@ import javax.persistence.*;
 import cat.udl.eps.entsoftarch.textannot.domain.validator.RangeConstraint;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,8 +13,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @EqualsAndHashCode(callSuper = true)
-@Entity
 @Data
+@NoArgsConstructor
+@Entity
 @RangeConstraint
 public class Annotation extends UriEntity<Integer> {
 
@@ -31,13 +33,4 @@ public class Annotation extends UriEntity<Integer> {
 
     @ManyToOne
     private Sample annotated;
-
-    public Annotation(){
-
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
 }
