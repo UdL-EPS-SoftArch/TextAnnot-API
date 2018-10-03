@@ -24,9 +24,4 @@ public class Tag extends UriEntity<Integer> {
     public Tag(String name) {
         this.setName(name);
     }
-
-    @Override
-    public Integer getId() {
-        return this.id;
-    }
 }
