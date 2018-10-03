@@ -26,6 +26,6 @@ public class TagHierarchy extends UriEntity<Integer> {
         return this.tagHierachyId;
     }
 
-    @OneToMany(mappedBy = "definedIn")
+    @OneToMany(mappedBy = "tagHierarchy")
     private List<Tag> defines;
 }

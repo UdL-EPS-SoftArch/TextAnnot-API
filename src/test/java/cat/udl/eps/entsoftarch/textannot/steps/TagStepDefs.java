@@ -5,17 +5,12 @@ import cat.udl.eps.entsoftarch.textannot.domain.Tag;
 import cat.udl.eps.entsoftarch.textannot.domain.TagHierarchy;
 import cat.udl.eps.entsoftarch.textannot.repository.TagHierarchyRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.TagRepository;
-import cucumber.api.PendingException;
-import cucumber.api.java.bs.A;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
-import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-
-import javax.print.attribute.standard.Media;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +21,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class TagStepDefs {
 
@@ -83,9 +77,9 @@ public class TagStepDefs {
         Optional<TagHierarchy> tagHier= tagHierarchyRepository.findByName(tagHierName);
         if(!tags.isEmpty())
             tag.setName(tags.get(0).getName());
-        tagHier.ifPresent(tagHierarchy1 -> tag.setDefinedIn(tagHierarchy1));
+        tagHier.ifPresent(tagHierarchy1 -> tag.setTagHierarchy(tagHierarchy1));
         stepDefs.result = stepDefs.mockMvc.perform(
-                put("/tags/" + tag.getId() + "/definedIn")
+                put("/tags/" + tag.getId() + "/tagHierarchy")
                     .contentType("text/uri-list")
                     .content(tag.getUri())
                     .accept(MediaType.APPLICATION_JSON)

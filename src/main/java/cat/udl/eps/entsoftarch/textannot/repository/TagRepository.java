@@ -11,5 +11,5 @@ import java.util.List;
 @RepositoryRestResource
 public interface TagRepository extends PagingAndSortingRepository<Tag, Integer> {
     List<Tag> findByNameContaining(@Param("name") String name);
-    List<Tag> findByDefinedIn(@Param("tagHierarchy")TagHierarchy tagHierarchy);
+    List<Tag> findByTagHierarchy(@Param("tagHierarchy")TagHierarchy tagHierarchy);
 }
