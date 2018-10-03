@@ -3,6 +3,7 @@ package cat.udl.eps.entsoftarch.textannot.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,8 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@Data
 @Entity
+@Data
+@NoArgsConstructor
 public class MetadataValue extends UriEntity<Integer> {
 
     @Id
@@ -34,14 +36,9 @@ public class MetadataValue extends UriEntity<Integer> {
     @JsonIdentityReference(alwaysAsId = true)
     private	MetadataField valued;
 
-    public MetadataValue(){}
-
     public MetadataValue(String value){
         this.value = value;
     }
-
-    @Override
-    public Integer getId() { return id; }
 
     public String getFieldName() { return this.valued != null? this.valued.getName() : ""; }
 
