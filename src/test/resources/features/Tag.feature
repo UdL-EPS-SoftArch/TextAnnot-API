@@ -14,7 +14,6 @@ Feature: Tag
     Given I'm not logged in
     When I create a new tag with name "noauthenticating"
     Then The response code is 401
-    And It has not been created a tag with name "noauthenticating" and Id 1
 
   Scenario: Create a new tag as an admin
     Given I login as "admin" with password "password"
@@ -26,4 +25,12 @@ Feature: Tag
     Given I login as "linguist" with password "password"
     When I create a new tag with name "noauthenticating"
     Then The response code is 401
-    And It has not been created a tag with name "noauthenticating" and Id 1
+
+  Scenario: Create a Tag linked to a Tag Hierarchy as admin
+    Given I login as "admin" with password "password"
+    And Exists a TagHierarchy with name "hierarchy"
+    And Exists a Tag with name "Tag"
+    When I create a new tag with name "Tag" defined in the tag hierarchy "admin tags"
+    Then The tag hierarchy "admin tags" defines a tag with the text "Tag text..."
+    And The response code is 204
+

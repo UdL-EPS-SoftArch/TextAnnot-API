@@ -12,10 +12,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@EqualsAndHashCode(callSuper = true)
+
+
+@Entity
 @Data
 @NoArgsConstructor
-@Entity
+@EqualsAndHashCode(callSuper = true)
 @RangeConstraint
 public class Annotation extends UriEntity<Integer> {
 
@@ -32,5 +34,8 @@ public class Annotation extends UriEntity<Integer> {
     private Boolean reviewed;
 
     @ManyToOne
-    private Sample annotated;
+    private Sample sample;
+
+    @ManyToOne
+    private Tag tag;
 }
