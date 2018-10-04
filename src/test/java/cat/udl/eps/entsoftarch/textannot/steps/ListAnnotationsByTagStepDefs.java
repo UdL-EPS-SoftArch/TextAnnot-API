@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -37,7 +38,7 @@ public class ListAnnotationsByTagStepDefs {
 
     private String taggedAnnotation;
     private String taggedBy;
-    private List<Annotation> taggedAnnotations;
+    private Optional<List<Annotation>> taggedAnnotations;
     private Tag expectedTag;
 
     @Given("^I create one annotation with start (\\d+) and end (\\d+)$")
@@ -122,10 +123,16 @@ public class ListAnnotationsByTagStepDefs {
 
     @Then("^I get a List with the said number of tagged annotations$")
     public void iGetAListWithTheSaidNumberOfTaggedAnnotations() throws Throwable {
+
+        int expectedSize = 0;
+
+        if(taggedAnnotations.isPresent())
+            expectedSize = taggedAnnotations.get().size();
+
         stepDefs.mockMvc.perform(get("/annotations")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .with(AuthenticationStepDefs.authenticate())).andExpect(jsonPath("@.page.totalElements").value(this.taggedAnnotations.size()))
+                .with(AuthenticationStepDefs.authenticate())).andExpect(jsonPath("@.page.totalElements").value(expectedSize))
                 .andDo(print());
     }
 

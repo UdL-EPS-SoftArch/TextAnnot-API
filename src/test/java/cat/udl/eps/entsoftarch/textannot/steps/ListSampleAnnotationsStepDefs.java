@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -30,7 +31,7 @@ public class ListSampleAnnotationsStepDefs {
     private static String currentPassword;
 
     private Sample expected;
-    List<Annotation> result;
+    Optional<List<Annotation>> result;
 
     @Autowired
     private StepDefs stepDefs;
@@ -141,10 +142,19 @@ public class ListSampleAnnotationsStepDefs {
 
     @Then("^I get a List with the said number of annotations$")
     public void iGetAListWithTheSaidNumberOfAnnotations() throws Throwable {
+
+        int expectedSize = 0;
+
+        if(this.result.isPresent()){
+
+            expectedSize = result.get().size();
+        }
+
+
         stepDefs.mockMvc.perform(get("/annotations")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .with(AuthenticationStepDefs.authenticate())).andExpect(jsonPath("@.page.totalElements").value(this.result.size()))
+                .with(AuthenticationStepDefs.authenticate())).andExpect(jsonPath("@.page.totalElements").value(expectedSize))
                 .andDo(print());
     }
 
