@@ -19,5 +19,5 @@ public interface MetadataValueRepository extends PagingAndSortingRepository<Meta
     @Query("SELECT t " +
             "FROM MetadataTemplate t, MetadataField f, MetadataValue v " +
             "WHERE v.values.id = f.id AND f.definedAt.id = t.id AND v.value = ?1")
-    List<MetadataTemplate> getMetadataTemplateWithValues(@Param("value")String value);
+    List<MetadataTemplate> findAllMetadataTemplatesByValue(@Param("value")String value);
 }

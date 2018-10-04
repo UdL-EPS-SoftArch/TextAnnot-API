@@ -21,10 +21,6 @@ public class MetadataTemplate extends UriEntity<String> {
     private ZonedDateTime startDate;
 
 
-    @OneToMany(mappedBy = "definedAt")
-    private List<MetadataField> defines;
-
-
     @OneToMany(mappedBy = "describedBy")
     private List<Sample> describes;
 

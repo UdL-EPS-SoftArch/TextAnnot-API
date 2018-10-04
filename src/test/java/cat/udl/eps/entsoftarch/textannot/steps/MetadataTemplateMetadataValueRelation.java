@@ -55,7 +55,7 @@ public class MetadataTemplateMetadataValueRelation {
     @Transactional
     public void iFindMetadataTemplatesByMetadataValueWithValue(String VValue) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/metadataValues/search/getMetadataTemplateWithValues?value={VValue}", VValue)
+                get("/metadataValues/search/findAllMetadataTemplatesByValue?value={VValue}", VValue)
                 .accept(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(MockMvcResultHandlers.print());
