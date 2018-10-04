@@ -35,17 +35,4 @@ public class Tag extends UriEntity<Integer> {
         this.setDefinedIn(definedIn);
         this.setName(name);
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public Integer getId() {
-        return this.id;
-    }
 }
