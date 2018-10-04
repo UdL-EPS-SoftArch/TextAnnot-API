@@ -102,7 +102,7 @@ public class CreateMetadataValueStepDefs {
         JSONObject metadataValue = new JSONObject();
         metaField=metadataFieldRepository.findByName(name);
         metadataValue.put("value", value);
-        metadataValue.put("valued", "/metadataFields/"+metaField.getId()+"");
+        metadataValue.put("values", "/metadataFields/" + metaField.getId());
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/metadataValues")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -114,8 +114,7 @@ public class CreateMetadataValueStepDefs {
 
     @And("^It has been created a new metadataValue with value \"([^\"]*)\" for metadataField with text \"([^\"]*)\"$")
     public void itHasBeenCreatedANewMetadataValueWithValueForMetadataFieldWithText(String value, String name) throws Throwable {
-
-        metaValue=metadataValueRepository.findByValue(value);
+        metaValue = metadataValueRepository.findByValue(value);
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/metadataValues/{id}", metaValue.getId())
                         .accept(MediaType.APPLICATION_JSON)
@@ -124,7 +123,7 @@ public class CreateMetadataValueStepDefs {
                 .andExpect(jsonPath("$.value", is(value)));
 
         stepDefs.mockMvc.perform(
-                get("/metadataValues/"+metaValue.getId()+"/valued")
+                get("/metadataValues/" + metaValue.getId() + "/values")
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())

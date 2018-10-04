@@ -13,6 +13,5 @@ public interface MetadataTemplateRepository extends PagingAndSortingRepository<M
     List<MetadataTemplate> findByDefinesNameAndDefinesType(@Param("name") String name, @Param("type") String type);
     List<MetadataTemplate> findByDefinesName(@Param("name") String name);
     List<MetadataTemplate> findByDefinesType(@Param("type") String type);
-    List<MetadataTemplate> findByDefinesValuesValue(@Param("value") String value);
-    Optional<MetadataTemplate> findByName (@Param("name") String name);
+    Optional<MetadataTemplate> findByName(@Param("name") String name);
 }

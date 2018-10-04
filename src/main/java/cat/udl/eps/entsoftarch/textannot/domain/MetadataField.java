@@ -23,9 +23,9 @@ public class MetadataField extends UriEntity<Integer> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToMany(mappedBy = "valued")
+    @OneToMany(mappedBy = "values")
     @JsonIdentityReference(alwaysAsId = true)
-    private List<MetadataValue> values = new ArrayList<>();
+    private List<MetadataValue> valued = new ArrayList<>();
 
     @ManyToOne
     private MetadataTemplate definedAt;
