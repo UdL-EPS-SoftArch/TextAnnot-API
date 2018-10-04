@@ -9,11 +9,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
+import java.util.Optional;
 
 @RepositoryRestResource
 public interface AnnotationRepository extends PagingAndSortingRepository<Annotation, Integer> {
-    List<Annotation> findBySample(@Param("sample") Sample sample);
-    List<Annotation> findByTag(@Param("tag") Tag tag);
+    Optional<List<Annotation>> findBySample(@Param("sample") Sample sample);
+    Optional<List<Annotation>> findByTag(@Param("tag") Tag tag);
 
 }
 

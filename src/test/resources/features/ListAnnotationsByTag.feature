@@ -14,3 +14,10 @@ Feature: List all the annotations tagged with a certain Tag
     Given I create a certain Tag with text "8TaggedAnnotations" and Tag 8 Annotations
     When  I search the annotations by Tagged as the created Tag
     Then  I get a List with the said number of tagged annotations
+
+
+  Scenario: List 0 Annotations Tagged by a Tag
+    Given I login as "user" with password "password"
+    Given I create a certain Tag with text "0TaggedAnnotations" and Tag 0 Annotations
+    When  I search the annotations by Tagged as the created Tag
+    Then  I get a List with the said number of tagged annotations
