@@ -39,8 +39,6 @@ public class AddMetadataFieldStepDefs {
     @Autowired
     private MetadataFieldRepository metadataFieldRepository;
 
-    private String newResourceUri;
-
 
     @When("^I create a new metadatafield with text \"([^\"]*)\" and type \"([^\"]*)\"$")
     public void iCreateANewMetadatafieldWithTextAndType(String name, String type) throws Throwable {
@@ -57,7 +55,6 @@ public class AddMetadataFieldStepDefs {
 
     }
 
-
     @And("^It has been created a new metadatafield with text \"([^\"]*)\" and type \"([^\"]*)\" and Id (\\d+)$")
     public void itHasBeenCreatedANewMetadatafieldWithTextAndTypeAndId(String name, String type, Integer id) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -68,11 +65,7 @@ public class AddMetadataFieldStepDefs {
                 .andExpect(jsonPath("$.name", is(name)))
                 .andExpect(jsonPath("$.type", is(type)))
                 .andExpect(jsonPath("$.id", is(id)));
-
     }
-
-
-
 
     @And("^It has not been created a metadatafield with text \"([^\"]*)\" and type \"([^\"]*)\" and Id (\\d+)$")
     public void itHasNotBeenCreatedAMetadatafieldWithTextAndTypeAndId(String name, String type, Integer id) throws Throwable {
@@ -105,7 +98,7 @@ public class AddMetadataFieldStepDefs {
         metaTemplate = metadataTemplateOptional.get();
         metadataField.put("name", name);
         metadataField.put("type", type);
-        metadataField.put("definedIn", "/metadataTemplates/"+metaTemplate.getId()+"");
+        metadataField.put("definedAt", "/metadataTemplates/"+metaTemplate.getId()+"");
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/metadataFields")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -114,7 +107,7 @@ public class AddMetadataFieldStepDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
 
-        newResourceUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
+        String newResourceUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
     }
 
     @And("^It has been created a new metadataField with text \"([^\"]*)\"  for metadataTemplate with value \"([^\"]*)\"$")
@@ -128,7 +121,7 @@ public class AddMetadataFieldStepDefs {
                 .andExpect(jsonPath("$.name", is(name)));
 
         stepDefs.mockMvc.perform(
-                get("/metadataFields/"+metaField.getId()+"/definedIn")
+                get("/metadataFields/"+metaField.getId()+"/definedAt")
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
