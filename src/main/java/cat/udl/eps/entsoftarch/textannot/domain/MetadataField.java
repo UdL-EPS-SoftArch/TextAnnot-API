@@ -12,7 +12,6 @@ import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class MetadataField extends UriEntity<Integer> {
 
@@ -35,6 +34,9 @@ public class MetadataField extends UriEntity<Integer> {
     @Override
     public Integer getId() {
         return id;
+    }
+
+    public MetadataField() {
     }
 
     public MetadataField(String name, String type){

@@ -16,7 +16,6 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Data
-@NoArgsConstructor
 public class MetadataValue extends UriEntity<Integer> {
 
     @Id
@@ -38,6 +37,9 @@ public class MetadataValue extends UriEntity<Integer> {
 
     public MetadataValue(String value){
         this.value = value;
+    }
+
+    public MetadataValue() {
     }
 
     public String getFieldName() { return this.valued != null? this.valued.getName() : ""; }

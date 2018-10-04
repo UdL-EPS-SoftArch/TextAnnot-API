@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Sample extends UriEntity<Integer>{
 
@@ -45,5 +44,8 @@ public class Sample extends UriEntity<Integer>{
 
     public Sample(String text) {
         this.text=text;
+    }
+
+    public Sample() {
     }
 }
