@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Data
@@ -23,6 +24,9 @@ public class Tag extends UriEntity<Integer> {
     @JsonIdentityReference(alwaysAsId = true)
 
     private TagHierarchy tagHierarchy;
+
+    @ManyToOne
+    private Tag parent;
 
     public Tag(String name) {
         this.setName(name);

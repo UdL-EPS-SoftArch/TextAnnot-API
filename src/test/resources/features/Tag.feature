@@ -34,3 +34,11 @@ Feature: Tag
     Then The tag hierarchy "admin tags" defines a tag with the text "Tag text..."
     And The response code is 204
 
+  Scenario: Setting the parent of a given tag
+    Given I login as "admin" with password "password"
+    And I create the parent Tag with name "parent"
+    And I create the child Tag with name "child"
+    When I set the parent with name "parent" to child with name "child"
+    Then Parent is set to the child
+    And The response code is 204
+

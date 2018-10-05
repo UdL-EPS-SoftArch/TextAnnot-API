@@ -5,10 +5,12 @@ import cat.udl.eps.entsoftarch.textannot.domain.Tag;
 import cat.udl.eps.entsoftarch.textannot.domain.TagHierarchy;
 import cat.udl.eps.entsoftarch.textannot.repository.TagHierarchyRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.TagRepository;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
