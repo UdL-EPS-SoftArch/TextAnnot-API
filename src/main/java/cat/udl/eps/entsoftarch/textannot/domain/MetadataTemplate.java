@@ -24,10 +24,6 @@ public class MetadataTemplate extends UriEntity<String> {
     @OneToMany(mappedBy = "definedAt")
     private List<MetadataField> defines;
 
-
-    @OneToMany(mappedBy = "describedBy")
-    private List<Sample> describes;
-
     @Override
     public String getId() {
         return this.name;
