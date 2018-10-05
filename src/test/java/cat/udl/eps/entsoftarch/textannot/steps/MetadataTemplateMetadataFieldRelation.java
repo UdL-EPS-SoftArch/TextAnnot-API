@@ -48,7 +48,7 @@ public class MetadataTemplateMetadataFieldRelation {
     public void iFindMetadataTemplateByMetadataFieldNameAndType(String FName, String FType) throws Throwable {
 
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/metadataTemplates/search/findByDefinesNameAndDefinesType?name={FName}&type={FType}", FName, FType)
+                get("/metadataFields/search/findAllMetadataTemplatesByNameAndType?name={FName}&type={FType}", FName, FType)
                 .accept(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(MockMvcResultHandlers.print());
@@ -78,7 +78,7 @@ public class MetadataTemplateMetadataFieldRelation {
     public void iFindMetadataTemplateByMetadataFieldName(String FName) throws Throwable {
 
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/metadataTemplates/search/findByDefinesName?name={FName}", FName)
+                get("/metadataFields/search/findAllMetadataTemplatesByName?name={FName}", FName)
                 .accept(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(MockMvcResultHandlers.print());
@@ -99,7 +99,7 @@ public class MetadataTemplateMetadataFieldRelation {
     public void iFindMetadataTemplateByMetadataFieldType(String FType) throws Throwable {
 
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/metadataTemplates/search/findByDefinesType?type={FType}",FType)
+                get("/metadataFields/search/findAllMetadataTemplatesByType?type={FType}",FType)
                 .accept(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(MockMvcResultHandlers.print());

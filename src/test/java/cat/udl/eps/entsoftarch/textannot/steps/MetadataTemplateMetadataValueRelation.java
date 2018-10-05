@@ -47,7 +47,7 @@ public class MetadataTemplateMetadataValueRelation {
         mt = metadataTemplateRepository.save(mt);
         mf.setDefinedAt(mt);
         metadataFieldRepository.save(mf);
-        mv.setValued(mf);
+        mv.setValues(mf);
         metadataValueRepository.save(mv);
     }
 
@@ -55,7 +55,7 @@ public class MetadataTemplateMetadataValueRelation {
     @Transactional
     public void iFindMetadataTemplatesByMetadataValueWithValue(String VValue) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/metadataTemplates/search/findByDefinesValuesValue?value={VValue}", VValue)
+                get("/metadataValues/search/findAllMetadataTemplatesByValue?value={VValue}", VValue)
                 .accept(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(MockMvcResultHandlers.print());

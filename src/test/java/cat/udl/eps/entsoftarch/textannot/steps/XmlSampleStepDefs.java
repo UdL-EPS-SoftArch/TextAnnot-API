@@ -94,7 +94,7 @@ public class XmlSampleStepDefs {
                 .andExpect(jsonPath("$.value", is(value)));
 
         stepDefs.mockMvc.perform(
-                get("/metadataValues/"+metaValue.getId()+"/valued")
+                get("/metadataValues/" + metaValue.getId() + "/values")
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())

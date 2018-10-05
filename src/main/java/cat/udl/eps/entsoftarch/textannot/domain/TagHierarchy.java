@@ -15,7 +15,7 @@ public class TagHierarchy extends UriEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer tagHierachyId;
+    private Integer tagHierarchyId;
 
     @NotBlank
     @Column(unique = true)
@@ -23,9 +23,6 @@ public class TagHierarchy extends UriEntity<Integer> {
 
     @Override
     public Integer getId() {
-        return this.tagHierachyId;
+        return this.tagHierarchyId;
     }
-
-    @OneToMany(mappedBy = "definedIn")
-    private List<Tag> defines;
 }

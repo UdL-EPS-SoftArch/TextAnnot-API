@@ -27,7 +27,7 @@ public class MetadataValue extends UriEntity<Integer> {
 
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
-    private	MetadataField valued;
+    private	MetadataField values;
 
     public MetadataValue(){}
 
@@ -38,8 +38,8 @@ public class MetadataValue extends UriEntity<Integer> {
     @Override
     public Integer getId() { return id; }
 
-    public String getFieldName() { return this.valued != null? this.valued.getName() : ""; }
+    public String getFieldName() { return this.values != null? this.values.getName() : ""; }
 
-    public String getFieldCategory() { return this.valued != null? this.valued.getCategory() : ""; }
+    public String getFieldCategory() { return this.values != null? this.values.getCategory() : ""; }
 
 }

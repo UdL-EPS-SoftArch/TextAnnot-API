@@ -91,7 +91,7 @@ public class XMLIngestionService {
             Assert.notNull(metadataField, "The metadata field \"" + currentField + ">" +
                 currentSubfield + "\" is not defined in template " + template.getName());
             MetadataValue metadataValue = new MetadataValue(value);
-            metadataValue.setValued(metadataField);
+            metadataValue.setValues(metadataField);
             metadataValue.setForA(xmlSample);
             metadataValues.add(metadataValue);
         }
