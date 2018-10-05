@@ -42,7 +42,6 @@ public class CreateMetadataValueStepDefs {
 
     @When("^I register a new metadataValue with value \"([^\"]*)\"$")
     public void iRegisterANewMetadataValueWithValue(String testValue) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
         JSONObject metadatavalue = new JSONObject();
         metadatavalue.put("value", testValue);
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -62,7 +61,6 @@ public class CreateMetadataValueStepDefs {
 
     @And("^there is a created Sample with text \"([^\"]*)\"$")
     public void thereIsACreatedSampleWithText(String text) throws Throwable {
-
         JSONObject samplev = new JSONObject();
         samplev.put("text", text);
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -81,7 +79,6 @@ public class CreateMetadataValueStepDefs {
 
     @And("^there is a created metadataField with text \"([^\"]*)\" and type \"([^\"]*)\"$")
     public void thereIsACreatedMetadataFieldWithTextAndType(String name, String type) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
         JSONObject metadataField = new JSONObject();
         metadataField.put("name", name);
         metadataField.put("type", type);

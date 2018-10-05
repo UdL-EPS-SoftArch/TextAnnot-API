@@ -1,12 +1,9 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
 
-import cat.udl.eps.entsoftarch.textannot.domain.MetadataField;
 import cat.udl.eps.entsoftarch.textannot.domain.MetadataTemplate;
 import cat.udl.eps.entsoftarch.textannot.domain.Sample;
-import cat.udl.eps.entsoftarch.textannot.repository.MetadataFieldRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.MetadataTemplateRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.SampleRepository;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -16,18 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class CreateMetadataTemplateDefs {
 
@@ -44,9 +37,6 @@ public class CreateMetadataTemplateDefs {
 
     @When("^I create a new Metadata Template with name \"([^\"]*)\"$")
     public void iCreateANewMetadataTemplateWithName(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-
-
         JSONObject metadataTemplate = new JSONObject();
         metadataTemplate.put("name", arg0);
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -60,7 +50,6 @@ public class CreateMetadataTemplateDefs {
 
     @And("^The metadata template name is \"([^\"]*)\"$")
     public void theObjectNameIs(String name) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/metadataTemplates/{name}", name)
                         .accept(MediaType.APPLICATION_JSON)
@@ -96,7 +85,7 @@ public class CreateMetadataTemplateDefs {
         List<Sample> samples = sampleRepository.findByDescribedByName(name);
         Assert.assertTrue(
                 "Only exists 1 sample describedBy a MetadataTemplate with name " + name,
-                samples.size() == size
+                samples != null && samples.size() == size
         );
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/samples/" + samples.get(0).getId() + "/describedBy")
