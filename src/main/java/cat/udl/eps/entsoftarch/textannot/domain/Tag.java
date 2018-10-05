@@ -19,7 +19,7 @@ public class Tag extends UriEntity<Integer> {
 
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
-    private TagHierarchy definedIn;
+    private TagHierarchy definedAt;
 
     public Tag(String name) {
         this.setName(name);
