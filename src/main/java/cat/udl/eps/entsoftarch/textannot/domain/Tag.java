@@ -22,11 +22,13 @@ public class Tag extends UriEntity<Integer> {
 
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
-
     private TagHierarchy tagHierarchy;
 
     @ManyToOne
     private Tag parent;
+
+    @OneToMany(mappedBy = "parent")
+    private List<Tag> child;
 
     public Tag(String name) {
         this.setName(name);

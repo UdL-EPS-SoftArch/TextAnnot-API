@@ -33,8 +33,9 @@ public class TagStepDefs {
     @Autowired
     private TagRepository tagRepository;
 
-    private Tag tag;
+    private Tag tag, parent, child;
     private TagHierarchy tagHierarchy;
+    private String childUri, parentUri;
 
     @When("^I create a new tag with name \"([^\"]*)\"$")
     public void iCreateANewTagWithName(String name) throws Throwable {
@@ -97,6 +98,53 @@ public class TagStepDefs {
                     .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
                 .andExpect(jsonPath("$._embedded.tags[0].id", is(tag.getId()))
+        );
+    }
+
+    @And("^I create the parent Tag with name \"([^\"]*)\"$")
+    public void iCreateTheParentTagWithName(String parentName) throws Throwable {
+        parent = new Tag(parentName);
+        tagRepository.save(parent);
+        parentUri = parent.getUri();
+
+    }
+
+    @And("^I create the child Tag with name \"([^\"]*)\"$")
+    public void iCreateTheChildTagWithName(String childName) throws Throwable {
+        child = new Tag(childName);
+        tagRepository.save(child);
+        childUri = child.getUri();
+    }
+
+    @When("^I set the parent with name \"([^\"]*)\" to child with name \"([^\"]*)\"$")
+    public void iSetTheParentWithNameToChildWithName(String parentName, String childName) throws Throwable {
+        parent = tagRepository.findByNameContaining(parentName).get(0);
+        child = tagRepository.findByNameContaining(childName).get(0);
+        child.setParent(parent);
+    }
+
+    @And("^I create link between parent with name \"([^\"]*)\" and child with name \"([^\"]*)\"$")
+    public void iCreateLinkBetweenParentWithNameAndChildWithName(String parentName, String childName) throws Throwable {
+        stepDefs.mockMvc.perform(
+            put(childUri + "/parent")
+                .contentType("text/uri-list")
+                .content(parentUri)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(AuthenticationStepDefs.authenticate()))
+            .andDo(print()
+        );
+
+
+    }
+
+    @Then("^Parent with name \"([^\"]*)\" was set correctly to the child with name \"([^\"]*)\"$")
+    public void parentWithNameWasSetCorrectlyToTheChildWithName(String parentName, String childName) throws Throwable {
+        stepDefs.mockMvc.perform(
+            get(parentUri + "/child")
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(AuthenticationStepDefs.authenticate()))
+            .andDo(print())
+            .andExpect(jsonPath("$._embedded.tags[0].id", is(child.getId()))
         );
     }
 }
