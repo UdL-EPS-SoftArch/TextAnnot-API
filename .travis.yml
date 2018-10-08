@@ -21,7 +21,7 @@ after_success:
       docker tag $REPO:$TRAVIS_COMMIT registry.heroku.com/textannot-api/web;
       docker push registry.heroku.com/textannot-api/web;
       wget -qO- https://toolbelt.heroku.com/install.sh | sh;
-      heroku container:release web --app textannot;
+      heroku container:release web --app textannot-api;
     fi
 
 notifications:
