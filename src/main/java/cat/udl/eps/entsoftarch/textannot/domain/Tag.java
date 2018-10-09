@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -27,8 +28,6 @@ public class Tag extends UriEntity<Integer> {
     @ManyToOne
     private Tag parent;
 
-    @OneToMany(mappedBy = "parent")
-    private List<Tag> child;
 
     public Tag(String name) {
         this.setName(name);

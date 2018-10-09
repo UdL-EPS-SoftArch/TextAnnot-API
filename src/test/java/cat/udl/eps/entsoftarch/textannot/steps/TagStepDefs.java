@@ -77,10 +77,8 @@ public class TagStepDefs {
     @When("^I create a new tag with name \"([^\"]*)\" defined in the tag hierarchy \"([^\"]*)\"$")
     public void iCreateANewTagWithNameDefinedInTheTagHierarchy(String name, String tagHierName) throws Throwable {
         List<Tag> tags = tagRepository.findByNameContaining(name);
-        Optional<TagHierarchy> tagHier= tagHierarchyRepository.findByName(tagHierName);
         if(!tags.isEmpty())
             tag.setName(tags.get(0).getName());
-        tagHier.ifPresent(tagHierarchy1 -> tag.setTagHierarchy(tagHierarchy1));
         stepDefs.result = stepDefs.mockMvc.perform(
                 put("/tags/" + tag.getId() + "/tagHierarchy")
                     .contentType("text/uri-list")
@@ -93,7 +91,7 @@ public class TagStepDefs {
     @Then("^The tag hierarchy \"([^\"]*)\" defines a tag with the text \"([^\"]*)\"$")
     public void theTagHierarchyDefinesATagWithTheText(String tagHierName, String name) throws Throwable {
         stepDefs.mockMvc.perform(
-                get("/tagHierarchies/" + tagHierarchy.getId() + "/defines")
+                get("/tags/search/findByTagHierarchy?tagHierarchy=" + tagHierarchy.getUri())
                     .accept(MediaType.APPLICATION_JSON)
                     .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
@@ -140,7 +138,7 @@ public class TagStepDefs {
     @Then("^Parent with name \"([^\"]*)\" was set correctly to the child with name \"([^\"]*)\"$")
     public void parentWithNameWasSetCorrectlyToTheChildWithName(String parentName, String childName) throws Throwable {
         stepDefs.mockMvc.perform(
-            get(parentUri + "/child")
+            get("/tags/search/findByParent?parent=" + parentUri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate()))
             .andDo(print())
