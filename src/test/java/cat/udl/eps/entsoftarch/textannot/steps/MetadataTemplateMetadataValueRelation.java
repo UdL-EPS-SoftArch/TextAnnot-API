@@ -9,7 +9,6 @@ import cat.udl.eps.entsoftarch.textannot.repository.MetadataValueRepository;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -38,16 +37,16 @@ public class MetadataTemplateMetadataValueRelation {
     private List<MetadataTemplate> metadataTemplateList;
 
     @Given("^A MetadataTemplate with name \"([^\"]*)\" defines a MetadataField with name \"([^\"]*)\" and type \"([^\"]*)\" that values a MetadataValue with value \"([^\"]*)\"$")
-    public void aMetadataTemplateWithNameDefinesAMetadataFieldWithNameAndTypeThatValuesAMetadataValueWithValue(String name, String FName, String FType, String VValue) throws Throwable {
+    public void aMetadataTemplateWithNameDefinesAMetadataFieldWithNameAndTypeThatValuesAMetadataValueWithValue(String name, String FName, String FType, String VValue) {
         MetadataTemplate mt = new MetadataTemplate();
         mt.setName(name);
         MetadataField mf = new MetadataField(FName, FType);
         MetadataValue mv = new MetadataValue(VValue);
 
         mt = metadataTemplateRepository.save(mt);
-        mf.setDefinedIn(mt);
+        mf.setDefinedAt(mt);
         metadataFieldRepository.save(mf);
-        mv.setValued(mf);
+        mv.setValues(mf);
         metadataValueRepository.save(mv);
     }
 
@@ -55,7 +54,7 @@ public class MetadataTemplateMetadataValueRelation {
     @Transactional
     public void iFindMetadataTemplatesByMetadataValueWithValue(String VValue) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/metadataTemplates/search/findByDefinesValuesValue?value={VValue}", VValue)
+                get("/metadataValues/search/findAllMetadataTemplatesByValue?value={VValue}", VValue)
                 .accept(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(MockMvcResultHandlers.print());

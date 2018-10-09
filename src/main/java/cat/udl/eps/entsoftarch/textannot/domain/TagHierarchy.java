@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 @Entity
 @Data
@@ -22,7 +21,4 @@ public class TagHierarchy extends UriEntity<Integer> {
     @NotBlank
     @Column(unique = true)
     private String name;
-
-    @OneToMany(mappedBy = "definedIn")
-    private List<Tag> defines;
 }

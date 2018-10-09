@@ -4,18 +4,14 @@ import cat.udl.eps.entsoftarch.textannot.domain.MetadataField;
 import cat.udl.eps.entsoftarch.textannot.domain.MetadataTemplate;
 import cat.udl.eps.entsoftarch.textannot.repository.MetadataFieldRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.MetadataTemplateRepository;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -34,13 +30,13 @@ public class MetadataTemplateMetadataFieldRelation {
     private List<MetadataTemplate> MetadataTemplatesList;
 
     @Given("^A MetadataTemplate with name \"([^\"]*)\" defines a MetadataField with name \"([^\"]*)\" and type \"([^\"]*)\"$")
-    public void aMetadataTemplateWithNameDefinesAMetadataFieldWithNameAndType(String name, String FName, String FType) throws Throwable {
+    public void aMetadataTemplateWithNameDefinesAMetadataFieldWithNameAndType(String name, String FName, String FType) {
         MetadataTemplate mt = new MetadataTemplate();
         mt.setName(name);
         MetadataField mf = new MetadataField(FName, FType);
 
         mt = mtr.save(mt);
-        mf.setDefinedIn(mt);
+        mf.setDefinedAt(mt);
         mtfr.save(mf);
     }
 
@@ -48,7 +44,7 @@ public class MetadataTemplateMetadataFieldRelation {
     public void iFindMetadataTemplateByMetadataFieldNameAndType(String FName, String FType) throws Throwable {
 
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/metadataTemplates/search/findByDefinesNameAndDefinesType?name={FName}&type={FType}", FName, FType)
+                get("/metadataFields/search/findAllMetadataTemplatesByNameAndType?name={FName}&type={FType}", FName, FType)
                 .accept(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(MockMvcResultHandlers.print());
@@ -63,13 +59,13 @@ public class MetadataTemplateMetadataFieldRelation {
 
 
     @Given("^A MetadataTemplate with name \"([^\"]*)\" which defines a MetadataFields with name \"([^\"]*)\"$")
-    public void aMetadataTemplateWithNameWhichDefinesAMetadataFieldsWithName(String name, String FName) throws Throwable {
+    public void aMetadataTemplateWithNameWhichDefinesAMetadataFieldsWithName(String name, String FName) {
         MetadataTemplate m = new MetadataTemplate();
         m.setName(name);
         MetadataField f = new MetadataField(FName,"NTp"); //no type
 
         m = mtr.save(m);
-        f.setDefinedIn(m);
+        f.setDefinedAt(m);
         mtfr.save(f);
 
     }
@@ -78,20 +74,20 @@ public class MetadataTemplateMetadataFieldRelation {
     public void iFindMetadataTemplateByMetadataFieldName(String FName) throws Throwable {
 
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/metadataTemplates/search/findByDefinesName?name={FName}", FName)
+                get("/metadataFields/search/findAllMetadataTemplatesByName?name={FName}", FName)
                 .accept(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(MockMvcResultHandlers.print());
     }
 
     @Given("^A MetadataTemplate with name \"([^\"]*)\" defines a MetadataField with type \"([^\"]*)\"$")
-    public void aMetadataTemplateWithNameDefinesAMedatataFieldWithType(String name, String FType) throws Throwable {
+    public void aMetadataTemplateWithNameDefinesAMedatataFieldWithType(String name, String FType) {
         MetadataTemplate m = new MetadataTemplate();
         m.setName(name);
         MetadataField f = new MetadataField("NName",FType); //no name
 
         m = mtr.save(m);
-        f.setDefinedIn(m);
+        f.setDefinedAt(m);
         mtfr.save(f);
     }
 
@@ -99,7 +95,7 @@ public class MetadataTemplateMetadataFieldRelation {
     public void iFindMetadataTemplateByMetadataFieldType(String FType) throws Throwable {
 
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/metadataTemplates/search/findByDefinesType?type={FType}",FType)
+                get("/metadataFields/search/findAllMetadataTemplatesByType?type={FType}",FType)
                 .accept(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(MockMvcResultHandlers.print());

@@ -3,19 +3,18 @@ package cat.udl.eps.entsoftarch.textannot.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class MetadataValue extends UriEntity<Integer> {
 
     @Id
@@ -23,8 +22,6 @@ public class MetadataValue extends UriEntity<Integer> {
     private Integer id;
 
     @NotBlank
-    @Column(length = 512) // 512B
-    @Size(max = 512)
     private String value;
 
     @ManyToOne
@@ -33,16 +30,20 @@ public class MetadataValue extends UriEntity<Integer> {
 
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
-    private	MetadataField valued;
+    private	MetadataField values;
 
     public MetadataValue(String value){
         this.value = value;
     }
 
-    public MetadataValue() {
+    public MetadataValue(){
     }
 
-    public String getFieldName() { return this.valued != null? this.valued.getName() : ""; }
+    @Override
+    public Integer getId() { return id; }
 
-    public String getFieldCategory() { return this.valued != null? this.valued.getCategory() : ""; }
+    public String getFieldName() { return this.values != null? this.values.getName() : ""; }
+
+    public String getFieldCategory() { return this.values != null? this.values.getCategory() : ""; }
+
 }
