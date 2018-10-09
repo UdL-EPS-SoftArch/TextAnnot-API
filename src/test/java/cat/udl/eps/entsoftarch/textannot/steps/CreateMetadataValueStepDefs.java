@@ -42,7 +42,6 @@ public class CreateMetadataValueStepDefs {
 
     @When("^I register a new metadataValue with value \"([^\"]*)\"$")
     public void iRegisterANewMetadataValueWithValue(String testValue) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
         JSONObject metadatavalue = new JSONObject();
         metadatavalue.put("value", testValue);
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -62,7 +61,6 @@ public class CreateMetadataValueStepDefs {
 
     @And("^there is a created Sample with text \"([^\"]*)\"$")
     public void thereIsACreatedSampleWithText(String text) throws Throwable {
-
         JSONObject samplev = new JSONObject();
         samplev.put("text", text);
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -81,7 +79,6 @@ public class CreateMetadataValueStepDefs {
 
     @And("^there is a created metadataField with text \"([^\"]*)\" and type \"([^\"]*)\"$")
     public void thereIsACreatedMetadataFieldWithTextAndType(String name, String type) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
         JSONObject metadataField = new JSONObject();
         metadataField.put("name", name);
         metadataField.put("type", type);
@@ -102,7 +99,7 @@ public class CreateMetadataValueStepDefs {
         JSONObject metadataValue = new JSONObject();
         metaField=metadataFieldRepository.findByName(name);
         metadataValue.put("value", value);
-        metadataValue.put("valued", "/metadataFields/"+metaField.getId()+"");
+        metadataValue.put("values", "/metadataFields/" + metaField.getId());
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/metadataValues")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -114,8 +111,7 @@ public class CreateMetadataValueStepDefs {
 
     @And("^It has been created a new metadataValue with value \"([^\"]*)\" for metadataField with text \"([^\"]*)\"$")
     public void itHasBeenCreatedANewMetadataValueWithValueForMetadataFieldWithText(String value, String name) throws Throwable {
-
-        metaValue=metadataValueRepository.findByValue(value);
+        metaValue = metadataValueRepository.findByValue(value);
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/metadataValues/{id}", metaValue.getId())
                         .accept(MediaType.APPLICATION_JSON)
@@ -124,7 +120,7 @@ public class CreateMetadataValueStepDefs {
                 .andExpect(jsonPath("$.value", is(value)));
 
         stepDefs.mockMvc.perform(
-                get("/metadataValues/"+metaValue.getId()+"/valued")
+                get("/metadataValues/" + metaValue.getId() + "/values")
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())

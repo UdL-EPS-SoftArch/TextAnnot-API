@@ -1,14 +1,10 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Data
@@ -24,12 +20,8 @@ public class MetadataField extends UriEntity<Integer> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToMany(mappedBy = "valued")
-    @JsonIdentityReference(alwaysAsId = true)
-    private List<MetadataValue> values = new ArrayList<>();
-
     @ManyToOne
-    private MetadataTemplate definedIn;
+    private MetadataTemplate definedAt;
 
     @Override
     public Integer getId() {
@@ -37,11 +29,11 @@ public class MetadataField extends UriEntity<Integer> {
     }
 
     public MetadataField() {
+        this.name = "";
     }
 
     public MetadataField(String name, String type){
         this.name = name;
         this.type = type;
-
     }
 }

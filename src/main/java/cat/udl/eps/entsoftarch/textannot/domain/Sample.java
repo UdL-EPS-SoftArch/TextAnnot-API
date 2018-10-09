@@ -9,12 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Data
@@ -37,10 +35,6 @@ public class Sample extends UriEntity<Integer>{
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
     private TagHierarchy taggedBy;
-
-    @OneToMany(mappedBy = "forA")
-    @JsonIdentityReference(alwaysAsId = true)
-    private List<MetadataValue> has = new ArrayList<>();
 
     public Sample(String text) {
         this.text=text;
