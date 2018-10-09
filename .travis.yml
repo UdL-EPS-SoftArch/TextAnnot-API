@@ -1,9 +1,7 @@
 language: java
 jdk:
-- oraclejdk8
-
+  - oraclejdk8
 sudo: required
-
 services:
   - docker
 
@@ -13,7 +11,7 @@ branches:
 
 after_success:
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
-      docker login -u $DOCKER_USER -p $DOCKER_PASS;
+      echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin;
       export REPO=udlepssoftarch/textannot-api;
       export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`;
       docker build -f Dockerfile -t $REPO:$TRAVIS_COMMIT .;
@@ -22,11 +20,13 @@ after_success:
       docker login --username=_ --password=$HEROKU_TOKEN registry.heroku.com;
       docker tag $REPO:$TRAVIS_COMMIT registry.heroku.com/textannot-api/web;
       docker push registry.heroku.com/textannot-api/web;
+      wget -qO- https://toolbelt.heroku.com/install.sh | sh;
+      heroku container:release web --app textannot-api;
     fi
 
 notifications:
   slack:
+    secure: CLJRQTpiv5oCQukwIy/I71zb+iPWMaRg8ZNan0zy3BX1BPXxAdP8S7zX27z/m8wdtV0+ogsHHOXLEkGFbkhfkMXQFO/SRtnrV5OdOb5KEWg5cJZsG8PPW7tC1RcFprFaL9rcJ14XAYn+QrFlSbkvuHMnL2HMXHPkPZ1/7zHg3MAnIlBROIBjM+IpqLBF1c0I+f5NPzH1ILncxezevRHCsXA4WeG1jXz4YiM2BeGD9DAoeQa8X1yhiXzYTNumRAqhmguUuSzDi4VCPJwIiIMsA/buIAS+1GdVOUBFU6+mnM01xKIbfFvXZJyySfQ3Y2WQ3kCOc4p+XdnLOLzmSTcOdwpiemWlqO7+E+k6i2qAIKT43e4C+DKq5Avgu1Wodo+dJerZeKEFvPgMAmc0sFWHgXYQmeYsgS49iJhuDuOII33YCbsDN9uUsMQqgSdr9twS0r7BdFVOsLwy3gwNMMcDK7r43e0hPIjWV6GdLmpylozUrVkdw4dEULrJct81GbDOx6Zdea0B+EzVm8fQaNcCi2jdHrREgDZVk4UeAwqSGPnB0bRCd9p1/sKtYOH1Km75bpGE81ajpwd+kohYVYAl5OYVbTTCISYySudHyAwTv/Qb/G9GfeCmwOEDrp2I0im+ePJqd0hlBE1ttZOcrKHCTzEsN8ODqnnN1510yoEtLY8=
     on_success: change
     on_failure: always
     on_pull_requests: true
-    secure: NQTUcOgLxjUV+9w8ZbwKR15dTKS2Z+Kue1MIEnqcIIaMyjI53W1kSeAsWi21jPixQM42wqr01X+dzft1uOEYj19UMAoHXn092OU+YqvMBkp/J9RekMmsuQpieYUhTftJhIdTXqtiPwTIW2xvwTCIFcXeOSo9XZ/Y9EqpKS1mk050AGLRLsb15GRP4HIgrUVaAYMzNgfRe6zrz4rZLF8h7EIwELwVMbEshaGRdjSLmzycg4PpLBFwjic+7CpiTKPPi8wpLAZuczM1+YyNwXPx9IiArrAc5pWBihJzDvJi3eloMGV9e3t8khs9nkfw/SZ9C8ho4Uh5csA713I5TRmSHplCWLqY7Nl479+ynCDcQbQ/ax8UoAFJgeZYJyJkNvTKjfWvOP1eRvtEDawM28tIKVdghJFxSeWgJScAZnSf1fnAEfgOpCMF6XZB8Ffr0pzvhOCWaSgEVXvKYwSkrm8zuy39DEnj/AiyuVlxXQQSekFd2CMHeybsY5+dzfeobTqeC68N3DmAonqSc/2iUM9KbKej3wfzpj1IviM6yTg7RPfJUZBNXxJXq3+wcHyILtEUVr+xalZWc8PbAD6+XJYSlOfGxi1WQ0IqhxsCSCJsghRsBrS2NY5c5jfQVVTJC36gyhzGYm3aHrdpzkKcSqaV9y9C4U6nFMlIewjNIZr5qyk=
