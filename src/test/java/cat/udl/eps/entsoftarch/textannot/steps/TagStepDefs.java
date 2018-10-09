@@ -6,7 +6,6 @@ import cat.udl.eps.entsoftarch.textannot.domain.TagHierarchy;
 import cat.udl.eps.entsoftarch.textannot.repository.TagHierarchyRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.TagRepository;
 import cucumber.api.PendingException;
-import cucumber.api.java.bs.A;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -14,8 +13,6 @@ import org.json.JSONObject;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-
-import javax.print.attribute.standard.Media;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +23,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class TagStepDefs {
 
@@ -37,8 +33,9 @@ public class TagStepDefs {
     @Autowired
     private TagRepository tagRepository;
 
-    private Tag tag;
+    private Tag tag, parent, child;
     private TagHierarchy tagHierarchy;
+    private String childUri, parentUri;
 
     @When("^I create a new tag with name \"([^\"]*)\"$")
     public void iCreateANewTagWithName(String name) throws Throwable {
@@ -80,12 +77,10 @@ public class TagStepDefs {
     @When("^I create a new tag with name \"([^\"]*)\" defined in the tag hierarchy \"([^\"]*)\"$")
     public void iCreateANewTagWithNameDefinedInTheTagHierarchy(String name, String tagHierName) throws Throwable {
         List<Tag> tags = tagRepository.findByNameContaining(name);
-        Optional<TagHierarchy> tagHier= tagHierarchyRepository.findByName(tagHierName);
         if(!tags.isEmpty())
             tag.setName(tags.get(0).getName());
-        tagHier.ifPresent(tagHierarchy1 -> tag.setDefinedIn(tagHierarchy1));
         stepDefs.result = stepDefs.mockMvc.perform(
-                put("/tags/" + tag.getId() + "/definedIn")
+                put("/tags/" + tag.getId() + "/tagHierarchy")
                     .contentType("text/uri-list")
                     .content(tag.getUri())
                     .accept(MediaType.APPLICATION_JSON)
@@ -96,11 +91,58 @@ public class TagStepDefs {
     @Then("^The tag hierarchy \"([^\"]*)\" defines a tag with the text \"([^\"]*)\"$")
     public void theTagHierarchyDefinesATagWithTheText(String tagHierName, String name) throws Throwable {
         stepDefs.mockMvc.perform(
-                get("/tagHierarchies/" + tagHierarchy.getId() + "/defines")
+                get("/tags/search/findByTagHierarchy?tagHierarchy=" + tagHierarchy.getUri())
                     .accept(MediaType.APPLICATION_JSON)
                     .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
                 .andExpect(jsonPath("$._embedded.tags[0].id", is(tag.getId()))
+        );
+    }
+
+    @And("^I create the parent Tag with name \"([^\"]*)\"$")
+    public void iCreateTheParentTagWithName(String parentName) throws Throwable {
+        parent = new Tag(parentName);
+        tagRepository.save(parent);
+        parentUri = parent.getUri();
+
+    }
+
+    @And("^I create the child Tag with name \"([^\"]*)\"$")
+    public void iCreateTheChildTagWithName(String childName) throws Throwable {
+        child = new Tag(childName);
+        tagRepository.save(child);
+        childUri = child.getUri();
+    }
+
+    @When("^I set the parent with name \"([^\"]*)\" to child with name \"([^\"]*)\"$")
+    public void iSetTheParentWithNameToChildWithName(String parentName, String childName) throws Throwable {
+        parent = tagRepository.findByNameContaining(parentName).get(0);
+        child = tagRepository.findByNameContaining(childName).get(0);
+        child.setParent(parent);
+    }
+
+    @And("^I create link between parent with name \"([^\"]*)\" and child with name \"([^\"]*)\"$")
+    public void iCreateLinkBetweenParentWithNameAndChildWithName(String parentName, String childName) throws Throwable {
+        stepDefs.mockMvc.perform(
+            put(childUri + "/parent")
+                .contentType("text/uri-list")
+                .content(parentUri)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(AuthenticationStepDefs.authenticate()))
+            .andDo(print()
+        );
+
+
+    }
+
+    @Then("^Parent with name \"([^\"]*)\" was set correctly to the child with name \"([^\"]*)\"$")
+    public void parentWithNameWasSetCorrectlyToTheChildWithName(String parentName, String childName) throws Throwable {
+        stepDefs.mockMvc.perform(
+            get("/tags/search/findByParent?parent=" + parentUri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(AuthenticationStepDefs.authenticate()))
+            .andDo(print())
+            .andExpect(jsonPath("$._embedded.tags[0].id", is(child.getId()))
         );
     }
 }

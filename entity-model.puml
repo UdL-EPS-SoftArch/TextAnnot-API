@@ -22,7 +22,7 @@ class MetadataTemplate <<Metadata>> {
 class MetadataField <<Metadata>> {
     String name, type
 }
-MetadataTemplate "definedIn 1" -- "defines many" MetadataField
+MetadataTemplate "tagHierarchy 1" -- "defines many" MetadataField
 MetadataTemplate "describedBy 1" -- "describes many" Sample
 
 class MetadataValue <<Metadata>> {
@@ -47,7 +47,7 @@ TagHierarchy "taggedBy 1" -- "tags many" Sample
 class Tag <<Annotation>> {
     String name
 }
-Tag "defines many" -up- "definedIn 1" TagHierarchy
+Tag "defines many" -up- "tagHierarchy 1" TagHierarchy
 Tag "child many" -- "parent 0..1" Tag
 Tag "uses 1" -- "usedIn many" Annotation
 

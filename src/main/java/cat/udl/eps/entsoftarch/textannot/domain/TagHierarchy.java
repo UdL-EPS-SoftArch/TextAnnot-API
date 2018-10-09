@@ -3,26 +3,27 @@ package cat.udl.eps.entsoftarch.textannot.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
-@Entity
 @Data
-@NoArgsConstructor
+@Entity
 @EqualsAndHashCode(callSuper = true)
 public class TagHierarchy extends UriEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer id;
+    private Integer tagHierachyId;
 
     @NotBlank
     @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "definedIn")
-    private List<Tag> defines;
+    @Override
+    public Integer getId() {
+        return this.tagHierachyId;
+    }
+
 }
