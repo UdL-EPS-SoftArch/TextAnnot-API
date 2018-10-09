@@ -12,9 +12,8 @@ import java.util.List;
 
 @RepositoryRestResource
 public interface AnnotationRepository extends PagingAndSortingRepository<Annotation, Integer> {
-    Annotation findByid(@Param("id") Integer id);
-    List<Annotation> findByAnnotated(@Param("value") Sample value);
-    List<Annotation> findByTagged(@Param("value") Tag value);
+    List<Annotation> findBySample(@Param("sample") Sample sample);
+    List<Annotation> findByTag(@Param("tag") Tag tag);
 
 }
 

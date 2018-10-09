@@ -1,20 +1,28 @@
 language: java
 jdk:
-- oraclejdk8
+  - oraclejdk8
 sudo: required
 services:
-- docker
+  - docker
+
 branches:
   only:
   - master
+
 after_success:
-- if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
-  docker login -u $DOCKER_USER -p $DOCKER_PASS; export REPO=udlepssoftarch/textannot-api;
-  export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH
-  ; fi`; docker build -f Dockerfile -t $REPO:$TRAVIS_COMMIT .; docker tag $REPO:$TRAVIS_COMMIT
-  $REPO:$TAG; docker push $REPO; docker login --username=_ --password=$HEROKU_TOKEN
-  registry.heroku.com; docker tag $REPO:$TRAVIS_COMMIT registry.heroku.com/textannot-api/web;
-  docker push registry.heroku.com/textannot-api/web; fi
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
+      echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin;
+      export REPO=udlepssoftarch/textannot-api;
+      export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`;
+      docker build -f Dockerfile -t $REPO:$TRAVIS_COMMIT .;
+      docker tag $REPO:$TRAVIS_COMMIT $REPO:$TAG;
+      docker push $REPO;
+      docker login --username=_ --password=$HEROKU_TOKEN registry.heroku.com;
+      docker tag $REPO:$TRAVIS_COMMIT registry.heroku.com/textannot-api/web;
+      docker push registry.heroku.com/textannot-api/web;
+      wget -qO- https://toolbelt.heroku.com/install.sh | sh;
+      heroku container:release web --app textannot-api;
+    fi
 
 notifications:
   slack:
