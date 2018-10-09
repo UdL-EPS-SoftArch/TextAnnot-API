@@ -37,17 +37,4 @@ public class Tag extends UriEntity<Integer> {
         this.setTagHierarchy(tagHierarchy);
         this.setName(name);
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public Integer getId() {
-        return this.id;
-    }
 }
