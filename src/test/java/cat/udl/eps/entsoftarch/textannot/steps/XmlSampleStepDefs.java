@@ -22,7 +22,10 @@ import cucumber.api.java.en.When;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Optional;
+
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -91,7 +94,7 @@ public class XmlSampleStepDefs {
                 .andExpect(jsonPath("$.value", is(value)));
 
         stepDefs.mockMvc.perform(
-                get("/metadataValues/"+metaValue.getId()+"/valued")
+                get("/metadataValues/" + metaValue.getId() + "/values")
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
@@ -105,7 +108,9 @@ public class XmlSampleStepDefs {
         Resource resource = stepDefs.wac.getResource("classpath:"+filename);
         byte[] content = Files.readAllBytes(resource.getFile().toPath());
         sample.setContent(new String(content, StandardCharsets.UTF_8));
-        sample.setDescribedBy(metadataTemplateRepository.findByName(template));
+        Optional<MetadataTemplate> metadataTemplateOptional = metadataTemplateRepository.findByName(template);
+        Assert.assertTrue("metadataTemplate is present", metadataTemplateOptional.isPresent());
+        sample.setDescribedBy(metadataTemplateOptional.get());
 
         String message = stepDefs.mapper.writeValueAsString(sample);
 
@@ -123,7 +128,7 @@ public class XmlSampleStepDefs {
     public void itHasBeenCreatedAXmlSampleWith(int count, List<List<String>> expectedFieldValues)
         throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-            get(newResourceUri+"/has")
+            get("/metadataValues/search/findByForA?sample=" + newResourceUri )
                 .accept(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate()))
             .andDo(print())
@@ -145,13 +150,15 @@ public class XmlSampleStepDefs {
 
     @And("^The metadata template \"([^\"]*)\" has fields$")
     public void theMetadataTemplateHasFields(String templateName, List<List<String>> fields) throws Throwable {
-        MetadataTemplate template = metadataTemplateRepository.findByName(templateName);
+        Optional<MetadataTemplate> metadataTemplateOptional = metadataTemplateRepository.findByName(templateName);
+        Assert.assertTrue("metadataTemplate is present", metadataTemplateOptional.isPresent());
+        MetadataTemplate template = metadataTemplateOptional.get();
         fields.forEach(fieldNameType -> {
             MetadataField field = new MetadataField();
             field.setCategory(fieldNameType.get(0));
             field.setName(fieldNameType.get(1));
             field.setType(fieldNameType.get(2));
-            field.setDefinedIn(template);
+            field.setDefinedAt(template);
             metadataFieldRepository.save(field);
         });
     }
