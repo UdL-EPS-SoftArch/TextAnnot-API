@@ -31,7 +31,7 @@ public class Annotation extends UriEntity<Integer> {
     @NonNull
     private Integer end;
 
-    private Boolean reviewed;
+    private Boolean reviewed = false;
 
     @ManyToOne
     private Sample sample;
