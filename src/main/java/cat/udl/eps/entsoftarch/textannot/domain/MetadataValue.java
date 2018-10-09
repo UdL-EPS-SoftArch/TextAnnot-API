@@ -5,8 +5,11 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -29,10 +32,11 @@ public class MetadataValue extends UriEntity<Integer> {
     @JsonIdentityReference(alwaysAsId = true)
     private	MetadataField values;
 
-    public MetadataValue(){}
-
     public MetadataValue(String value){
         this.value = value;
+    }
+
+    public MetadataValue(){
     }
 
     @Override

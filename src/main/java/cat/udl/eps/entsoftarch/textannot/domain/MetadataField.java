@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 public class MetadataField extends UriEntity<Integer> {
 
     @NotBlank
-    String name, type;
+    String name="", type;
 
     String category;
 
@@ -28,7 +28,7 @@ public class MetadataField extends UriEntity<Integer> {
         return id;
     }
 
-    public MetadataField(){
+    public MetadataField() {
         this.name = "";
     }
 

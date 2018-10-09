@@ -77,14 +77,13 @@ public class ListSampleAnnotationsStepDefs {
                 .andDo(print());
 
         newSampleUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
-        System.out.println(newSampleUri);
     }
 
     @When("^I link the previous annotation with the previous sample$")
     public void iLinkThePreviousAnnotationWithThePreviousSample() throws Throwable {
 
         JSONObject annotated = new JSONObject();
-        annotated.put("annotated",newSampleUri);
+        annotated.put("sample",newSampleUri);
 
         stepDefs.mockMvc.perform(patch(newAnnotationUri).content(annotated.toString())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -99,7 +98,7 @@ public class ListSampleAnnotationsStepDefs {
 
     @Then("^The annotation with the text \"([^\"]*)\" has been linked to the sample$")
     public void theAnnotationWithTheTextHasBeenLinkedToTheSample(String arg0) throws Throwable {
-        stepDefs.mockMvc.perform(get(newAnnotationUri + "/annotated")
+        stepDefs.mockMvc.perform(get(newAnnotationUri + "/sample")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate()))
@@ -108,7 +107,7 @@ public class ListSampleAnnotationsStepDefs {
     }
 
     @Given("^I create a different sample with text \"([^\"]*)\" with (\\d+) related Annotations$")
-    public void iCreateADifferentSampleWithTextWithRelatedAnnotations(String arg0, int arg1) throws Throwable {
+    public void iCreateADifferentSampleWithTextWithRelatedAnnotations(String arg0, int arg1) {
 
         Sample annotated = new Sample();
         this.expected = annotated;
@@ -120,7 +119,7 @@ public class ListSampleAnnotationsStepDefs {
             Annotation toAdd = new Annotation();
             toAdd.setStart(1 + i);
             toAdd.setEnd(2 + i);
-            toAdd.setAnnotated(annotated);
+            toAdd.setSample(annotated);
             annotationRepository.save(toAdd);
         }
 
@@ -128,9 +127,9 @@ public class ListSampleAnnotationsStepDefs {
     }
 
     @When("^I search by Annotated as the last sample$")
-    public void iSearchByAnnotatedAsTheLastSample() throws Throwable {
+    public void iSearchByAnnotatedAsTheLastSample() {
 
-        this.result = annotationRepository.findByAnnotated(expected);
+        this.result = annotationRepository.findBySample(expected);
 
 
     }

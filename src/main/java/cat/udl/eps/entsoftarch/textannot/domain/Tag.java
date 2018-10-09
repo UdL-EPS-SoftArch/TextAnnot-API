@@ -2,12 +2,14 @@ package cat.udl.eps.entsoftarch.textannot.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Tag extends UriEntity<Integer> {
 
     @Id
@@ -25,16 +27,8 @@ public class Tag extends UriEntity<Integer> {
         this.setName(name);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public Integer getId() {
-        return this.id;
+    public Tag(String name, TagHierarchy definedIn){
+        this.setDefinedAt(definedIn);
+        this.setName(name);
     }
 }

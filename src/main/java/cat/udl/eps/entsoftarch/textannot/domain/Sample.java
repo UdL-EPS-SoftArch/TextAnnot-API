@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Data;
@@ -37,9 +36,10 @@ public class Sample extends UriEntity<Integer>{
     @JsonIdentityReference(alwaysAsId = true)
     private TagHierarchy taggedBy;
 
-    public Sample() { }
-
     public Sample(String text) {
         this.text=text;
+    }
+
+    public Sample() {
     }
 }

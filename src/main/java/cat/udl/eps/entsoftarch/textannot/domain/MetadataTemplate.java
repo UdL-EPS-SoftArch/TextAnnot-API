@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
+import lombok.NoArgsConstructor;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -8,8 +9,9 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.time.ZonedDateTime;
 
-@Data
 @Entity
+@Data
+@NoArgsConstructor
 public class MetadataTemplate extends UriEntity<String> {
 
     @Id @NotBlank
