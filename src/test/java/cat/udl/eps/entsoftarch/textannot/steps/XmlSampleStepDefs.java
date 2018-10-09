@@ -128,7 +128,7 @@ public class XmlSampleStepDefs {
     public void itHasBeenCreatedAXmlSampleWith(int count, List<List<String>> expectedFieldValues)
         throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-            get(newResourceUri+"/has")
+            get("/metadataValues/search/findByForA?sample=" + newResourceUri )
                 .accept(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate()))
             .andDo(print())
