@@ -83,9 +83,9 @@ public class TagStepDefs {
         Optional<TagHierarchy> tagHier= tagHierarchyRepository.findByName(tagHierName);
         if(!tags.isEmpty())
             tag.setName(tags.get(0).getName());
-        tagHier.ifPresent(tagHierarchy1 -> tag.setDefinedIn(tagHierarchy1));
+        tagHier.ifPresent(tagHierarchy1 -> tag.setDefinedAt(tagHierarchy1));
         stepDefs.result = stepDefs.mockMvc.perform(
-                put("/tags/" + tag.getId() + "/definedIn")
+                put("/tags/" + tag.getId() + "/definedAt")
                     .contentType("text/uri-list")
                     .content(tag.getUri())
                     .accept(MediaType.APPLICATION_JSON)
@@ -95,8 +95,11 @@ public class TagStepDefs {
 
     @Then("^The tag hierarchy \"([^\"]*)\" defines a tag with the text \"([^\"]*)\"$")
     public void theTagHierarchyDefinesATagWithTheText(String tagHierName, String name) throws Throwable {
+        Optional<TagHierarchy> optionalTagHierarchy = tagHierarchyRepository.findByName(tagHierName);
+        Assert.assertTrue("Exist a TagHierarchy", optionalTagHierarchy.isPresent());
+        TagHierarchy tagHierarchy = optionalTagHierarchy.get();
         stepDefs.mockMvc.perform(
-                get("/tagHierarchies/" + tagHierarchy.getId() + "/defines")
+                get("/tags/search/findByDefinedAt?tagHierarchy=" + tagHierarchy.getUri())
                     .accept(MediaType.APPLICATION_JSON)
                     .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
