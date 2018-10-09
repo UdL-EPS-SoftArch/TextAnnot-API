@@ -66,7 +66,7 @@ public class SampleMetadataRelation {
     @When("^I find Samples by MetadataValue value \"([^\"]*)\" and MetadataField name \"([^\"]*)\"$")
     public void iFindSamplesByMetadataValueValueAndMetadataFieldName(String value, String name) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/samples/search/findByHasValuesNameAndHasValue?name={name}&value={value}", name, value)
+                get("/samples/search/findAllSamplesWithFieldNameAndValue?name={name}&value={value}", name, value)
                 .accept(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate())
         ).andDo(print());
