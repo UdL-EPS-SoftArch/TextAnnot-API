@@ -20,10 +20,6 @@ public class MetadataTemplate extends UriEntity<String> {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime startDate;
 
-
-    @OneToMany(mappedBy = "describedBy")
-    private List<Sample> describes;
-
     @Override
     public String getId() {
         return this.name;

@@ -11,17 +11,20 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,9 +36,11 @@ public class CreateMetadataTemplateDefs {
     @Autowired
     private SampleRepository sampleRepository;
     @Autowired
-    private MetadataTemplateRepository mtR;
+    private MetadataTemplateRepository metadataTemplateRepository;
 
     protected ResultActions result;
+
+    private Sample sample;
 
     @When("^I create a new Metadata Template with name \"([^\"]*)\"$")
     public void iCreateANewMetadataTemplateWithName(String arg0) throws Throwable {
@@ -64,35 +69,41 @@ public class CreateMetadataTemplateDefs {
                 .andExpect(jsonPath("$.name", is(name)));
     }
 
-    @Then("^The metadataTemplate with name \"([^\"]*)\" have (\\d+) samples$")
-    public void theMetadataTemplateWithNameHaveSamples(String name, int size) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        stepDefs.result = stepDefs.mockMvc.perform(
-                get("/metadataTemplates/{name}/describes", name)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print())
-                .andExpect(jsonPath("$._embedded.samples", hasSize(size)));
-    }
-
     @When("^There is a single Sample with text \"([^\"]*)\"$")
     public void thereIsASingleSampleWithText(String text) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        Sample s = new Sample(text);
-        sampleRepository.save(s);
+        sample = new Sample();
+        sample.setText(text);
+        sampleRepository.save(sample);
     }
 
 
     @When("^I create a new metadata Template \"([^\"]*)\" with the previous sample$")
     public void iCreateANewMetadataTemplateThePreviousSample(String name) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        MetadataTemplate mt =  new MetadataTemplate();
-        mt.setName(name);
-        mt = mtR.save(mt);
-        Sample s = sampleRepository.findByText("Test");
-        s.setDescribedBy(mt);
-        sampleRepository.save(s);
+        MetadataTemplate metadataTemplate =  new MetadataTemplate();
+        metadataTemplate.setName(name);
+        metadataTemplateRepository.save(metadataTemplate);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                put("/samples/"+ sample.getId() +"/describedBy")
+                        .contentType("text/uri-list")
+                        .content(metadataTemplate.getUri())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
 
+    @Then("^The metadataTemplate with name \"([^\"]*)\" have (\\d+) samples$")
+    public void theMetadataTemplateWithNameHaveSamples(String name, int size) throws Throwable {
+        List<Sample> samples = sampleRepository.findByDescribedByName(name);
+        Assert.assertTrue(
+                "Only exists 1 sample describedBy a MetadataTemplate with name " + name,
+                samples.size() == size
+        );
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/samples/" + samples.get(0).getId() + "/describedBy")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$.name", is(name)));
     }
 
 }
