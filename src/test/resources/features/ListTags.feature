@@ -31,3 +31,27 @@ Feature: List tags
     When I list tags
     Then The response code is 200
     And The tags' list is empty
+
+  Scenario: Having 1 tag hierarchy, list tags authenticated as a linguist
+    Given I login as "user" with password "password"
+    Given I create a new Tag Hierarchy named "tag hierarchy"
+    Given I create a tag with name "a" linked to the tag hierarchy called "tag hierarchy"
+    Given I create a tag with name "b" linked to the tag hierarchy called "tag hierarchy"
+    When I list tags in the tag hierarchy called "tag hierarchy"
+    Then The reponse code is 200
+    And The tag with name "a" is in the response
+    And The tag with name "b" is in the response
+
+  Scenario: Having 1 tag hierarchy, list only tags in the tag hierarchy as a linguist
+    Given I login as "user" with password "password"
+    Given I create a new Tag Hierarchy named "tag hierarchy"
+    Given I create a tag with name "a" linked to the tag hierarchy called "tag hierarchy"
+    Given I create a tag with name "b" linked to the tag hierarchy called "tag hierarchy"
+    Given I create a tag with name "c" not linked to any tag hierarchy
+    When I list tags in the tag hierarchy called "tag hierarchy"
+    Then The reponse code is 200
+    And The tag with name "a" is in the response
+    And The tag with name "b" is in the response
+    And The tag with name "c" is not in the response
+
+
