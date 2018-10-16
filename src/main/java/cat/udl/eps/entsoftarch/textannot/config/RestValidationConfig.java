@@ -18,9 +18,9 @@ public class RestValidationConfig extends RepositoryRestConfigurerAdapter {
 
   @Override
   public void configureValidatingRepositoryEventListener(
-      ValidatingRepositoryEventListener validatingListener) {
-    validatingListener.addValidator("beforeCreate", validator());
-    validatingListener.addValidator("beforeSave", validator());
-    super.configureValidatingRepositoryEventListener(validatingListener);
-  }
+    ValidatingRepositoryEventListener validatingListener) {
+      validatingListener.addValidator("beforeCreate", validator());
+      validatingListener.addValidator("beforeSave", validator());
+      super.configureValidatingRepositoryEventListener(validatingListener);
+    }
 }
