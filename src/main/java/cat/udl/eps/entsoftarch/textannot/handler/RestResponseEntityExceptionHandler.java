@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.textannot.handler;
 
+import cat.udl.eps.entsoftarch.textannot.controller.TagTreeException;
 import lombok.Data;
 import org.springframework.data.rest.core.RepositoryConstraintViolationException;
 import org.springframework.http.HttpHeaders;
@@ -42,8 +43,20 @@ public class RestResponseEntityExceptionHandler extends
         return new ResponseEntity<>(result, responseHeaders, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({TagTreeException.class})
+    public ResponseEntity<Map<String, ErrorInfo>> tagTreeException(Exception ex) {
+
+        Map<String, ErrorInfo> result = new HashMap<>();
+        result.put("errors", new ErrorInfo("TagHierarchy", ex.getMessage()));
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        return new ResponseEntity<>(result, responseHeaders, HttpStatus.BAD_REQUEST);
+    }
+
     @Data
-    public static class ErrorInfo {
+    static class ErrorInfo {
         private final String entity;
         private final String message;
     }
