@@ -35,7 +35,7 @@ public class TagStepDefs {
 
     private Tag tag, parent, child;
     private TagHierarchy tagHierarchy;
-    private String childUri, parentUri;
+    private String childUri, parentUri,errormessage;
 
     @When("^I create a new tag with name \"([^\"]*)\"$")
     public void iCreateANewTagWithName(String name) throws Throwable {
@@ -146,5 +146,25 @@ public class TagStepDefs {
             .andDo(print())
             .andExpect(jsonPath("$._embedded.tags[0].id", is(child.getId()))
         );
+    }
+
+    @Then("^Parent with name \"([^\"]*)\" wasn't linked to the child with name \"([^\"]*)\"$")
+    public void parentWithNameWasnTLinkedToTheChildWithName(String arg0, String arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @And("^I try to link between parent with name \"([^\"]*)\" and child with name \"([^\"]*)\"$")
+    public void iTryToLinkBetweenParentWithNameAndChildWithName(String arg0, String arg1) throws Throwable {
+
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                    put(childUri + "/parent")
+                            .contentType("text/uri-list")
+                            .content(parentUri)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .with(AuthenticationStepDefs.authenticate()))
+                    .andDo(print());
+
     }
 }
