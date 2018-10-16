@@ -1,5 +1,6 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
+import cat.udl.eps.entsoftarch.textannot.domain.validator.TagHierarchyConstraint;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
+@TagHierarchyConstraint
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Tag extends UriEntity<Integer> {

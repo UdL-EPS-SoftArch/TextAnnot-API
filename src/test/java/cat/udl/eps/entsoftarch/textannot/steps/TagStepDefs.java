@@ -102,6 +102,7 @@ public class TagStepDefs {
     @And("^I create the parent Tag with name \"([^\"]*)\"$")
     public void iCreateTheParentTagWithName(String parentName) throws Throwable {
         parent = new Tag(parentName);
+        parent.setTagHierarchy(tagHierarchy);
         tagRepository.save(parent);
         parentUri = parent.getUri();
 
@@ -110,6 +111,7 @@ public class TagStepDefs {
     @And("^I create the child Tag with name \"([^\"]*)\"$")
     public void iCreateTheChildTagWithName(String childName) throws Throwable {
         child = new Tag(childName);
+        child.setTagHierarchy(tagHierarchy);
         tagRepository.save(child);
         childUri = child.getUri();
     }
