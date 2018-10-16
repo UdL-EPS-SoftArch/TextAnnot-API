@@ -2,6 +2,8 @@ package cat.udl.eps.entsoftarch.textannot.steps;
 
 import cat.udl.eps.entsoftarch.textannot.domain.Sample;
 import cat.udl.eps.entsoftarch.textannot.domain.Tag;
+import cat.udl.eps.entsoftarch.textannot.domain.TagHierarchy;
+import cat.udl.eps.entsoftarch.textannot.repository.TagHierarchyRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.TagRepository;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
@@ -10,6 +12,8 @@ import cucumber.api.java.en.When;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
@@ -25,6 +29,9 @@ public class ListTagsStepDefs {
 
     @Autowired
     private TagRepository tagRepository;
+
+    @Autowired
+    private TagHierarchyRepository tagHierarchyRepository;
 
     @When("^I list tags$")
     public void iListTags() throws Throwable {
@@ -50,5 +57,48 @@ public class ListTagsStepDefs {
     @And("^The tags' list is empty$")
     public void theTagsListIsEmpty() throws Throwable {
         stepDefs.result.andExpect(jsonPath("$._embedded.tags", hasSize(0)));
+    }
+
+    @Given("^I create a tag with name \"([^\"]*)\" linked to the tag hierarchy called \"([^\"]*)\"$")
+    public void iCreateATagWithNameLinkedToTheTagHierarchyCalled(String name, String tagHierarchyName) throws Throwable {
+        JSONObject AddTag = new JSONObject();
+        AddTag.put("name", name);
+        AddTag.put("tagHierarchy", tagHierarchyName);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                post("/tags")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(AddTag.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+    }
+
+    @When("^I list tags in the tag hierarchy called \"([^\"]*)\"$")
+    public void iListTagsInTheTagHierarchyCalled(String name) throws Throwable {
+        Optional<TagHierarchy> tagHierarchy = tagHierarchyRepository.findByName(name);
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/tags")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate())
+        )
+                .andDo(print());
+    }
+
+    @Given("^I create a tag with name \"([^\"]*)\" not linked to any tag hierarchy$")
+    public void iCreateATagWithNameNotLinkedToAnyTagHierarchy(String arg0) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @And("^The tag with name \"([^\"]*)\" is not in the response$")
+    public void theTagWithNameIsNotInTheResponse(String arg0) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @When("^I list tags in tag hierarchy$")
+    public void iListTagsInTagHierarchy() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
     }
 }
