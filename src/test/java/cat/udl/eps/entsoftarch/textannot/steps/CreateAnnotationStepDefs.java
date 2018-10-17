@@ -135,7 +135,7 @@ public class CreateAnnotationStepDefs {
         annotation.put("start", start);
         annotation.put("end", end);
         String tagUri = tagRepository.findByNameContaining(tagName).get(0).getUri();
-        annotation.put ("tag",tagUri);
+        annotation.put("tag", tagUri);
 
 
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -163,8 +163,8 @@ public class CreateAnnotationStepDefs {
 
         JSONObject jsonObject = new JSONObject(stepDefs.result.andReturn().getResponse().getContentAsString());
 
-        JSONObject links = (JSONObject)jsonObject.get("_links");
-        JSONObject tag = (JSONObject)links.get("tag");
+        JSONObject links = (JSONObject) jsonObject.get("_links");
+        JSONObject tag = (JSONObject) links.get("tag");
         String tagUri = tag.getString("href");
 
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -180,16 +180,42 @@ public class CreateAnnotationStepDefs {
 
         JSONObject annotation = new JSONObject();
         String tagUri = tagRepository.findByNameContaining(tagName2).get(0).getUri();
-        annotation.put ("tag",tagUri);
+        annotation.put("tag",tagUri);
 
         stepDefs.result = stepDefs.mockMvc.perform(
                 patch(newResourceUri)
-                    .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .content(annotation.toString())
-                    .accept(MediaType.APPLICATION_JSON)
-                    .with(AuthenticationStepDefs.authenticate()))
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(annotation.toString())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
 
+    }
+
+
+    @And("^It has been created a new annotation with start (\\d+), end (\\d+), reviewed is false and username of the linguist is \"([^\"]*)\"$")
+    public void itHasBeenCreatedANewAnnotationWithStartEndReviewedIsFalseAndUsernameOfTheLinguistIs(int start, int end, String username) throws Throwable {
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get(newResourceUri)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andExpect(jsonPath("$.start", is(start)))
+                .andExpect(jsonPath("$.end", is(end)))
+                .andExpect(jsonPath("$.reviewed", is(false)))
+                .andDo(print());
+
+        JSONObject jsonObject = new JSONObject(stepDefs.result.andReturn().getResponse().getContentAsString());
+        JSONObject links = (JSONObject) jsonObject.get("_links");
+        JSONObject linguist = (JSONObject) links.get("linguist");
+        String linguistUri = linguist.getString("href");
+
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get(linguistUri)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andExpect(jsonPath("$.username", is(username)))
+                .andDo(print());
     }
 }
 
