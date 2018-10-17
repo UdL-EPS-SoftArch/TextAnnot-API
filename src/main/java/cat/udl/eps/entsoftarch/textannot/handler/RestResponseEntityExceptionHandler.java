@@ -1,5 +1,7 @@
 package cat.udl.eps.entsoftarch.textannot.handler;
 
+import java.util.Collections;
+import javax.validation.ConstraintViolationException;
 import lombok.Data;
 import org.springframework.data.rest.core.RepositoryConstraintViolationException;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +34,33 @@ public class RestResponseEntityExceptionHandler extends
                 .stream()
                 .map(error -> new ErrorInfo(error.getObjectName(), error.getDefaultMessage()))
                 .collect(Collectors.toList());
+
+        Map<String, List<ErrorInfo>> result = new HashMap<>();
+        result.put("errors", errorInfoList);
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        return new ResponseEntity<>(result, responseHeaders, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({org.springframework.transaction.TransactionSystemException.class})
+    public ResponseEntity<Map<String, List<ErrorInfo>>> handleConstraintViolationException(
+        Exception ex, WebRequest request) {
+        org.springframework.transaction.TransactionSystemException nevEx =
+            (org.springframework.transaction.TransactionSystemException) ex;
+
+        Throwable cause = nevEx.getRootCause();
+        List<ErrorInfo> errorInfoList;
+
+        if (cause instanceof ConstraintViolationException) {
+            errorInfoList = ((ConstraintViolationException)cause).getConstraintViolations()
+                .stream()
+                .map(error -> new ErrorInfo(error.getRootBeanClass().getSimpleName(), error.getMessage()))
+                .collect(Collectors.toList());
+        } else {
+            errorInfoList = Collections.singletonList(new ErrorInfo(cause.getClass().getName(), cause.getMessage()));
+        }
 
         Map<String, List<ErrorInfo>> result = new HashMap<>();
         result.put("errors", errorInfoList);
