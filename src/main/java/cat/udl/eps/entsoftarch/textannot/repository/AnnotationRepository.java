@@ -12,7 +12,18 @@ import java.util.List;
 
 @RepositoryRestResource
 public interface AnnotationRepository extends PagingAndSortingRepository<Annotation, Integer> {
+    /**
+     * Returns the annotations related to a sample.
+     * @param sample The sample that contains the annotations we want.
+     * @return list of annotations.
+     */
     List<Annotation> findBySample(@Param("sample") Sample sample);
+
+    /**
+     Returns the annotations related to a tag.
+     * @param tag The tags that contains the annotations we want.
+     * @return list of annotations.
+     */
     List<Annotation> findByTag(@Param("tag") Tag tag);
 
 }
