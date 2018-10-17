@@ -13,12 +13,15 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -32,6 +35,9 @@ public class ListTagsStepDefs {
 
     @Autowired
     private TagHierarchyRepository tagHierarchyRepository;
+
+    private Tag tag;
+    private TagHierarchy tagHierarchy;
 
     @When("^I list tags$")
     public void iListTags() throws Throwable {
@@ -59,29 +65,38 @@ public class ListTagsStepDefs {
         stepDefs.result.andExpect(jsonPath("$._embedded.tags", hasSize(0)));
     }
 
+    @When("^I create a new Tag Hierarchy called \"([^\"]*)\"$")
+    public void iCreateANewTagHierarchyCalled(String name) throws Throwable {
+        tagHierarchy = new TagHierarchy();
+        tagHierarchy.setName(name);
+        tagHierarchyRepository.save(tagHierarchy);
+    }
+
     @Given("^I create a tag with name \"([^\"]*)\" linked to the tag hierarchy called \"([^\"]*)\"$")
     public void iCreateATagWithNameLinkedToTheTagHierarchyCalled(String name, String tagHierarchyName) throws Throwable {
-        JSONObject AddTag = new JSONObject();
-        AddTag.put("name", name);
-        AddTag.put("tagHierarchy", tagHierarchyName);
+        tag = new Tag(name);
+        tag.setTagHierarchy(tagHierarchy);
+        tagRepository.save(tag);
         stepDefs.result = stepDefs.mockMvc.perform(
-                post("/tags")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(AddTag.toString())
+                put("/tags/" + tag.getId() + "/tagHierarchy")
+                        .contentType("text/uri-list")
+                        .content(tag.getUri())
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
+
     }
 
     @When("^I list tags in the tag hierarchy called \"([^\"]*)\"$")
     public void iListTagsInTheTagHierarchyCalled(String name) throws Throwable {
-        Optional<TagHierarchy> tagHierarchy = tagHierarchyRepository.findByName(name);
-        stepDefs.result = stepDefs.mockMvc.perform(
-                get("/tags")
+        List<Tag> tags = tagRepository.findByTagHierarchy(tagHierarchyRepository.findByName(name).get());
+        stepDefs.mockMvc.perform(
+                get("/tags/search/findByTagHierarchy?tagHierarchy=" + tagHierarchy.getUri())
                         .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate())
-        )
-                .andDo(print());
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print())
+                .andExpect(jsonPath("$._embedded.tags.*.id", is(tags.get(0).getId())))
+                .andExpect(jsonPath("$._embedded.tags.*.id", is(tags.get(1).getId())));
     }
 
     @Given("^I create a tag with name \"([^\"]*)\" not linked to any tag hierarchy$")
