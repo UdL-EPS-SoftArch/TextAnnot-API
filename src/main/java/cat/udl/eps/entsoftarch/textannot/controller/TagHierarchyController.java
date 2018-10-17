@@ -7,11 +7,9 @@ import cat.udl.eps.entsoftarch.textannot.repository.TagRepository;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.bind.ValidationException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +20,9 @@ public class TagHierarchyController {
     private TagHierarchyRepository tagHierarchyRepository;
     private TagRepository tagRepository;
 
-    public TagHierarchyController(TagHierarchyRepository tagHierarchyRepository) {
+    public TagHierarchyController(TagHierarchyRepository tagHierarchyRepository, TagRepository tagRepository) {
         this.tagHierarchyRepository = tagHierarchyRepository;
+        this.tagRepository = tagRepository;
     }
 
     @RequestMapping(value = "/quickTagHierarchyCreate", method = RequestMethod.POST, consumes = "application/json")
@@ -57,13 +56,17 @@ public class TagHierarchyController {
         tag.setParent(parent);
         tag.setTagHierarchy(tagHierarchy);
 
-        if(treeHierarchy.contains(tag)) {
+        if(treeHierarchy.stream().anyMatch((Tag t) -> t.getName().equals(tag.getName()))) {
             throw new ValidationException("Cycle found in TagHierarchy while adding Tag " + tag.getName());
         }
 
         treeHierarchy.add(tag);
 
-        for (Map<String, Object> child: (List<Map<String, Object>> ) root.get("children")) {
+        List<Map<String, Object>> children = (List<Map<String, Object>> )root.get("children");
+        if (children == null)
+            return;
+
+        for (Map<String, Object> child: children) {
             createTag(child, tag, tagHierarchy, treeHierarchy);
         }
     }
