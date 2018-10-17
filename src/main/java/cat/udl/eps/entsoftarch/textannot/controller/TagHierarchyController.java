@@ -2,14 +2,16 @@ package cat.udl.eps.entsoftarch.textannot.controller;
 
 import cat.udl.eps.entsoftarch.textannot.domain.Tag;
 import cat.udl.eps.entsoftarch.textannot.domain.TagHierarchy;
+import cat.udl.eps.entsoftarch.textannot.exception.TagHierarchyValidationException;
+import cat.udl.eps.entsoftarch.textannot.exception.TagTreeException;
 import cat.udl.eps.entsoftarch.textannot.repository.TagHierarchyRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.TagRepository;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
+import org.springframework.data.rest.webmvc.PersistentEntityResource;
+import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.bind.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,9 +29,12 @@ public class TagHierarchyController {
 
     @RequestMapping(value = "/quickTagHierarchyCreate", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public ResponseEntity quickTagHierarchyCreate(@RequestBody Map<String, Object> body) throws ValidationException {
+    @ResponseStatus(HttpStatus.CREATED)
+    public PersistentEntityResource quickTagHierarchyCreate(
+            @RequestBody Map<String,Object> body,
+            PersistentEntityResourceAssembler resourceAssembler) throws TagHierarchyValidationException {
         if (isNameContentNullOrBlack(body) || body.get("roots") == null) {
-            throw new ValidationException("TagHierarchy Object must contains defined name and root.");
+            throw new TagHierarchyValidationException();
         }
 
         List<Tag> treeHierarchy = new ArrayList<>();
@@ -45,19 +50,19 @@ public class TagHierarchyController {
             tagRepository.save(child);
         }
 
-        return new ResponseEntity(HttpStatus.CREATED);
+        return resourceAssembler.toResource(tagHierarchy);
     }
 
-    private void createTag(Map<String, Object> root, Tag parent, TagHierarchy tagHierarchy, List<Tag> treeHierarchy) throws ValidationException {
+    private void createTag(Map<String, Object> root, Tag parent, TagHierarchy tagHierarchy, List<Tag> treeHierarchy) throws TagHierarchyValidationException {
         if (isNameContentNullOrBlack(root)) {
-            throw new ValidationException("TagHierarchy son Objects must contains a defined name.");
+            throw new TagHierarchyValidationException();
         }
         Tag tag = new Tag(root.get("name").toString());
         tag.setParent(parent);
         tag.setTagHierarchy(tagHierarchy);
 
         if(treeHierarchy.stream().anyMatch((Tag t) -> t.getName().equals(tag.getName()))) {
-            throw new ValidationException("Cycle found in TagHierarchy while adding Tag " + tag.getName());
+            throw new TagTreeException();
         }
 
         treeHierarchy.add(tag);
