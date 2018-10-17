@@ -76,10 +76,12 @@ public class ListTagsStepDefs {
         Tag tag = new Tag(name);
         tagHierarchy.ifPresent(tag::setTagHierarchy);
         tagRepository.save(tag);
+        JSONObject AddTag = new JSONObject();
+        AddTag.put("name", name);
         stepDefs.result = stepDefs.mockMvc.perform(
-                post("/tags/" + tag.getId() + "/tagHierarchy")
-                        .contentType("text/uri-list")
-                        .content(tag.getUri())
+                post("/tags")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(AddTag.toString())
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
