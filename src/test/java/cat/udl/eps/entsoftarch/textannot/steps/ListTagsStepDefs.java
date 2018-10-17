@@ -36,8 +36,6 @@ public class ListTagsStepDefs {
     @Autowired
     private TagHierarchyRepository tagHierarchyRepository;
 
-    private Tag tag;
-    private TagHierarchy tagHierarchy;
 
     @When("^I list tags$")
     public void iListTags() throws Throwable {
@@ -67,36 +65,37 @@ public class ListTagsStepDefs {
 
     @When("^I create a new Tag Hierarchy called \"([^\"]*)\"$")
     public void iCreateANewTagHierarchyCalled(String name) throws Throwable {
-        tagHierarchy = new TagHierarchy();
+        TagHierarchy tagHierarchy = new TagHierarchy();
         tagHierarchy.setName(name);
         tagHierarchyRepository.save(tagHierarchy);
     }
 
     @Given("^I create a tag with name \"([^\"]*)\" linked to the tag hierarchy called \"([^\"]*)\"$")
     public void iCreateATagWithNameLinkedToTheTagHierarchyCalled(String name, String tagHierarchyName) throws Throwable {
-        tag = new Tag(name);
-        tag.setTagHierarchy(tagHierarchy);
+        Optional<TagHierarchy> tagHierarchy = tagHierarchyRepository.findByName(tagHierarchyName);
+        Tag tag = new Tag(name);
+        tagHierarchy.ifPresent(tag::setTagHierarchy);
         tagRepository.save(tag);
         stepDefs.result = stepDefs.mockMvc.perform(
-                put("/tags/" + tag.getId() + "/tagHierarchy")
+                post("/tags/" + tag.getId() + "/tagHierarchy")
                         .contentType("text/uri-list")
                         .content(tag.getUri())
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
-
     }
 
     @When("^I list tags in the tag hierarchy called \"([^\"]*)\"$")
     public void iListTagsInTheTagHierarchyCalled(String name) throws Throwable {
+        Optional<TagHierarchy> tagHierarchy = tagHierarchyRepository.findByName(name);
         List<Tag> tags = tagRepository.findByTagHierarchy(tagHierarchyRepository.findByName(name).get());
         stepDefs.mockMvc.perform(
-                get("/tags/search/findByTagHierarchy?tagHierarchy=" + tagHierarchy.getUri())
+                get("/tags/search/findByTagHierarchy?tagHierarchy=" + tagHierarchy.get().getUri())
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
-                .andExpect(jsonPath("$._embedded.tags.*.id", is(tags.get(0).getId())))
-                .andExpect(jsonPath("$._embedded.tags.*.id", is(tags.get(1).getId())));
+                .andExpect(jsonPath("$._embedded.tags[0].id", is(tags.get(0).getId())))
+                .andExpect(jsonPath("$._embedded.tags[1].id", is(tags.get(1).getId())));
     }
 
     @Given("^I create a tag with name \"([^\"]*)\" not linked to any tag hierarchy$")
