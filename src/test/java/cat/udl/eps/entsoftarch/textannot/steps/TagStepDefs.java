@@ -18,9 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -34,7 +32,7 @@ public class TagStepDefs {
     private TagRepository tagRepository;
 
     private Tag tag, parent, child;
-    private TagHierarchy tagHierarchy;
+    private TagHierarchy tagHierarchy = null;
     private String childUri, parentUri,errormessage;
 
     @When("^I create a new tag with name \"([^\"]*)\"$")
@@ -106,6 +104,7 @@ public class TagStepDefs {
         tagRepository.save(parent);
         parentUri = parent.getUri();
 
+
     }
 
     @And("^I create the child Tag with name \"([^\"]*)\"$")
@@ -114,6 +113,7 @@ public class TagStepDefs {
         child.setTagHierarchy(tagHierarchy);
         tagRepository.save(child);
         childUri = child.getUri();
+
     }
 
     @When("^I set the parent with name \"([^\"]*)\" to child with name \"([^\"]*)\"$")
@@ -148,23 +148,21 @@ public class TagStepDefs {
         );
     }
 
-    @Then("^Parent with name \"([^\"]*)\" wasn't linked to the child with name \"([^\"]*)\"$")
-    public void parentWithNameWasnTLinkedToTheChildWithName(String arg0, String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
 
     @And("^I try to link between parent with name \"([^\"]*)\" and child with name \"([^\"]*)\"$")
     public void iTryToLinkBetweenParentWithNameAndChildWithName(String arg0, String arg1) throws Throwable {
 
 
-        stepDefs.result = stepDefs.mockMvc.perform(
-                    put(childUri + "/parent")
-                            .contentType("text/uri-list")
-                            .content(parentUri)
-                            .accept(MediaType.APPLICATION_JSON)
-                            .with(AuthenticationStepDefs.authenticate()))
-                    .andDo(print());
+        JSONObject parent = new JSONObject();
+        parent.put("parent",parentUri);
+
+        stepDefs.result  = stepDefs.mockMvc.perform(patch(childUri)
+                .content("text/uri-list")
+                .content(parent.toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
 
     }
 }
