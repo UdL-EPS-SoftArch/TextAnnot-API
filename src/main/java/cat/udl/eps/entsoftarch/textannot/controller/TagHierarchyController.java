@@ -56,7 +56,13 @@ public class TagHierarchyController {
         Tag tag = new Tag(root.get("name").toString());
         tag.setParent(parent);
         tag.setTagHierarchy(tagHierarchy);
+
+        if(treeHierarchy.contains(tag)) {
+            throw new ValidationException("Cycle found in TagHierarchy while adding Tag " + tag.getName());
+        }
+
         treeHierarchy.add(tag);
+
         for (Map<String, Object> child: (List<Map<String, Object>> ) root.get("children")) {
             createTag(child, tag, tagHierarchy, treeHierarchy);
         }
