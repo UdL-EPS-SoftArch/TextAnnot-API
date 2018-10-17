@@ -15,6 +15,10 @@ public class Linguist extends User {
 
 	@Override
 	@Transient
+	/**
+	 * This function returns a collection of linguist credentials.
+	 * Returns the collection of granted authority for the user.
+	 */
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_LINGUIST");
 	}

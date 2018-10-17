@@ -6,13 +6,11 @@ import cat.udl.eps.entsoftarch.textannot.repository.MetadataTemplateRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.SampleRepository;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
@@ -33,7 +31,7 @@ public class FindByMetadataTemplateStepDefs {
     private MetadataTemplateRepository metadataTemplateRepository;
 
     @And("^There are some Metadata Templates with text \"([^\"]*)\" \"([^\"]*)\" and \"([^\"]*)\"$")
-    public void saveTheMetadataTemplate(String md1, String md2, String md3) throws Throwable{
+    public void saveTheMetadataTemplate(String md1, String md2, String md3) {
         MetadataTemplate metadata1 = new MetadataTemplate();
         metadata1.setName(md1);
         MetadataTemplate metadata2 = new MetadataTemplate();
@@ -65,9 +63,11 @@ public class FindByMetadataTemplateStepDefs {
     }
 
     @And("There is a sample with text \"([^\"]*)\" defined by \"([^\"]*)\"$")
-    public void addSamples(String sam, String metadata) throws Throwable{
+    public void addSamples(String sam, String metadata) {
         Sample sample = new Sample(sam);
-        sample.setDescribedBy(metadataTemplateRepository.findByName(metadata));
+        Optional<MetadataTemplate> metadataTemplateOptional = metadataTemplateRepository.findByName(metadata);
+        Assert.assertTrue("metadataTemplate is present", metadataTemplateOptional.isPresent());
+        sample.setDescribedBy(metadataTemplateOptional.get());
         sampleRepository.save(sample);
     }
 

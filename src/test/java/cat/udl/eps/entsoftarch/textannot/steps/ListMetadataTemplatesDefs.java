@@ -1,5 +1,4 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
-//Daniel Galan i Roger Capdevila                                                                                        //
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -12,8 +11,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
-// It's necessary to know the type of the metadata templates are recived. Is a List, a Set, an Iterable?//
-
 public class ListMetadataTemplatesDefs {
     @Autowired
     private StepDefs stepDefs;
@@ -22,7 +19,7 @@ public class ListMetadataTemplatesDefs {
     private MetadataTemplateRepository mtR;
 
     @And("^There is a metadata template with name \"([^\"]*)\"$")
-    public void thereIsASingleMetadataTemplateWithName(String mtName) throws Throwable {
+    public void thereIsASingleMetadataTemplateWithName(String mtName) {
         MetadataTemplate mt;
         mt = new MetadataTemplate();
         mt.setName(mtName);
@@ -30,8 +27,7 @@ public class ListMetadataTemplatesDefs {
     }
 
     @And("^The respone contains only a MetadataTemplate with name \"([^\"]*)\"$")
-    public void theResponeContainsAMetadataTemplateWithName(String mtName) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+    public void theResponeContainsAMetadataTemplateWithName(String mtName) {
         int i = 0;
         for(MetadataTemplate mt : mtR.findAll()){
             assert (mt.getName() == mtName);
@@ -58,8 +54,7 @@ public class ListMetadataTemplatesDefs {
     }
 
     @And("^The response is a MetadataTemplatesList with (\\d+) items$")
-    public void theResponseIsAMetadataTemplatesListWithItems(int numOfMT) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+    public void theResponseIsAMetadataTemplatesListWithItems(int numOfMT) {
         int i = 0;
         Set<String> mtNames = new LinkedHashSet<String>();
         for(int j=0; j<numOfMT; j++){

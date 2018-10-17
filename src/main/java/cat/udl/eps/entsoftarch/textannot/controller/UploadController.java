@@ -9,10 +9,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
+import java.util.Optional;
 import javax.xml.parsers.ParserConfigurationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,11 +31,10 @@ public class UploadController {
   @PostMapping("/xmlsample")
   @ResponseBody
   public void uploadXML(MultipartHttpServletRequest request)
-      throws IOException, ParserConfigurationException, SAXException {
+          throws Exception {
     String templateUri = request.getParameter("metadataTemplate");
     String templateName = templateUri.substring(templateUri.lastIndexOf('/') + 1);
-    MetadataTemplate template = metadataTemplateRepository.findByName(templateName);
-    Assert.notNull(template, "The specified MetadataTemplate does not exist");
+    Optional<MetadataTemplate> metadataTemplateOptional = metadataTemplateRepository.findByName(templateName);
 
     Iterator<String> fileNames = request.getFileNames();
     MultipartFile xmlFile = request.getFile(fileNames.next());
@@ -49,7 +48,7 @@ public class UploadController {
       result.write(buffer, 0, length);
     }
     xmlSample.setContent(result.toString("UTF-8"));
-    xmlSample.setDescribedBy(template);
+    xmlSample.setDescribedBy(metadataTemplateOptional.orElseThrow(() -> new Exception("metadataTemplate Optional not found")));
     xmlService.ingest(xmlSample);
   }
 }

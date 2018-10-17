@@ -17,19 +17,18 @@ import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
+import java.util.Optional;
+
 public class AddMetadataFieldStepDefs {
-
-
-    private static final Logger logger = LoggerFactory.getLogger(RegisterLinguistStepDef.class);
 
     @Autowired
     private StepDefs stepDefs;
-    private MetadataValue metaValue;
     private MetadataField metaField;
     private MetadataTemplate metaTemplate;
 
@@ -40,13 +39,9 @@ public class AddMetadataFieldStepDefs {
     @Autowired
     private MetadataFieldRepository metadataFieldRepository;
 
-    private String newResourceUri;
-
 
     @When("^I create a new metadatafield with text \"([^\"]*)\" and type \"([^\"]*)\"$")
     public void iCreateANewMetadatafieldWithTextAndType(String name, String type) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new PendingException();
         JSONObject AddMetaDataField = new JSONObject();
         AddMetaDataField.put("name",name);
         AddMetaDataField.put("type",type);
@@ -60,10 +55,8 @@ public class AddMetadataFieldStepDefs {
 
     }
 
-
     @And("^It has been created a new metadatafield with text \"([^\"]*)\" and type \"([^\"]*)\" and Id (\\d+)$")
     public void itHasBeenCreatedANewMetadatafieldWithTextAndTypeAndId(String name, String type, Integer id) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/metadataFields/{id}", id)
                         .accept(MediaType.APPLICATION_JSON)
@@ -72,28 +65,18 @@ public class AddMetadataFieldStepDefs {
                 .andExpect(jsonPath("$.name", is(name)))
                 .andExpect(jsonPath("$.type", is(type)))
                 .andExpect(jsonPath("$.id", is(id)));
-
     }
-
-
-
 
     @And("^It has not been created a metadatafield with text \"([^\"]*)\" and type \"([^\"]*)\" and Id (\\d+)$")
     public void itHasNotBeenCreatedAMetadatafieldWithTextAndTypeAndId(String name, String type, Integer id) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/metadataFields/{id}", id)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
-
-
-
-
     @And("^there is a created metadataTemplate with name \"([^\"]*)\"$")
     public void thereIsACreatedMetadataTemplateWithName(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
         JSONObject metadataTemplate = new JSONObject();
         metadataTemplate.put("name", arg0);
         stepDefs.result = stepDefs.mockMvc.perform(
@@ -105,14 +88,17 @@ public class AddMetadataFieldStepDefs {
                 .andDo(print());
     }
 
-    @When("^I register a new metadataField with text \"([^\"]*)\" and type \"([^\"]*)\" for metadataTemplate with value \"([^\"]*)\"$")
-    public void iRegisterANewMetadataFieldWithTextAndTypeForMetadataTemplateWithValue(String name, String type, String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+    @When("^I register a new metadataField with text \"([^\"]*)\" and type \"([^\"]*)\" " +
+            "for metadataTemplate with value \"([^\"]*)\"$")
+    public void iRegisterANewMetadataFieldWithTextAndTypeForMetadataTemplateWithValue
+            (String name, String type, String metadataTemplateValue) throws Throwable {
         JSONObject metadataField = new JSONObject();
-        metaTemplate=metadataTemplateRepository.findByName(arg0);
+        Optional<MetadataTemplate> metadataTemplateOptional = metadataTemplateRepository.findByName(metadataTemplateValue);
+        Assert.assertTrue("metadataTemplate is present", metadataTemplateOptional.isPresent());
+        metaTemplate = metadataTemplateOptional.get();
         metadataField.put("name", name);
         metadataField.put("type", type);
-        metadataField.put("definedIn", "/metadataTemplates/"+metaTemplate.getId()+"");
+        metadataField.put("definedAt", "/metadataTemplates/"+metaTemplate.getId()+"");
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/metadataFields")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -121,12 +107,11 @@ public class AddMetadataFieldStepDefs {
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
 
-        newResourceUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
+        String newResourceUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
     }
 
     @And("^It has been created a new metadataField with text \"([^\"]*)\"  for metadataTemplate with value \"([^\"]*)\"$")
     public void itHasBeenCreatedANewMetadataFieldWithTextForMetadataTemplateWithValue(String name, String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
         metaField=metadataFieldRepository.findByName(name);
         stepDefs.result = stepDefs.mockMvc.perform(
                 get("/metadataFields/{id}", metaField.getId())
@@ -136,7 +121,7 @@ public class AddMetadataFieldStepDefs {
                 .andExpect(jsonPath("$.name", is(name)));
 
         stepDefs.mockMvc.perform(
-                get("/metadataFields/"+metaField.getId()+"/definedIn")
+                get("/metadataFields/"+metaField.getId()+"/definedAt")
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
