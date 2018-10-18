@@ -19,17 +19,29 @@ public class MetadataValue extends UriEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    /**
+     * Identifier of annotation needs to be unique, otherwise it will generate conflicts.
+     */
     private Integer id;
 
     @NotBlank
+    /**
+     * Indicates the String name of the  Metadata value.
+     */
     private String value;
 
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
+    /**
+     * Linking MetadataValue with a Sample.
+     */
     private	Sample forA;
 
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
+    /**
+     * Linking MetadataValue with MetadataField.
+     */
     private	MetadataField values;
 
     public MetadataValue(String value){
@@ -42,8 +54,8 @@ public class MetadataValue extends UriEntity<Integer> {
     @Override
     public Integer getId() { return id; }
 
-    public String getFieldName() { return this.values != null? this.values.getName() : ""; }
+    public String getFieldName() { return this.values != null ? this.values.getName() : ""; }
 
-    public String getFieldCategory() { return this.values != null? this.values.getCategory() : ""; }
+    public String getFieldCategory() { return this.values != null ? this.values.getCategory() : ""; }
 
 }
