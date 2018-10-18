@@ -18,9 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -34,8 +32,8 @@ public class TagStepDefs {
     private TagRepository tagRepository;
 
     private Tag tag, parent, child;
-    private TagHierarchy tagHierarchy;
-    private String childUri, parentUri;
+    private TagHierarchy tagHierarchy = null;
+    private String childUri, parentUri,errormessage;
 
     @When("^I create a new tag with name \"([^\"]*)\"$")
     public void iCreateANewTagWithName(String name) throws Throwable {
@@ -102,16 +100,20 @@ public class TagStepDefs {
     @And("^I create the parent Tag with name \"([^\"]*)\"$")
     public void iCreateTheParentTagWithName(String parentName) throws Throwable {
         parent = new Tag(parentName);
+        parent.setTagHierarchy(tagHierarchy);
         tagRepository.save(parent);
         parentUri = parent.getUri();
+
 
     }
 
     @And("^I create the child Tag with name \"([^\"]*)\"$")
     public void iCreateTheChildTagWithName(String childName) throws Throwable {
         child = new Tag(childName);
+        child.setTagHierarchy(tagHierarchy);
         tagRepository.save(child);
         childUri = child.getUri();
+
     }
 
     @When("^I set the parent with name \"([^\"]*)\" to child with name \"([^\"]*)\"$")
@@ -144,5 +146,23 @@ public class TagStepDefs {
             .andDo(print())
             .andExpect(jsonPath("$._embedded.tags[0].id", is(child.getId()))
         );
+    }
+
+
+    @And("^I try to link between parent with name \"([^\"]*)\" and child with name \"([^\"]*)\"$")
+    public void iTryToLinkBetweenParentWithNameAndChildWithName(String arg0, String arg1) throws Throwable {
+
+
+        JSONObject parent = new JSONObject();
+        parent.put("parent",parentUri);
+
+        stepDefs.result  = stepDefs.mockMvc.perform(patch(childUri)
+                .content("text/uri-list")
+                .content(parent.toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
+
     }
 }
