@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @BasePathAwareController
 public class TagHierarchyController {
@@ -33,17 +34,20 @@ public class TagHierarchyController {
     public PersistentEntityResource quickTagHierarchyCreate(
             @RequestBody Map<String,Object> body,
             PersistentEntityResourceAssembler resourceAssembler) throws TagHierarchyValidationException {
-        if (isNameContentNullOrBlack(body) || body.get("roots") == null) {
+
+        if (isNameContentNullOrBlack(body))
             throw new TagHierarchyValidationException();
-        }
 
         List<Tag> treeHierarchy = new ArrayList<>();
         TagHierarchy tagHierarchy = new TagHierarchy();
         tagHierarchy.setName(body.get("name").toString());
 
-        for (Map<String, Object> root: (List<Map<String, Object>> ) body.get("roots")) {
-            createTag(root, null, tagHierarchy, treeHierarchy);
-        }
+        List<Map<String, Object>> roots =
+                Optional.ofNullable((List<Map<String, Object>>)body.get("roots"))
+                    .orElseThrow(TagHierarchyValidationException::new);
+
+        for (Map<String, Object> root: roots)
+                 createTag(root, null, tagHierarchy, treeHierarchy);
 
         tagHierarchyRepository.save(tagHierarchy);
         for (Tag child: treeHierarchy) {
@@ -53,30 +57,29 @@ public class TagHierarchyController {
         return resourceAssembler.toResource(tagHierarchy);
     }
 
-    private void createTag(Map<String, Object> root, Tag parent, TagHierarchy tagHierarchy, List<Tag> treeHierarchy) throws TagHierarchyValidationException {
-        if (isNameContentNullOrBlack(root)) {
+    private void createTag(Map<String, Object> root, Tag parent, TagHierarchy tagHierarchy, List<Tag> treeHierarchy) {
+        if (isNameContentNullOrBlack(root))
             throw new TagHierarchyValidationException();
-        }
+
         Tag tag = new Tag(root.get("name").toString());
         tag.setParent(parent);
         tag.setTagHierarchy(tagHierarchy);
 
-        if(treeHierarchy.stream().anyMatch((Tag t) -> t.getName().equals(tag.getName()))) {
+        if(treeHierarchy.stream().anyMatch(t -> t.getName().equals(tag.getName())))
             throw new TagTreeException();
-        }
 
         treeHierarchy.add(tag);
 
-        List<Map<String, Object>> children = (List<Map<String, Object>> )root.get("children");
-        if (children == null)
-            return;
-
-        for (Map<String, Object> child: children) {
-            createTag(child, tag, tagHierarchy, treeHierarchy);
-        }
+        System.out.println(root.get("children"));
+        Optional.ofNullable((List<Map<String, Object>>)root.get("children"))
+            .ifPresent(children -> {
+                for (Map<String, Object> child : children)
+                    createTag(child, tag, tagHierarchy, treeHierarchy);
+            });
     }
 
     private boolean isNameContentNullOrBlack(Map<String, Object> body) {
-        return body.get("name") == null || body.get("name") == "";
+        Optional<String> name = Optional.ofNullable((String)body.get("name"));
+        return !name.isPresent() || name.get().isEmpty();
     }
 }
