@@ -1,0 +1,31 @@
+{ "name" : "tagHierarchy1",
+  "roots" : [
+    {
+      "name" : "root1",
+      "children" : [
+        {
+          "name" : "son_of_root_1",
+          "children" : [
+            {
+              "name":"grandchild_of_root1"
+            },
+            {
+              "name":"another_grandchild_of_root1"
+            }
+          ]
+        },
+        {
+          "name": "another_son_of_root_1"
+        }
+      ]
+    },
+    {
+      "name": "root2",
+      "children": [
+        {
+          "name": ""
+        }
+      ]
+    }
+  ]
+}

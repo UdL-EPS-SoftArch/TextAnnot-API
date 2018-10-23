@@ -14,9 +14,18 @@ import javax.validation.constraints.NotBlank;
 @EqualsAndHashCode(callSuper = true)
 public class TagHierarchy extends UriEntity<Integer> {
 
+    /**
+     * Identifier of TagHierarchy needs to be unique, otherwise it will generate conflicts.
+     */
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
+
+    /**
+     *  The name given to the TagHierarchy. It can't be blank.
+     *
+     */
 
     @NotBlank
     @Column(unique = true)

@@ -10,5 +10,10 @@ import java.util.Optional;
 
 @RepositoryRestResource
 public interface MetadataTemplateRepository extends PagingAndSortingRepository<MetadataTemplate, String> {
+    /**
+     * Returns the metadataTemplate found by a given name.
+     * @param name The given name of metadataTemplate.
+     * @return metadataTemplate object.
+     */
     Optional<MetadataTemplate> findByName(@Param("name") String name);
 }
