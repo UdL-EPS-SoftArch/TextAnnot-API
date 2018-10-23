@@ -91,3 +91,4 @@ Feature: Create Annotation
     When I change the tag of the annotation to "tagName2"
     Then The response code is 200
     And It has been created a new annotation with start 0, end 4, reviewed is false and tagName "tagName2"
+
