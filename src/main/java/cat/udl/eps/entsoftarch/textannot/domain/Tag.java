@@ -1,8 +1,10 @@
 package cat.udl.eps.entsoftarch.textannot.domain;
 
+import cat.udl.eps.entsoftarch.textannot.domain.validator.TagHierarchyConstraint;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -10,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
+@TagHierarchyConstraint
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Tag extends UriEntity<Integer> {
@@ -19,7 +22,7 @@ public class Tag extends UriEntity<Integer> {
      */
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     /**
