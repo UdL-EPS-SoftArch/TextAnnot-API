@@ -72,7 +72,7 @@ public class CreateSampleStepDefs {
                 post("/samples")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(sample.toString())
-                       .accept(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
         newResourceUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
