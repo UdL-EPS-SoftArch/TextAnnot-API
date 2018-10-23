@@ -46,11 +46,11 @@ Feature: List tags
     When I create a new Tag Hierarchy called "tag hierarchy"
     Given I create a tag with name "c" not linked to any tag hierarchy
     Given I login as "user" with password "password"
-    Then I list tags in the tag hierarchy called "tag hierarchy"
-    Then The response code is 200
+    Then The tags' list is empty in the tag hierarchy called "tag hierarchy"
 
 
   Scenario: Try to list tags in a tag hierarchy without authenticating
     Given I'm not logged in
-    When I list tags in tag hierarchy
+    And It exists a TagHierarchy with name "tag hierarchy"
+    When I list tags in tag hierarchy "tag hierarchy"
     Then The response code is 401

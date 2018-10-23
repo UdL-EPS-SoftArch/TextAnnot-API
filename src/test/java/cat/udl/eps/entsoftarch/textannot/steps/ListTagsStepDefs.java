@@ -8,14 +8,18 @@ import cat.udl.eps.entsoftarch.textannot.repository.TagRepository;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
+import javax.validation.constraints.AssertTrue;
 import java.util.List;
 import java.util.Optional;
 
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -24,6 +28,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ListTagsStepDefs {
 
@@ -101,20 +107,38 @@ public class ListTagsStepDefs {
     }
 
     @Given("^I create a tag with name \"([^\"]*)\" not linked to any tag hierarchy$")
-    public void iCreateATagWithNameNotLinkedToAnyTagHierarchy(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    public void iCreateATagWithNameNotLinkedToAnyTagHierarchy(String name) throws Throwable {
+        Tag tag = new Tag(name);
+        tagRepository.save(tag);
     }
 
-    @And("^The tag with name \"([^\"]*)\" is not in the response$")
-    public void theTagWithNameIsNotInTheResponse(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+
+    @Then("^The tags' list is empty in the tag hierarchy called \"([^\"]*)\"$")
+    public void theTagsListIsEmptyInTheTagHierarchyCalled(String name) throws Throwable {
+        if(tagHierarchyRepository.findByName(name).isPresent()) {
+            List<Tag> tags = tagRepository.findByTagHierarchy(tagHierarchyRepository.findByName(name).get());
+            assertEquals(0, tags.size());
+        }
     }
 
-    @When("^I list tags in tag hierarchy$")
-    public void iListTagsInTagHierarchy() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    @And("^It exists a TagHierarchy with name \"([^\"]*)\"$")
+    public void itExistsATagHierarchyWithName(String name) throws Throwable {
+        TagHierarchy tagHierarchy = new TagHierarchy();
+        tagHierarchy.setName(name);
+        tagHierarchyRepository.save(tagHierarchy);
+    }
+
+    @When("^I list tags in tag hierarchy \"([^\"]*)\"$")
+    public void iListTagsInTagHierarchy(String name) throws Throwable {
+        String uri = "";
+        Optional<TagHierarchy> tagHierarchy = tagHierarchyRepository.findByName(name);
+        if(tagHierarchy.isPresent()) {
+            uri = tagHierarchy.get().getUri();
+        }
+        stepDefs.result = stepDefs.mockMvc.perform(
+                get("/tags/search/findByTagHierarchy?tagHierarchy=" + uri)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(AuthenticationStepDefs.authenticate()))
+                .andDo(print());
     }
 }
