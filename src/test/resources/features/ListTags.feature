@@ -10,8 +10,8 @@ Feature: List tags
 
   Scenario: Having 2 tags, list tags authenticated as admin
     Given I login as "admin" with password "password"
-    Given I create a tag with name "a"
-    Given I create a tag with name "b"
+    And I create a tag with name "a"
+    And I create a tag with name "b"
     When I list tags
     Then The response code is 200
     And The tag with name "a" is in the response
@@ -19,8 +19,8 @@ Feature: List tags
 
   Scenario: Having 2 tags, list tags authenticated as a linguist
     Given I login as "user" with password "password"
-    Given I create a tag with name "a"
-    Given I create a tag with name "b"
+    And I create a tag with name "a"
+    And I create a tag with name "b"
     When I list tags
     Then The response code is 200
     And The tag with name "a" is in the response
@@ -31,3 +31,26 @@ Feature: List tags
     When I list tags
     Then The response code is 200
     And The tags' list is empty
+
+  Scenario: Having 1 tag hierarchy, list tags authenticated as a linguist
+    Given I login as "admin" with password "password"
+    And I create a new Tag Hierarchy called "tag hierarchy"
+    And I create a tag with name "a" linked to the tag hierarchy called "tag hierarchy"
+    And I create a tag with name "b" linked to the tag hierarchy called "tag hierarchy"
+    When I login as "user" with password "password"
+    And I list tags in the tag hierarchy called "tag hierarchy"
+    Then The response code is 201
+
+  Scenario: Having 1 tag hierarchy, list only tags in the tag hierarchy as a linguist
+    Given I login as "admin" with password "password"
+    And I create a new Tag Hierarchy called "tag hierarchy"
+    And I create a tag with name "c" not linked to any tag hierarchy
+    When I login as "user" with password "password"
+    Then The tags' list is empty in the tag hierarchy called "tag hierarchy"
+
+
+  Scenario: Try to list tags in a tag hierarchy without authenticating
+    Given I'm not logged in
+    And It exists a TagHierarchy with name "tag hierarchy"
+    When I list tags in tag hierarchy "tag hierarchy"
+    Then The response code is 401
