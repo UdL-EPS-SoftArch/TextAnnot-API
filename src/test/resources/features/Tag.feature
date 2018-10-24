@@ -35,10 +35,44 @@ Feature: Tag
 
   Scenario: Setting the parent of a given tag
     Given I login as "admin" with password "password"
+    And Exists a TagHierarchy with name "hierarchy"
     And I create the parent Tag with name "parent"
     And I create the child Tag with name "child"
     When I set the parent with name "parent" to child with name "child"
     And I create link between parent with name "parent" and child with name "child"
     Then Parent with name "parent" was set correctly to the child with name "child"
+
+  Scenario: Linking parent and child with different tag hierarchy
+    Given I login as "admin" with password "password"
+    And Exists a TagHierarchy with name "hierarchy1"
+    And I create the parent Tag with name "parent"
+    And Exists a TagHierarchy with name "hierarchy2"
+    And I create the child Tag with name "child"
+    When I set the parent with name "parent" to child with name "child"
+    And I try to link between parent with name "parent" and child with name "child"
+    Then The response code is 400
+    And The error message is "Invalid tag hierarchy"
+
+  Scenario: Linking parent without tag hierarchy with child with tag hierarchy
+    Given I login as "admin" with password "password"
+    And I create the parent Tag with name "parent"
+    And Exists a TagHierarchy with name "hierarchy"
+    And I create the child Tag with name "child"
+    When I set the parent with name "parent" to child with name "child"
+    And I try to link between parent with name "parent" and child with name "child"
+    Then The response code is 400
+    And The error message is "Invalid tag hierarchy"
+
+  Scenario: Linking parent with tag hierarchy with child without tag hierarchy
+    Given I login as "admin" with password "password"
+    And I create the child Tag with name "child"
+    And Exists a TagHierarchy with name "hierarchy"
+    And I create the parent Tag with name "parent"
+    When I set the parent with name "parent" to child with name "child"
+    And I try to link between parent with name "parent" and child with name "child"
+    Then The response code is 400
+    And The error message is "Invalid tag hierarchy"
+
+
 
 

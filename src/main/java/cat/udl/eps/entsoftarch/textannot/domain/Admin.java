@@ -11,6 +11,11 @@ public class Admin extends User {
 
   @Override
   @Transient
+
+  /**
+   * This function returns collection of admin credentials.
+   * Returns the collection of granted authority for the user.
+   */
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN");
   }

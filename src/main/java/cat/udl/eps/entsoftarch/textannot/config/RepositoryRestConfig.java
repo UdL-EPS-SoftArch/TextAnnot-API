@@ -39,7 +39,8 @@ public class RepositoryRestConfig extends RepositoryRestConfigurerAdapter {
     @PostConstruct
     @Profile("!test")
     public void init() {
-        if(!environment.acceptsProfiles("Test")) {
+        if(!environment.acceptsProfiles("Test") &&
+            !metadataTemplateRepository.existsById("default")) {
             MetadataTemplate template = new MetadataTemplate();
             template.setName("default");
             metadataTemplateRepository.save(template);
