@@ -69,14 +69,14 @@ public class ListTagsStepDefs {
         stepDefs.result.andExpect(jsonPath("$._embedded.tags", hasSize(0)));
     }
 
-    @When("^I create a new Tag Hierarchy called \"([^\"]*)\"$")
+    @Then("^I create a new Tag Hierarchy called \"([^\"]*)\"$")
     public void iCreateANewTagHierarchyCalled(String name) throws Throwable {
         TagHierarchy tagHierarchy = new TagHierarchy();
         tagHierarchy.setName(name);
         tagHierarchyRepository.save(tagHierarchy);
     }
 
-    @Given("^I create a tag with name \"([^\"]*)\" linked to the tag hierarchy called \"([^\"]*)\"$")
+    @And("^I create a tag with name \"([^\"]*)\" linked to the tag hierarchy called \"([^\"]*)\"$")
     public void iCreateATagWithNameLinkedToTheTagHierarchyCalled(String name, String tagHierarchyName) throws Throwable {
         Optional<TagHierarchy> tagHierarchy = tagHierarchyRepository.findByName(tagHierarchyName);
         Tag tag = new Tag(name);
@@ -93,7 +93,7 @@ public class ListTagsStepDefs {
                 .andDo(print());
     }
 
-    @When("^I list tags in the tag hierarchy called \"([^\"]*)\"$")
+    @Then("^I list tags in the tag hierarchy called \"([^\"]*)\"$")
     public void iListTagsInTheTagHierarchyCalled(String name) throws Throwable {
         Optional<TagHierarchy> tagHierarchy = tagHierarchyRepository.findByName(name);
         List<Tag> tags = tagRepository.findByTagHierarchy(tagHierarchyRepository.findByName(name).get());
@@ -106,7 +106,7 @@ public class ListTagsStepDefs {
                 .andExpect(jsonPath("$._embedded.tags[1].id", is(tags.get(1).getId())));
     }
 
-    @Given("^I create a tag with name \"([^\"]*)\" not linked to any tag hierarchy$")
+    @And("^I create a tag with name \"([^\"]*)\" not linked to any tag hierarchy$")
     public void iCreateATagWithNameNotLinkedToAnyTagHierarchy(String name) throws Throwable {
         Tag tag = new Tag(name);
         tagRepository.save(tag);
