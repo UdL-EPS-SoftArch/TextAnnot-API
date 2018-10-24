@@ -56,4 +56,7 @@ public class Annotation extends UriEntity<Integer> {
      *  Linking Annotation with Tag entity
      */
     private Tag tag;
+
+    @ManyToOne
+    private Linguist linguist;
 }
