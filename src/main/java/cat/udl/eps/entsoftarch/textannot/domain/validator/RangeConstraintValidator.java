@@ -16,6 +16,7 @@ public class RangeConstraintValidator implements ConstraintValidator<RangeConstr
         return annotation.getStart() != null &&
                 annotation.getEnd() != null &&
                 0 <= annotation.getStart() &&
-                annotation.getStart() < annotation.getEnd();
+                annotation.getStart() < annotation.getEnd() &&
+                annotation.getEnd() <= annotation.getSample().getText().length();
     }
 }
