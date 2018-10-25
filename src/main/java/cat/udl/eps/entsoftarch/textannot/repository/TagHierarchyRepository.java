@@ -5,6 +5,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+import java.util.List;
 import java.util.Optional;
 
 @RepositoryRestResource
@@ -16,4 +17,5 @@ public interface TagHierarchyRepository extends PagingAndSortingRepository<TagHi
      * @return TagHierarchy object.
      */
     Optional<TagHierarchy> findByName(@Param("name") String name);
+    List<TagHierarchy> findByNameContaining(@Param("name") String name);
 }
