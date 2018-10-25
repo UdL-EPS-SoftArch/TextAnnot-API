@@ -46,11 +46,14 @@ public class ListSampleAnnotationsStepDefs {
     private String newAnnotationUri;
 
 
-    @Given("^I create an annotation with start (\\d+) and end (\\d+)$")
-    public void iCreateAnAnnotationWithStartAndEnd(int arg0, int arg1) throws Throwable {
+    @Given("^I create an annotation with start (\\d+), end (\\d+) and sample text \"([^\"]*)\"$")
+    public void iCreateAnAnnotationWithStartAndEnd(int start, int end, String sample) throws Throwable {
         JSONObject annotation = new JSONObject();
-        annotation.put("start", arg0);
-        annotation.put("end", arg1);
+        annotation.put("start", start);
+        annotation.put("end", end);
+        String sampleUri = sampleRepository.findByTextContaining(sample).get(0).getUri();
+        annotation.put("sample", sampleUri);
+
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/annotations")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -60,14 +63,12 @@ public class ListSampleAnnotationsStepDefs {
                 .andDo(print());
 
         newAnnotationUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
-
-
     }
 
     @Given("^I create a different sample with text \"([^\"]*)\"$")
-    public void iCreateASampleWithText(String arg0) throws Throwable {
+    public void iCreateASampleWithText(String sampleText) throws Throwable {
         JSONObject sample = new JSONObject();
-        sample.put("text", arg0);
+        sample.put("text", sampleText);
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/samples")
                         .contentType(MediaType.APPLICATION_JSON)

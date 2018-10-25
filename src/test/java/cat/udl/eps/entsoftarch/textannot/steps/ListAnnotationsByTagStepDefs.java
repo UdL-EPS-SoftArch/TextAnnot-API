@@ -1,8 +1,10 @@
 package cat.udl.eps.entsoftarch.textannot.steps;
 
 import cat.udl.eps.entsoftarch.textannot.domain.Annotation;
+import cat.udl.eps.entsoftarch.textannot.domain.Sample;
 import cat.udl.eps.entsoftarch.textannot.domain.Tag;
 import cat.udl.eps.entsoftarch.textannot.repository.AnnotationRepository;
+import cat.udl.eps.entsoftarch.textannot.repository.SampleRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.TagRepository;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
@@ -33,33 +35,18 @@ public class ListAnnotationsByTagStepDefs {
     @Autowired
     private TagRepository tagRepository;
 
-
+    @Autowired
+    private SampleRepository sampleRepository;
 
     private String taggedAnnotation;
     private String taggedBy;
     private List<Annotation> taggedAnnotations;
     private Tag expectedTag;
 
-    @Given("^I create one annotation with start (\\d+) and end (\\d+)$")
-    public void iCreateOneAnnotationWithStartAndEnd(int arg0, int arg1) throws Throwable {
-        JSONObject annotation = new JSONObject();
-        annotation.put("start", arg0);
-        annotation.put("end", arg1);
-        stepDefs.result = stepDefs.mockMvc.perform(
-                post("/annotations")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(annotation.toString())
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(AuthenticationStepDefs.authenticate()))
-                .andDo(print());
-
-        taggedAnnotation = stepDefs.result.andReturn().getResponse().getHeader("Location");
-    }
-
     @Given("^I create a certain Tag with the name \"([^\"]*)\"$")
-    public void iCreateACertainTagWithTheName(String arg0) throws Throwable {
+    public void iCreateACertainTagWithTheName(String tagName) throws Throwable {
         JSONObject tag = new JSONObject();
-        tag.put("name", arg0);
+        tag.put("name", tagName);
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/tags")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -69,7 +56,6 @@ public class ListAnnotationsByTagStepDefs {
                 .andDo(print());
 
         taggedBy = stepDefs.result.andReturn().getResponse().getHeader("Location");
-
     }
 
     @When("^I tag the annotation with the Tag$")
@@ -83,36 +69,36 @@ public class ListAnnotationsByTagStepDefs {
                 .accept(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
-
-
     }
 
     @Then("^The annotation has been tagged with the Tag named \"([^\"]*)\"$")
-    public void theAnnotationHasBeenTaggedWithTheTagNamed(String arg0) throws Throwable {
+    public void theAnnotationHasBeenTaggedWithTheTagNamed(String tagName) throws Throwable {
         stepDefs.mockMvc.perform(get(taggedAnnotation + "/tag")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .with(AuthenticationStepDefs.authenticate()))
-                .andExpect(jsonPath("@.name").value(arg0))
+                .andExpect(jsonPath("@.name").value(tagName))
                 .andDo(print());
     }
 
     @Given("^I create a certain Tag with text \"([^\"]*)\" and Tag (\\d+) Annotations$")
-    public void iCreateACertainTagWithTextAndTagAnnotations(String arg0, int arg1) {
+    public void iCreateACertainTagWithTextAndTagAnnotations(String tagName, int numOfTags) {
 
-        Tag taggedBy = new Tag(arg0);
+        Tag taggedBy = new Tag(tagName);
         expectedTag = taggedBy;
         tagRepository.save(taggedBy);
 
-
-        for(int i = 0; i < arg1; i++){
+        for(int i = 0; i < numOfTags; i++){
             Annotation toAdd = new Annotation();
+            Sample sample = new Sample("Lorem ipsum dolor sit amet");
+            sampleRepository.save(sample);
+            toAdd.setSample(sample);
             toAdd.setStart(1 + i);
             toAdd.setEnd(2 + i);
             toAdd.setTag(taggedBy);
+
             annotationRepository.save(toAdd);
         }
-
     }
 
     @When("^I search the annotations by Tagged as the created Tag$")
@@ -128,6 +114,4 @@ public class ListAnnotationsByTagStepDefs {
                 .with(AuthenticationStepDefs.authenticate())).andExpect(jsonPath("@.page.totalElements").value(this.taggedAnnotations.size()))
                 .andDo(print());
     }
-
-
 }
