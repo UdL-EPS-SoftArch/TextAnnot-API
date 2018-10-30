@@ -29,6 +29,7 @@ Feature: Create Annotation
     And I create a new sample with text "abcdef"
     When I create a new annotation with start 0 and end 4 without a sample
     Then The response code is 400
+    And The error message is "Annotation without sample"
     And It has not been created a new annotation
 
   Scenario: Create a new annotation with a wrong start as a linguist
@@ -92,6 +93,7 @@ Feature: Create Annotation
     And Exists a Sample with text "abcdef"
     When I create a new annotation with start 0, end 3 and sample "abcdef"
     Then The response code is 401
+    And The error message is "Unauthorized"
     And It has not been created a new annotation
 
   Scenario: Create a new annotation as a linguist with a tag associated

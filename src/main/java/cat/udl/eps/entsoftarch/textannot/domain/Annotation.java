@@ -2,6 +2,7 @@ package cat.udl.eps.entsoftarch.textannot.domain;
 
 import javax.persistence.*;
 
+import cat.udl.eps.entsoftarch.textannot.domain.validator.AnnotationWithSampleConstraint;
 import cat.udl.eps.entsoftarch.textannot.domain.validator.RangeConstraint;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,6 +18,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @RangeConstraint
+@AnnotationWithSampleConstraint
 public class Annotation extends UriEntity<Integer> {
 
     @Id
