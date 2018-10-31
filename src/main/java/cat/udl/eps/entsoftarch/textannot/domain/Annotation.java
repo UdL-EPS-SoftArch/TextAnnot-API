@@ -11,8 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
-
 
 @Entity
 @Data
@@ -46,8 +44,10 @@ public class Annotation extends UriEntity<Integer> {
     private Boolean reviewed = false;
 
     @ManyToOne
+    @NonNull
     /**
      * Linking Annotation with Sample entity
+     * NonNull checked by RangeConstraintValidator
      */
     private Sample sample;
 

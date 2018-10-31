@@ -1,7 +1,5 @@
 Feature: List all the annotations tagged with a certain Tag
 
-
-
   Scenario: List 1 Annotations Tagged by a Tag
     Given I login as "user" with password "password"
     Given I create a certain Tag with text "1TaggedAnnotation" and Tag 1 Annotations
