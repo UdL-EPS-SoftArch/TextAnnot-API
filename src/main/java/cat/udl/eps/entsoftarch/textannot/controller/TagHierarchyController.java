@@ -7,6 +7,8 @@ import cat.udl.eps.entsoftarch.textannot.exception.TagTreeException;
 import cat.udl.eps.entsoftarch.textannot.repository.TagHierarchyRepository;
 import cat.udl.eps.entsoftarch.textannot.repository.TagRepository;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
@@ -73,5 +75,19 @@ public class TagHierarchyController {
 
     private boolean isNullOrEmpty(String name) {
         return name == null || name.isEmpty();
+    }
+
+    @Data
+    @NoArgsConstructor
+    public static class TagHierarchyJson {
+        private String name;
+        private List<TagJson> roots;
+    }
+
+    @Data
+    @NoArgsConstructor
+    public static class TagJson {
+        private String name;
+        private List<TagJson> children;
     }
 }
