@@ -26,10 +26,9 @@ Feature: Create Annotation
 
   Scenario: Create a new annotation without a sample as a linguist
     Given I login as "user" with password "password"
-    And I create a new sample with text "abcdef"
     When I create a new annotation with start 0 and end 4 without a sample
     Then The response code is 400
-    And The error message is "Annotation without sample"
+    And The error message is "Invalid Annotation"
     And It has not been created a new annotation
 
   Scenario: Create a new annotation with a wrong start as a linguist
@@ -37,7 +36,7 @@ Feature: Create Annotation
     And I create a new sample with text "abcdef"
     When I create a new annotation with start -1, end 4 and sample "abcdef"
     Then The response code is 400
-    And The error message is "Invalid range"
+    And The error message is "Invalid Annotation"
     And It has not been created a new annotation
 
   Scenario: Create a new annotation with a wrong end as a linguist
@@ -45,7 +44,7 @@ Feature: Create Annotation
     And I create a new sample with text "abcdef"
     When I create a new annotation with start 3, end 0 and sample "abcdef"
     Then The response code is 400
-    And The error message is "Invalid range"
+    And The error message is "Invalid Annotation"
     And It has not been created a new annotation
 
   Scenario: Create a new annotation with a greater end than sample text length as a linguist
@@ -53,7 +52,7 @@ Feature: Create Annotation
     And I create a new sample with text "abcdef"
     When I create a new annotation with start 3, end 7 and sample "abcdef"
     Then The response code is 400
-    And The error message is "Invalid range"
+    And The error message is "Invalid Annotation"
     And It has not been created a new annotation
 
   Scenario: Create a new annotation with a wrong start and end as a linguist
@@ -61,7 +60,7 @@ Feature: Create Annotation
     And I create a new sample with text "abcdef"
     When I create a new annotation with start -1, end -5 and sample "abcdef"
     Then The response code is 400
-    And The error message is "Invalid range"
+    And The error message is "Invalid Annotation"
     And It has not been created a new annotation
 
   Scenario: Create a new annotation with null start as a linguist
@@ -69,7 +68,7 @@ Feature: Create Annotation
     And I create a new sample with text "abcdef"
     When I create a new annotation with null start, end 5 and sample "abcdef"
     Then The response code is 400
-    And The error message is "Invalid range"
+    And The error message is "Invalid Annotation"
     And It has not been created a new annotation
 
   Scenario: Create a new annotation with null end as a linguist
@@ -77,7 +76,7 @@ Feature: Create Annotation
     And I create a new sample with text "abcdef"
     When I create a new annotation with start 0, null end and sample "abcdef"
     Then The response code is 400
-    And The error message is "Invalid range"
+    And The error message is "Invalid Annotation"
     And It has not been created a new annotation
 
   Scenario: Create a new annotation with null start and null end as a linguist
@@ -85,7 +84,7 @@ Feature: Create Annotation
     And I create a new sample with text "abcdef"
     When I create a new annotation with null start, null end and sample "abcdef"
     Then The response code is 400
-    And The error message is "Invalid range"
+    And The error message is "Invalid Annotation"
     And It has not been created a new annotation
 
   Scenario: Attempting to create a new annotation without authenticating

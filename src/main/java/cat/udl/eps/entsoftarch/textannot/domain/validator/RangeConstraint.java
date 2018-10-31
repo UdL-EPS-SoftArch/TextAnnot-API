@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RangeConstraint {
-    String message() default "Invalid range";
+    String message() default "Invalid Annotation";
 
     Class<?>[] groups() default {};
 
