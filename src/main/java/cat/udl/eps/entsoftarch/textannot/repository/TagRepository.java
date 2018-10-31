@@ -10,7 +10,26 @@ import java.util.List;
 
 @RepositoryRestResource
 public interface TagRepository extends PagingAndSortingRepository<Tag, Integer> {
+
+    /**
+     * Finds all Tags that has text containing like the given one
+     * @param name String name for finding in Tags
+     * @return The list of Tags that contains text in given parameter
+     */
     List<Tag> findByNameContaining(@Param("name") String name);
+
+    /**
+     Returns the Tags related to a tagHierarchy.
+     * @param tagHierarchy The tagHierarchy that contains the Tags we want.
+     * @return list of Tags.
+     */
     List<Tag> findByTagHierarchy(@Param("tagHierarchy")TagHierarchy tagHierarchy);
+
+    /**
+     Returns the Tags related to a Tag parent.
+     * @param parent The Tag parent that contains the Tag childs we want.
+     * @return list of Tags.
+     */
+
     List<Tag> findByParent(@Param("parent") Tag parent);
 }

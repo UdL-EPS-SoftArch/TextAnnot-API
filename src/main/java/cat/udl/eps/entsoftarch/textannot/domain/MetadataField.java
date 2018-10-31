@@ -12,21 +12,29 @@ import javax.validation.constraints.NotBlank;
 public class MetadataField extends UriEntity<Integer> {
 
     @NotBlank
+    /**
+     * The String name indicates the name of a metadata field and must not be blank.
+     * The String type indicates the kind of a metadata field and must not be blank.
+     */
     String name="", type;
 
+    /**
+     * The String category indicates the category of a metadata field.
+     */
     String category;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /**
+     * Identifier of annotation needs to be unique, otherwise it will generate conflicts.
+     */
     private Integer id;
 
     @ManyToOne
+    /**
+     * Linking MetadataField with Metadata Template.
+     */
     private MetadataTemplate definedAt;
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
 
     public MetadataField() {
         this.name = "";

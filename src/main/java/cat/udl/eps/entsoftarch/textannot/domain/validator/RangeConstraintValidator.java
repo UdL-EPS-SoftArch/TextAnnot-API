@@ -13,9 +13,12 @@ public class RangeConstraintValidator implements ConstraintValidator<RangeConstr
 
     @Override
     public boolean isValid(Annotation annotation, ConstraintValidatorContext context) {
+
         return annotation.getStart() != null &&
                 annotation.getEnd() != null &&
+                annotation.getSample() != null &&
                 0 <= annotation.getStart() &&
-                annotation.getStart() < annotation.getEnd();
+                annotation.getStart() < annotation.getEnd() &&
+                annotation.getEnd() <= annotation.getSample().getText().length();
     }
 }

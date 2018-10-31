@@ -10,6 +10,12 @@ import java.util.Optional;
 
 @RepositoryRestResource
 public interface TagHierarchyRepository extends PagingAndSortingRepository<TagHierarchy, Integer> {
+
+    /**
+     * Returns the TagHierarchy found by a given name.
+     * @param name The given name of TagHierarchy.
+     * @return TagHierarchy object.
+     */
     Optional<TagHierarchy> findByName(@Param("name") String name);
     List<TagHierarchy> findByNameContaining(@Param("name") String name);
 }

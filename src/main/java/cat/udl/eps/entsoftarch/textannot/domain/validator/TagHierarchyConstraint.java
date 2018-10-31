@@ -5,13 +5,13 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-
 @Documented
-@Constraint(validatedBy = RangeConstraintValidator.class)
+@Constraint(validatedBy = TagHierarchyConstraintValidator.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RangeConstraint {
-    String message() default "Invalid Annotation";
+public @interface TagHierarchyConstraint {
+
+    String message() default "Invalid tag hierarchy";
 
     Class<?>[] groups() default {};
 
