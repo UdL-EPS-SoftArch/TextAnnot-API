@@ -75,14 +75,15 @@ public class TagStepDefs {
     @When("^I create a new tag with name \"([^\"]*)\" defined in the tag hierarchy \"([^\"]*)\"$")
     public void iCreateANewTagWithNameDefinedInTheTagHierarchy(String name, String tagHierName) throws Throwable {
         List<Tag> tags = tagRepository.findByNameContaining(name);
-        Optional<TagHierarchy> tagHierarchy = tagHierarchyRepository.findByName(tagHierName);
-        Assert.assertTrue("TagHierarchy exists", tagHierarchy.isPresent());
+        Optional<TagHierarchy> tagHierarchyOptional = tagHierarchyRepository.findByName(tagHierName);
+        Assert.assertTrue("TagHierarchy exists", tagHierarchyOptional.isPresent());
+        TagHierarchy tagHierarchy = tagHierarchyOptional.get();
         if(!tags.isEmpty())
             tag.setName(tags.get(0).getName());
         stepDefs.result = stepDefs.mockMvc.perform(
                 put("/tags/" + tag.getId() + "/tagHierarchy")
                     .contentType("text/uri-list")
-                    .content(tagHierarchy.get().getUri())
+                    .content(tagHierarchy.getUri())
                     .accept(MediaType.APPLICATION_JSON)
                     .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
