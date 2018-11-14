@@ -2,6 +2,7 @@ package cat.udl.eps.entsoftarch.textannot.controller;
 
 import cat.udl.eps.entsoftarch.textannot.domain.Tag;
 import cat.udl.eps.entsoftarch.textannot.domain.TagHierarchy;
+import cat.udl.eps.entsoftarch.textannot.exception.TagHierarchyDuplicateException;
 import cat.udl.eps.entsoftarch.textannot.exception.TagHierarchyValidationException;
 import cat.udl.eps.entsoftarch.textannot.exception.TagTreeException;
 import cat.udl.eps.entsoftarch.textannot.repository.TagHierarchyRepository;
@@ -9,6 +10,7 @@ import cat.udl.eps.entsoftarch.textannot.repository.TagRepository;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
@@ -39,6 +41,10 @@ public class TagHierarchyController {
 
         if (isNullOrEmpty(body.getName()))
             throw new TagHierarchyValidationException();
+
+
+        if (tagHierarchyRepository.findByName(body.getName()).isPresent())
+            throw new TagHierarchyDuplicateException();
 
         List<Tag> treeHierarchy = new ArrayList<>();
 
