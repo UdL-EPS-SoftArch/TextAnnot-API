@@ -54,6 +54,12 @@
 			<artifactId>spring-data-rest-hal-browser</artifactId>
 		</dependency>
 
+º		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.6</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
