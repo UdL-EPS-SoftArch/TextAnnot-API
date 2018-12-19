@@ -20,33 +20,37 @@ import lombok.EqualsAndHashCode;
 public class Sample extends UriEntity<Integer>{
 
     private final static int textSize = 16 * 1024; // 16KB
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+
     /**
      * Identifier of sample needs to be unique, otherwise it will generate conflicts.
      */
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
-    @NotNull
-    @Column(length = textSize)
-    @Size(max = textSize)
+
     /**
      * The text contained in the Sample. It is limited to 16KB and it can't be null.
      */
+    @NotNull
+    @Column(length = textSize)
+    @Size(max = textSize)
     private String text;
 
-    @ManyToOne
-    @JsonIdentityReference(alwaysAsId = true)
+
     /**
      * Linking Sample with MetadataTemplate;
      */
-    private MetadataTemplate describedBy;
-
     @ManyToOne
     @JsonIdentityReference(alwaysAsId = true)
+    private MetadataTemplate describedBy;
+
+
     /**
      * Linking Sample with TagHierarchy.
      */
+    @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
     private TagHierarchy taggedBy;
 
     public Sample(String text) {
