@@ -40,7 +40,7 @@ public class RepositoryRestConfig extends RepositoryRestConfigurerAdapter {
     @Profile("!test")
     public void init() {
         if(!environment.acceptsProfiles("Test") &&
-            !metadataTemplateRepository.existsById("default")) {
+            !metadataTemplateRepository.existsById(1)) {
             MetadataTemplate template = new MetadataTemplate();
             template.setName("default");
             metadataTemplateRepository.save(template);
