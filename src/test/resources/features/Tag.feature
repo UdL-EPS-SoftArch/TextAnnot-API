@@ -74,5 +74,22 @@ Feature: Tag
     And The error message is "Invalid tag hierarchy"
 
 
+  Scenario: Deleting a tag which has a child
+    Given I login as "admin" with password "password"
+    And Exists a TagHierarchy with name "hierarchy"
+    And I create the parent Tag with name "parent"
+    And I create the child Tag with name "child"
+    And I try to link between parent with name "parent" and child with name "child"
+    When I delete the parent
+    Then The error message is "Tags with childs cannot be deleted"
+    Then The response code is 400
+
+
+  Scenario: Deleting a tag which has not a child
+    Given I login as "admin" with password "password"
+    And Exists a TagHierarchy with name "hierarchy"
+    And I create the parent Tag with name "parent"
+    When I delete the parent
+    Then The response code is 204
 
 
