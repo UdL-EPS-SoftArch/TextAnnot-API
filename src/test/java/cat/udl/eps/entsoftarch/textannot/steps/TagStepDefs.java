@@ -106,6 +106,7 @@ public class TagStepDefs {
         parent.setTagHierarchy(tagHierarchy);
         tagRepository.save(parent);
         parentUri = parent.getUri();
+        System.out.println(parent.getUri());
 
 
     }
@@ -167,5 +168,10 @@ public class TagStepDefs {
                 .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
 
+    }
+
+    @When("^I delete the parent$")
+    public void iDeleteTheParent() throws Throwable {
+        stepDefs.result  = stepDefs.mockMvc.perform(delete(parentUri).with(AuthenticationStepDefs.authenticate())).andDo(print());
     }
 }
