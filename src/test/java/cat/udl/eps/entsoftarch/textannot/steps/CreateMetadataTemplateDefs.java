@@ -35,10 +35,12 @@ public class CreateMetadataTemplateDefs {
 
     private Sample sample;
 
+    private String newResourceUri;
+
     @When("^I create a new Metadata Template with name \"([^\"]*)\"$")
-    public void iCreateANewMetadataTemplateWithName(String arg0) throws Throwable {
+    public void iCreateANewMetadataTemplateWithName(String name) throws Throwable {
         JSONObject metadataTemplate = new JSONObject();
-        metadataTemplate.put("name", arg0);
+        metadataTemplate.put("name", name);
         stepDefs.result = stepDefs.mockMvc.perform(
                 post("/metadataTemplates")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -46,12 +48,13 @@ public class CreateMetadataTemplateDefs {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print());
+        newResourceUri = stepDefs.result.andReturn().getResponse().getHeader("Location");
     }
 
     @And("^The metadata template name is \"([^\"]*)\"$")
     public void theObjectNameIs(String name) throws Throwable {
         stepDefs.result = stepDefs.mockMvc.perform(
-                get("/metadataTemplates/{name}", name)
+                get(newResourceUri)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(AuthenticationStepDefs.authenticate()))
                 .andDo(print())
